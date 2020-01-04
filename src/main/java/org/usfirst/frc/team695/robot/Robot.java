@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SampleRobot;
+import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.cscore.UsbCamera;
@@ -46,7 +46,7 @@ buttons:
 
 */
 
-public class Robot extends SampleRobot
+public class Robot extends TimedRobot
 {
 	//button ids
 	private int buttonBlueX = 3;
@@ -207,10 +207,9 @@ public class Robot extends SampleRobot
 	/****************************************************************/
 	/****************************************************************/
 	
-	public void autonomous()
+	public void autonomousPeriodic()
 	{
 		System.out.println("695:  autonomous()");
-		operatorControl();
 	}
 
 	
@@ -218,7 +217,7 @@ public class Robot extends SampleRobot
 	/****************************************************************/
 	/****************************************************************/
 	
-	public void operatorControl()
+	public void teleopPeriodic()
 	{
 		long hatchdebounce = 0;
 		long liftdebounce = 0;
@@ -245,236 +244,227 @@ public class Robot extends SampleRobot
 		System.out.println("695:  operatorControl()...");
 		System.out.println("Ring is green!");
 		ringop.setNumber(3);
+		// *********
+		// boost piston code
+		// *********
 		
-		while(isEnabled())
+		if (controllerLiftJack.getRawButton(buttonBlueX) == true)
 		{
-			// *********
-			// boost piston code
-			// *********
-			
-			if (controllerLiftJack.getRawButton(buttonBlueX) == true)
+			if (boostPistonDebounce == 0)
 			{
-				if (boostPistonDebounce == 0)
-				{
-					boostPistonDebounce = 1;
-					boostPiston.set(!boostPiston.get()); //switch fork state
-				}
+				boostPistonDebounce = 1;
+				boostPiston.set(!boostPiston.get()); //switch fork state
 			}
-			else
-			{
-				boostPistonDebounce = 0;
-			}
-			
-			retractJackUnlessAlreadyRetracted(controllerLiftJack.getRawAxis(1));
-			if ((hatchleft.get()) && (hatchright.get()))
-			{
-				hatch.set(true);
-			}
-			/*
-			if (controllerDrive.getPOV() != -1)
-			{
-				if (povdebounce == 0)
-				{
-					povdebounce = 1;
-					if (controllerDrive.getPOV() == 0)
-					{
-						if (pgain < 1)
-						{
-							pgain = pgain + 0.1;
-						}
-					}
-					if (controllerDrive.getPOV() == 180)
-					{
-						if (pgain > 0.1)
-						{
-							pgain = pgain - 0.1;
-						}
-					}
-				}
-			}
-			else
-			{
-				povdebounce = 0;
-			}
-			*/						
-			// lift
-			if (controllerDrive.getRawButton(buttonRedB) == true)
-			{
-				if (liftdebounce == 0)
-				{
-					liftdebounce = 1;
-					if (lift.get() == true)
-					{
-						lift.set(false);
-					}
-					else
-					{
-						lift.set(true);
-					}
-				}
-			}
-			else
-			{
-				liftdebounce = 0;
-			}
-			
-			// hatch
-			if (controllerDrive.getRawButton(buttonYellowY) == true)
-			{
-				if (hatchdebounce == 0)
-				{
-					hatchdebounce = 1;
-					hatch.set(!hatch.get());
-				}
-			}
-			else
-			{
-				hatchdebounce = 0;
-			}
-			
-			if (hatchleft.get() == true)
-			{
-				tabhatchleft.setNumber(1);
-			}
-			else
-			{
-				tabhatchleft.setNumber(0);
-			}
-			
-			if (hatchright.get() == true)
-			{
-				tabhatchright.setNumber(1);
-			}
-			else
-			{
-				tabhatchright.setNumber(0);
-			}
-			
-			//***********
-			// drive code
-			//***********
-
-			// drive speed
-			driveSensitivity = 1-(controllerDrive.getRawAxis(rightTriggerAxis)); 
-			if (driveSensitivity <= 0.25) {//do not let it become zero
-				driveSensitivity = 0.25;
-			} 
-			driveleft = driveright = controllerDrive.getRawAxis(leftYAxis)*(driveSensitivity); //speed is scales by how much controller drive is compressed
-			drivesteer = controllerDrive.getRawAxis(rightXAxis);
-
-			if ((driveleft >= -0.1) && (driveleft <= 0.1))
-			{
-				driveleft = driveright = 0;
-			}
-			/*
-			// auto dock
-			err = pidx.getDouble(0) / 100;
-
-			if (controllerDrive.getRawButton(7) == true)
-			{
-
-				drivesteer = err * pgain;
-
-				if (driveleft > 0.25)
-				{
-					driveleft = driveright = 0.25;
-				}
-				if (driveleft < -0.25)
-				{
-					driveleft = driveright = -0.25;
-				}
-
-			}
-			*/
-				
-		// apply steering to move
-		if (drivesteer > 0)
+		}
+		else
 		{
-			driveleft = driveleft * (1 - drivesteer);
+			boostPistonDebounce = 0;
 		}
-		if (drivesteer < 0)
-		{
-			driveright = driveright * (1 + drivesteer);
-		}
-				
-		azimuthToTarget = error = limeTx.getDouble(0.0);
-		copolarToTarget = limeTy.getDouble(0.0);
-		areaOfContour = limeTa.getDouble(0.0);
-
-		//System.out.println("LIME DATA: X: " + Double.toString(azimuthToTarget) + " Y: " + Double.toString(y) + " AREA: " + Double.toString(area));
-		double forwardModifier = 0;
-		//driveleft  = controllerDrive.getRawAxis(5);
-		//driveright = controllerDrive.getRawAxis(1);
-		if (controllerDrive.getRawButton(buttonGreenA)) {
-			//System.out.println("PBUTTON DOWN");
-			steeringAdjust = Kp*error;
-			if (error > 3.0)
-			{
-				steeringAdjust = Kp*error - minCommand;
-			}
-			else if (error < 3.0)
-			{
-				steeringAdjust = Kp*error + minCommand;
-				forwardModifier = 0;//-0.5;
-			}
-			//driveleft = driveright; //disable tank drive by ignoring right stick, left becomes the throttle
-			driveleft += steeringAdjust;
-			driveright -= steeringAdjust;
-			driveright += forwardModifier;
-			driveleft += forwardModifier;
-			// drive speed
-		}
-			
-			motorL1.set(ControlMode.PercentOutput, .7*driveleft);
-			motorL2.set(ControlMode.PercentOutput, .7*driveleft);
-
-			motorR1.set(ControlMode.PercentOutput, -1 * .7*driveright);
-			motorR2.set(ControlMode.PercentOutput, -1 * .7*driveright);
-
-						
-			//******************************
-			// diagnostic print every second
-			//******************************
-			if (++tickcnt == 100)
-			{
-				tickcnt = 0;
-				//System.out.println("raw button 2: " + controllerDrive.getRawButton(2));
-				//System.out.println("driveleft=" + driveleft + ", driveright=" + driveright + ", drivesteer=" + drivesteer);
-				//System.out.println("GAIN: " + pgain);
-				//System.out.println("JACK: " + countJack.get());
-				//System.out.println("695:  operatorControl(" + (++cnt) + ")");
-				//System.out.println(hatchleft.get() + " / " + hatchright.get());
-				//System.out.println("hatch: " + hatch.get() + ":  " + hatchleft.get() + " / " + hatchright.get());
-				//System.out.println("   jack count: " + countJack.get());
-				//System.out.println("   jack distance: " + getLidar());
-				//System.out.println("   jack in: " + jackin.get());
-				//System.out.println("   movejack: " + movejack);
-				//leds();
 		
+		retractJackUnlessAlreadyRetracted(controllerLiftJack.getRawAxis(1));
+		if ((hatchleft.get()) && (hatchright.get()))
+		{
+			hatch.set(true);
+		}
+		/*
+		if (controllerDrive.getPOV() != -1)
+		{
+			if (povdebounce == 0)
+			{
+				povdebounce = 1;
+				if (controllerDrive.getPOV() == 0)
+				{
+					if (pgain < 1)
+					{
+						pgain = pgain + 0.1;
+					}
+				}
+				if (controllerDrive.getPOV() == 180)
+				{
+					if (pgain > 0.1)
+					{
+						pgain = pgain - 0.1;
+					}
+				}
 			}
+		}
+		else
+		{
+			povdebounce = 0;
+		}
+		*/						
+		// lift
+		if (controllerDrive.getRawButton(buttonRedB) == true)
+		{
+			if (liftdebounce == 0)
+			{
+				liftdebounce = 1;
+				if (lift.get() == true)
+				{
+					lift.set(false);
+				}
+				else
+				{
+					lift.set(true);
+				}
+			}
+		}
+		else
+		{
+			liftdebounce = 0;
+		}
+		
+		// hatch
+		if (controllerDrive.getRawButton(buttonYellowY) == true)
+		{
+			if (hatchdebounce == 0)
+			{
+				hatchdebounce = 1;
+				hatch.set(!hatch.get());
+			}
+		}
+		else
+		{
+			hatchdebounce = 0;
+		}
+		
+		if (hatchleft.get() == true)
+		{
+			tabhatchleft.setNumber(1);
+		}
+		else
+		{
+			tabhatchleft.setNumber(0);
+		}
+		
+		if (hatchright.get() == true)
+		{
+			tabhatchright.setNumber(1);
+		}
+		else
+		{
+			tabhatchright.setNumber(0);
+		}
+		
+		//***********
+		// drive code
+		//***********
+
+		// drive speed
+		driveSensitivity = 1-(controllerDrive.getRawAxis(rightTriggerAxis)); 
+		if (driveSensitivity <= 0.25) {//do not let it become zero
+			driveSensitivity = 0.25;
+		} 
+		driveleft = driveright = controllerDrive.getRawAxis(leftYAxis)*(driveSensitivity); //speed is scales by how much controller drive is compressed
+		drivesteer = controllerDrive.getRawAxis(rightXAxis);
+
+		if ((driveleft >= -0.1) && (driveleft <= 0.1))
+		{
+			driveleft = driveright = 0;
+		}
+		/*
+		// auto dock
+		err = pidx.getDouble(0) / 100;
+
+		if (controllerDrive.getRawButton(7) == true)
+		{
+
+			drivesteer = err * pgain;
+
+			if (driveleft > 0.25)
+			{
+				driveleft = driveright = 0.25;
+			}
+			if (driveleft < -0.25)
+			{
+				driveleft = driveright = -0.25;
+			}
+
+		}
+		*/
 			
-			//***********************
-			// time delay for roborio
-			//***********************
-			Timer.delay(0.01);
-			
-		}		
+	// apply steering to move
+	if (drivesteer > 0)
+	{
+		driveleft = driveleft * (1 - drivesteer);
 	}
+	if (drivesteer < 0)
+	{
+		driveright = driveright * (1 + drivesteer);
+	}
+			
+	azimuthToTarget = error = limeTx.getDouble(0.0);
+	copolarToTarget = limeTy.getDouble(0.0);
+	areaOfContour = limeTa.getDouble(0.0);
+
+	//System.out.println("LIME DATA: X: " + Double.toString(azimuthToTarget) + " Y: " + Double.toString(y) + " AREA: " + Double.toString(area));
+	double forwardModifier = 0;
+	//driveleft  = controllerDrive.getRawAxis(5);
+	//driveright = controllerDrive.getRawAxis(1);
+	if (controllerDrive.getRawButton(buttonGreenA)) {
+		//System.out.println("PBUTTON DOWN");
+		steeringAdjust = Kp*error;
+		if (error > 3.0)
+		{
+			steeringAdjust = Kp*error - minCommand;
+		}
+		else if (error < 3.0)
+		{
+			steeringAdjust = Kp*error + minCommand;
+			forwardModifier = 0;//-0.5;
+		}
+		//driveleft = driveright; //disable tank drive by ignoring right stick, left becomes the throttle
+		driveleft += steeringAdjust;
+		driveright -= steeringAdjust;
+		driveright += forwardModifier;
+		driveleft += forwardModifier;
+		// drive speed
+	}
+		
+		motorL1.set(ControlMode.PercentOutput, .7*driveleft);
+		motorL2.set(ControlMode.PercentOutput, .7*driveleft);
+
+		motorR1.set(ControlMode.PercentOutput, -1 * .7*driveright);
+		motorR2.set(ControlMode.PercentOutput, -1 * .7*driveright);
+
+					
+		//******************************
+		// diagnostic print every second
+		//******************************
+		if (++tickcnt == 100)
+		{
+			tickcnt = 0;
+			//System.out.println("raw button 2: " + controllerDrive.getRawButton(2));
+			//System.out.println("driveleft=" + driveleft + ", driveright=" + driveright + ", drivesteer=" + drivesteer);
+			//System.out.println("GAIN: " + pgain);
+			//System.out.println("JACK: " + countJack.get());
+			//System.out.println("695:  operatorControl(" + (++cnt) + ")");
+			//System.out.println(hatchleft.get() + " / " + hatchright.get());
+			//System.out.println("hatch: " + hatch.get() + ":  " + hatchleft.get() + " / " + hatchright.get());
+			//System.out.println("   jack count: " + countJack.get());
+			//System.out.println("   jack distance: " + getLidar());
+			//System.out.println("   jack in: " + jackin.get());
+			//System.out.println("   movejack: " + movejack);
+			//leds();
 	
+		}
+		
+		//***********************
+		// time delay for roborio
+		//***********************
+		Timer.delay(0.01);
+		
+	}		
+
 	/****************************************************************/
 	/****************************************************************/
 	/****************************************************************/
 
-	public void test()
+	public void testPeriodic()
 	{
 		long cnt = 0;
 
 		System.out.println("695:  test()");
-		while (isTest() && isEnabled())
-		{
-			Timer.delay(1);
-			System.out.println("695:  test tick() " + (++cnt));
-		}
 	}
 	
 	/****************************************************************/
