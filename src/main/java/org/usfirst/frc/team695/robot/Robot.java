@@ -216,31 +216,32 @@ public class Robot extends TimedRobot
 	/****************************************************************/
 	/****************************************************************/
 	/****************************************************************/
+	long hatchdebounce = 0;
+	long liftdebounce = 0;
+	long povdebounce = 0;
+	long boostPistonDebounce = 0;
 	
+		
+	long tickcnt = 0;
+		
+	double err, pgain = 0.3;
+	
+	double driveleft;
+	double driveright;
+	double drivesteer;
+	
+	double azimuthToTarget;// = limeTx.getDouble(0.0);
+	double error;
+	double copolarToTarget;// = limeTy.getDouble(0.0);
+	double areaOfContour;// = limeTa.getDouble(0.0);
+	double Kp = 0.03;  // Proportional control constant
+	double steeringAdjust = 0;
+	double minCommand = -0.015;
+	double driveSensitivity = 1;
+
 	public void teleopPeriodic()
 	{
-		long hatchdebounce = 0;
-		long liftdebounce = 0;
-		long povdebounce = 0;
-		long boostPistonDebounce = 0;
-		
-		
-		long tickcnt = 0;
-		
-		double err, pgain = 0.3;
-		
-		double driveleft;
-		double driveright;
-		double drivesteer;
-		
-		double azimuthToTarget;// = limeTx.getDouble(0.0);
-		double error;
-		double copolarToTarget;// = limeTy.getDouble(0.0);
-		double areaOfContour;// = limeTa.getDouble(0.0);
-		double Kp = 0.03;  // Proportional control constant
-		double steeringAdjust = 0;
-		double minCommand = -0.015;
-		double driveSensitivity = 1;
+		System.out.println(DriverStation.getInstance().getGameSpecificMessage());
 		System.out.println("695:  operatorControl()...");
 		System.out.println("Ring is green!");
 		ringop.setNumber(3);
