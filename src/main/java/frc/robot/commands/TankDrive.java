@@ -7,25 +7,33 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Motors;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import java.util.function.DoubleSupplier;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class ExampleCommand extends CommandBase {
+public class TankDrive extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ExampleSubsystem m_subsystem;
-
+  private final Motors RobotMotorControllers;
+  private final GenericHID.Hand LeftMotorHand;
+  private final GenericHID.Hand RightMotorHand;
+  private final Joystick Controller;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExampleCommand(ExampleSubsystem subsystem) {
-    m_subsystem = subsystem;
+  public TankDrive(Motors RobotMotorControllers,Joystick Controller, GenericHID.Hand LeftMotorHand,GenericHID.Hand RightMotorHand) {
+    this.RobotMotorControllers = RobotMotorControllers;
+    this.LeftMotorHand = LeftMotorHand;
+    this.RightMotorHand = RightMotorHand;
+    this.Controller = Controller;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(RobotMotorControllers);
   }
 
   // Called when the command is initially scheduled.
@@ -36,6 +44,7 @@ public class ExampleCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    RobotMotorControllers.setPower(Controller.getY(LeftMotorHand), Controller.getY(RightMotorHand));
   }
 
   // Called once the command ends or is interrupted.

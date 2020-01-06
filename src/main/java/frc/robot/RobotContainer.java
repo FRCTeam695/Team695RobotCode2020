@@ -9,9 +9,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.TankDrive;
+import frc.robot.subsystems.Motors;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj.Joystick;
+import static edu.wpi.first.wpilibj.GenericHID.*;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -21,9 +23,14 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private int leftXAxis = 0;
+	private int leftYAxis = 1;
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+	private int rightXAxis = 4;
+	private int rightYAxis = 5;
+  private final Motors RobotDriveMotors = new Motors();
+	private Joystick ControllerDrive = new Joystick(0);
+  private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,Hand.kLeft,Hand.kRight);
 
 
 
@@ -46,12 +53,12 @@ public class RobotContainer {
 
 
   /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
+   * Use this to pass the teleop command to the main {@link Robot} class.
    *
-   * @return the command to run in autonomous
+   * @return the command to run in teleop
    */
-  public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+  public Command getTeleopCommand() {
+    // An ExampleCommand will run in teleop
+    return ActivateTankDrive;
   }
 }
