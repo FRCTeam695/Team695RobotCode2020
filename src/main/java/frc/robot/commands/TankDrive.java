@@ -11,7 +11,6 @@ import frc.robot.subsystems.Motors;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import java.util.function.DoubleSupplier;
 
 /**
  * An example command that uses an example subsystem.

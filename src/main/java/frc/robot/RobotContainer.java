@@ -23,11 +23,6 @@ import static edu.wpi.first.wpilibj.GenericHID.*;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private int leftXAxis = 0;
-	private int leftYAxis = 1;
-
-	private int rightXAxis = 4;
-	private int rightYAxis = 5;
   private final Motors RobotDriveMotors = new Motors();
 	private Joystick ControllerDrive = new Joystick(0);
   private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,Hand.kLeft,Hand.kRight);
