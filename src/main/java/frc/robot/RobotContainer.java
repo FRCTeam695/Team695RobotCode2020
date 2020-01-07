@@ -13,7 +13,6 @@ import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.Motors;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Joystick;
-import static edu.wpi.first.wpilibj.GenericHID.*;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,7 +24,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Motors RobotDriveMotors = new Motors();
 	private Joystick ControllerDrive = new Joystick(0);
-  private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,Hand.kLeft,Hand.kRight);
+  private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
 
 
 
