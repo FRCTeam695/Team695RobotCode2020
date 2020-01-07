@@ -8,27 +8,23 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.Solenoid;
-public class HatchGrabber extends SubsystemBase {
-  private Solenoid Hatch;
+import edu.wpi.first.wpilibj.Compressor;
+
+public class CompressorController extends SubsystemBase {
+  private Compressor CompressorControlled = new Compressor(0);
 
   /**
-   * Creates a new HatchGrabber.t
+   * Creates a new Compressor.
    */
-  public HatchGrabber(int hatchID) {
-    this.Hatch = new Solenoid(hatchID);
-    setHatch(false);
-  }
+  public CompressorController() {
 
-  public void setHatch(Boolean setState){
-    Hatch.set(setState);  
   }
+  public void enableCompressor() {
+    CompressorControlled.enabled();
 
-  public boolean getHatchState() {
-    return Hatch.get();
   }
-
-  public void toggleHatchState() {
-    setHatch(!getHatchState());
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
   }
 }

@@ -26,7 +26,6 @@ public class Motors extends SubsystemBase {
   }
 
   public void setPower(double powerRight,double powerLeft) {
-    System.out.println(Double.toString(powerRight) + ", LEFT:" +Double.toString(powerLeft));
 		motorR1.set(ControlMode.PercentOutput, -1 * .7*powerRight);
     motorR2.set(ControlMode.PercentOutput, -1 * .7*powerRight);
     motorL1.set(ControlMode.PercentOutput, .7*powerLeft);
