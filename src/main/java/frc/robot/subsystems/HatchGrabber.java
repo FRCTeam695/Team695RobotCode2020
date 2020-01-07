@@ -8,15 +8,17 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import edu.wpi.first.wpilibj.Solenoid;
 public class HatchGrabber extends SubsystemBase {
+  private Solenoid hatch = new Solenoid(0);
 
   /**
-   * Creates a new HatchGrabber.
+   * Creates a new HatchGrabber.t
    */
   public HatchGrabber() {
 
   }
+
 
   @Override
   public void periodic() {
