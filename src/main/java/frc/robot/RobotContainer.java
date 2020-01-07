@@ -9,9 +9,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.TankDrive;
-import frc.robot.subsystems.Motors;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
@@ -25,8 +26,8 @@ public class RobotContainer {
   private final Motors RobotDriveMotors = new Motors();
 	private Joystick ControllerDrive = new Joystick(0);
   private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
-
-
+  private JoystickButton XButton = new JoystickButton(ControllerDrive,1);
+  private final ModelTurret Turret = new ModelTurret(2,3);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -43,6 +44,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    XButton.whenPressed(new SetTurretRotation(Turret,45.0,45.0));
   }
 
 
