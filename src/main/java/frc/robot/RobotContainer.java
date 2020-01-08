@@ -39,7 +39,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     //enable compressor
-    new ActivateCompressor(Compressor).schedule();
+    new InstantCommand(Compressor::enableCompressor,Compressor).schedule();
   }
 
   /**
@@ -60,7 +60,6 @@ public class RobotContainer {
    * @return the command to run in teleop
    */
   public Command getTeleopCommand() {
-    // An ExampleCommand will run in teleop
     return ActivateTankDrive;
   }
 }
