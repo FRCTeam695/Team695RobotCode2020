@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class TankDrive extends CommandBase {
+public class MattDrive extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final Motors RobotMotorControllers;
   private final int leftSideAxisID;
@@ -47,8 +47,8 @@ public class TankDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    forward = Controller.getRawAxis(rightSideAxisID);
-    right = Controller.getRawAxis(leftSideAxisID);
+    forward = Controller.getRawAxis(leftSideAxisID);
+    right = Controller.getRawAxis(rightSideAxisID);
 
     rightPower = forward + right;
     leftPower = forward - right;
@@ -59,9 +59,9 @@ public class TankDrive extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(
+  public void end(boolean interrupted){
 
-  boole }
+  }
 
   // Returns true when the command should end.
   @Override
