@@ -87,7 +87,7 @@ public class SetColor extends CommandBase {
 
   @Override
   public void end(boolean interrupted){
-    
+  
   }
 
   // Returns true when the command should end.
