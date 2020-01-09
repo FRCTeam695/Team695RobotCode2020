@@ -20,16 +20,26 @@ public class Motors extends SubsystemBase {
 	private VictorSPX motorL2 = new VictorSPX(2);
 	private VictorSPX motorR1 = new VictorSPX(3);
 	private VictorSPX motorR2 = new VictorSPX(4);
+  
+
+  private double gain = 1;
+
+	public void changeGain(double changeGainTo){
+		gain = changeGainTo;
+	}
 
   public Motors() {
 
   }
 
   public void setPower(double powerRight,double powerLeft) {
-		motorR1.set(ControlMode.PercentOutput, -1 * .7*powerRight);
-    motorR2.set(ControlMode.PercentOutput, -1 * .7*powerRight);
-    motorL1.set(ControlMode.PercentOutput, .7*powerLeft);
-		motorL2.set(ControlMode.PercentOutput, .7*powerLeft);
+		double motorPowerMultiplier = .7*gain;
+		double finalRightPower = -1 * powerRight*motorPowerMultiplier;
+		double finalLeftPower = powerLeft*motorPowerMultiplier;
+		motorR1.set(ControlMode.PercentOutput, finalRightPower);
+    motorR2.set(ControlMode.PercentOutput, finalRightPower);
+    motorL1.set(ControlMode.PercentOutput, finalLeftPower);
+		motorL2.set(ControlMode.PercentOutput, finalLeftPower);
   }
   @Override
   public void periodic() {
