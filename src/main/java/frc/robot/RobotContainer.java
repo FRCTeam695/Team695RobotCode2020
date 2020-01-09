@@ -27,6 +27,7 @@ public class RobotContainer {
   private final Motors RobotDriveMotors = new Motors();
 	private Joystick ControllerDrive = new Joystick(0);
   private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
+  private final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
   private final JoystickButton XButton = new JoystickButton(ControllerDrive,1);
   private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
   private final ModelTurret Turret = new ModelTurret(2,3);
@@ -60,6 +61,6 @@ public class RobotContainer {
    * @return the command to run in teleop
    */
   public Command getTeleopCommand() {
-    return ActivateTankDrive;
+    return ActivateMattDrive;
   }
 }
