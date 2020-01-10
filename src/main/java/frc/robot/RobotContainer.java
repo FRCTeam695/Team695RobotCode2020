@@ -44,7 +44,7 @@ public class RobotContainer {
   private final ModelTurret Turret = new ModelTurret(2,3);
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
-  private final ColorSensor ColorSensorUsed = new ColorSensor();
+  private final SetColor ColorSensorUsed = new SetColor();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -64,7 +64,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     XButton.whenPressed(new SetTurretRotation(Turret,45.0,45.0));
     //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
-    AButton.whenPressed(() -> System.out.println( ColorSensorUsed.getReadColor()),ColorSensorUsed);
+    //AButton.whenPressed(() -> System.out.println( ColorSensorUsed.getReadColor()),ColorSensorUsed);
   }
 
 
@@ -74,6 +74,6 @@ public class RobotContainer {
    * @return the command to run in teleop
    */
   public Command getTeleopCommand() {
-    return new InstantCommand(() -> System.out.println( ColorSensorUsed.getReadColor()),ColorSensorUsed);//ActivateMattDrive;
+    return ColorSensorUsed;//new InstantCommand(() -> System.out.println( ColorSensorUsed.getReadColor()),ColorSensorUsed);//ActivateMattDrive;
   }
 }
