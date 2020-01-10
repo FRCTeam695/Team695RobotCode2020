@@ -15,7 +15,17 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
-
+/**
+ * COntroller button indicies:
+ * A: 1
+ * B: 2
+ * X: 3
+ * Y: 4
+ * 
+ * Left X-axis: 0
+ * Left Y-axis: 1
+ * 
+ */
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -24,19 +34,17 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final Motors RobotDriveMotors = new Motors();
+  //private final Motors RobotDriveMotors = new Motors();
 	private Joystick ControllerDrive = new Joystick(0);
-  private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
-  private final JoystickButton AButton = new JoystickButton(ControllerDrive,1);
-
-  private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
-  private final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
+  //private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
+  // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
+  private final JoystickButton AButton = new JoystickButton(ControllerDrive,2);
+  private final JoystickButton XButton = new JoystickButton(ControllerDrive,1);
   private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
   private final ModelTurret Turret = new ModelTurret(2,3);
-  private final CompressorController Compressor = new CompressorController();
-  private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
-  private final Lift ToggleLiftPosition = new Lift(0);
-
+  //private final CompressorController Compressor = new CompressorController();
+  //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
+  private final ColorSensor ColorSensorUsed = new ColorSensor();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -44,7 +52,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     //enable compressor
-    new InstantCommand(Compressor::enableCompressor,Compressor).schedule();
+    //new InstantCommand(Compressor::enableCompressor,Compressor).schedule();
   }
 
   /**
@@ -55,8 +63,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     XButton.whenPressed(new SetTurretRotation(Turret,45.0,45.0));
-    YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
-    AButton.whenPressed(new InstantCommand(ToggleLiftPosition::toggleLiftPosition, ToggleLiftPosition));
+    //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
+    //AButton.whenPressed(() -> System.out.print( ColorSensorUsed.getReadColor()),ColorSensorUsed);
   }
 
 
@@ -66,6 +74,6 @@ public class RobotContainer {
    * @return the command to run in teleop
    */
   public Command getTeleopCommand() {
-    return ActivateMattDrive;
+    return new InstantCommand(() -> System.out.print( ColorSensorUsed.getReadColor()),ColorSensorUsed);//ActivateMattDrive;
   }
 }
