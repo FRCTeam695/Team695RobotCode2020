@@ -35,8 +35,8 @@ public class SetTurretRotation extends CommandBase {
   @Override
   public void execute() {
 
-    left = ((Controller.getRawAxis(horizontalAxisId)+1)*90)*1.5;
-    up = (Controller.getRawAxis(verticalAxisId)+1)*90;
+    left = (Controller.getRawAxis(horizontalAxisId)+1)*100;
+    up = (Controller.getRawAxis(verticalAxisId)+1)*50;
 
     TurretControlled.setXServoAngle(left);
     TurretControlled.setYServoAngle(up);
