@@ -64,7 +64,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     XButton.whenPressed(new SetTurretRotation(Turret,45.0,45.0));
     //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
-    //AButton.whenPressed(() -> System.out.print( ColorSensorUsed.getReadColor()),ColorSensorUsed);
+    AButton.whenPressed(() -> System.out.println( ColorSensorUsed.getReadColor()),ColorSensorUsed);
   }
 
 
@@ -74,6 +74,6 @@ public class RobotContainer {
    * @return the command to run in teleop
    */
   public Command getTeleopCommand() {
-    return new Command(() -> System.out.print( ColorSensorUsed.getReadColor()),ColorSensorUsed);//ActivateMattDrive;
+    return new InstantCommand(() -> System.out.println( ColorSensorUsed.getReadColor()),ColorSensorUsed);//ActivateMattDrive;
   }
 }
