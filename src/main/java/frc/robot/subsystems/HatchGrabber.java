@@ -19,7 +19,7 @@ public class HatchGrabber extends SubsystemBase {
     this.Hatch = new Solenoid(hatchID);
     setHatch(false);
   }
-
+  
   public void setHatch(Boolean setState){
     Hatch.set(setState);  
   }
