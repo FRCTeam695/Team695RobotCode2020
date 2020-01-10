@@ -38,8 +38,8 @@ public class RobotContainer {
 	private Joystick ControllerDrive = new Joystick(0);
   //private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
   // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
-  private final JoystickButton AButton = new JoystickButton(ControllerDrive,2);
-  private final JoystickButton XButton = new JoystickButton(ControllerDrive,1);
+  private final JoystickButton AButton = new JoystickButton(ControllerDrive,1);
+  private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
   private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
   private final ModelTurret Turret = new ModelTurret(2,3);
   //private final CompressorController Compressor = new CompressorController();
@@ -74,6 +74,6 @@ public class RobotContainer {
    * @return the command to run in teleop
    */
   public Command getTeleopCommand() {
-    return new InstantCommand(() -> System.out.print( ColorSensorUsed.getReadColor()),ColorSensorUsed);//ActivateMattDrive;
+    return new Command(() -> System.out.print( ColorSensorUsed.getReadColor()),ColorSensorUsed);//ActivateMattDrive;
   }
 }
