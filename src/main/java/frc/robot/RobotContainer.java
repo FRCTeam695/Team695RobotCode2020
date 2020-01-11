@@ -45,6 +45,7 @@ public class RobotContainer {
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
   private final SetColor ColorSensorUsed = new SetColor();
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -64,7 +65,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     XButton.whenPressed(new SetTurretRotation(Turret,45.0,45.0));
     //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
-    //AButton.whenPressed(() -> System.out.println( ColorSensorUsed.getReadColor()),ColorSensorUsed);
+
   }
 
 
