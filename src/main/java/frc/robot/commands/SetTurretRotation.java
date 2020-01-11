@@ -18,6 +18,8 @@ public class SetTurretRotation extends CommandBase {
   int horizontalAxisId;
   private double left = 0;
   private double up = 0;
+  private double horizontal = 100;
+  private double vertical = 50;
 
   /**
    * Creates a new SetTurretRotation.
@@ -32,7 +34,7 @@ public class SetTurretRotation extends CommandBase {
   }
 
   // Called when the command is initially scheduled.
-  @Override
+  /*@Override
   public void execute() {
 
     left = (Controller.getRawAxis(horizontalAxisId)+1)*100;
@@ -40,6 +42,18 @@ public class SetTurretRotation extends CommandBase {
 
     TurretControlled.setXServoAngle(left);
     TurretControlled.setYServoAngle(up);
+  }*/
+
+  //second version of execute
+  @Override
+  public void execute() {
+
+    horizontal += Controller.getRawAxis(horizontalAxisId)*10;
+    vertical += Controller.getRawAxis(verticalAxisId)*10;
+
+    TurretControlled.setXServoAngle(horizontal);
+    TurretControlled.setYServoAngle(vertical);
+
   }
 
   // Returns true when the command should end.
