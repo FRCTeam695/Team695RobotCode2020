@@ -38,13 +38,14 @@ public class RobotContainer {
 	private Joystick ControllerDrive = new Joystick(0);
   //private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
   // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
-  private final JoystickButton AButton = new JoystickButton(ControllerDrive,2);
-  private final JoystickButton XButton = new JoystickButton(ControllerDrive,1);
+  private final JoystickButton AButton = new JoystickButton(ControllerDrive,1);
+  private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
   private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
   private final ModelTurret Turret = new ModelTurret(2,3);
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
-  private final ColorSensor ColorSensorUsed = new ColorSensor();
+  private final SetColor ColorSensorUsed = new SetColor();
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -64,7 +65,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     XButton.whenPressed(new SetTurretRotation(Turret,45.0,45.0));
     //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
-    //AButton.whenPressed(() -> System.out.print( ColorSensorUsed.getReadColor()),ColorSensorUsed);
+
   }
 
 
@@ -74,6 +75,6 @@ public class RobotContainer {
    * @return the command to run in teleop
    */
   public Command getTeleopCommand() {
-    return new InstantCommand(() -> System.out.print( ColorSensorUsed.getReadColor()),ColorSensorUsed);//ActivateMattDrive;
+    return ColorSensorUsed;//new InstantCommand(() -> System.out.println( ColorSensorUsed.getReadColor()),ColorSensorUsed);//ActivateMattDrive;
   }
 }
