@@ -35,18 +35,29 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+  //***************************************************************************/
+  //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
+  //***************************************************************************/
   //private final Motors RobotDriveMotors = new Motors();
+  //private final CompressorController Compressor = new CompressorController();
+  //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
+  private final ModelTurret Turret = new ModelTurret(2,3);
+
+  //***************************************************************************/
+  //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
+  //***************************************************************************/
 	private Joystick ControllerDrive = new Joystick(0);
-  //private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
-  // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
   private final JoystickButton AButton = new JoystickButton(ControllerDrive,1);
   private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
   private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
-  private final ModelTurret Turret = new ModelTurret(2,3);
-  private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
-  //private final CompressorController Compressor = new CompressorController();
-  //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
+  //***************************************************************************/
+  //COMMANDS INIT & CONSTRUCTED BELOW:
+  //***************************************************************************/
+  //private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
+  // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
   private final SetColor ColorSensorUsed = new SetColor();
+  private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
+
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
