@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
@@ -60,7 +61,9 @@ public class RobotContainer {
   //private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
   // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
   private final SetColor ColorSensorUsed = new SetColor();
-  private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
+  private final AutoTurretRotation Finding = new AutoTurretRotation(Turret, ControllerDrive, 1);
+  private final AutoTurretFocus Focusing = new AutoTurretFocus(Turret, ControllerDrive, 1);
+  private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup(Finding, Focusing);
 
 
   /**
@@ -80,9 +83,12 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
+    AButton.whenPressed(TurretGroup);
     //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
 
   }
+
 
 
   /**
@@ -92,7 +98,7 @@ public class RobotContainer {
    */
   public Command getTeleopCommand() {
     ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
-    ContinuousTeleop.addCommands(ActivateTurret,ColorSensorUsed);
+    ContinuousTeleop.addCommands(ColorSensorUsed);
     return ContinuousTeleop;
   }
 }

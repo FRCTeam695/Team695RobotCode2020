@@ -20,6 +20,8 @@ public class ModelTurret extends SubsystemBase {
   private NetworkTableEntry LimeLightAzimuth;
   private NetworkTableEntry LimeLightCoPolar;
   private NetworkTableEntry LimeLightContourArea;
+  private double horizontal = 0;
+  private double vertical = 75;
   /**
    * Creates a new ModelTurret.
    */
@@ -32,6 +34,14 @@ public class ModelTurret extends SubsystemBase {
 		this.LimeLightContourArea = LimeLight.getEntry("ta"); 		
   }
 
+  public double getHorizontal() {
+    return horizontal;
+  }
+
+  public double getVertical() {
+    return vertical;
+  }
+
   public double getAzimuth(){
     return LimeLightAzimuth.getDouble(0.0);
   }
@@ -41,12 +51,15 @@ public class ModelTurret extends SubsystemBase {
   public double getContourArea(){
     return LimeLightContourArea.getDouble(0.0);
   }
-  public void setXServoAngle(double angle) {
-    XServo.setAngle(angle);
+
+  public void setXServoPosition(double position) {
+    XServo.setAngle(position);
+    horizontal = position;
   }
 
-  public void setYServoAngle(double angle) {
-    YServo.setAngle(angle);
+  public void setYServoPosition(double position) {
+    YServo.setAngle(position);
+    vertical = position;
   }
   @Override
   public void periodic() {
