@@ -59,7 +59,7 @@ public class ModelTurret extends SubsystemBase {
       horizontal = position;
     }
     else {
-      throw(new Exception("Attempt to set turret to an unreasonably high elevation."));
+      throw(new Exception("Attempt to set turret to an unreasonably high azimuth."));
     }
   }
 
