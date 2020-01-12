@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
+
 /**
  * COntroller button indicies:
  * A: 1
@@ -34,6 +37,7 @@ import edu.wpi.first.wpilibj.Joystick;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  private final NetworkTableInstance RobotMainNetworkTableInstance = NetworkTableInstance.getDefault();
   // The robot's subsystems and commands are defined here...
   //***************************************************************************/
   //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
@@ -41,7 +45,7 @@ public class RobotContainer {
   //private final Motors RobotDriveMotors = new Motors();
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
-  private final ModelTurret Turret = new ModelTurret(2,3);
+  private final ModelTurret Turret = new ModelTurret(RobotMainNetworkTableInstance,2,3);
 
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:

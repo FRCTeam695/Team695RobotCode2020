@@ -8,19 +8,39 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Servo;
 
 public class ModelTurret extends SubsystemBase {
   private Servo XServo;
   private Servo YServo;
+  private NetworkTable LimeLight;
+  private NetworkTableEntry LimeLightAzimuth;
+  private NetworkTableEntry LimeLightCoPolar;
+  private NetworkTableEntry LimeLightContourArea;
   /**
    * Creates a new ModelTurret.
    */
-  public ModelTurret(int xServoChannel,int yServoChannel) {
+  public ModelTurret(NetworkTableInstance RobotMainNetworkTableInstace,int xServoChannel,int yServoChannel) {
     this.XServo = new Servo(xServoChannel);
     this.YServo = new Servo(yServoChannel);
+    this.LimeLight = RobotMainNetworkTableInstace.getTable("limelight");
+    this.LimeLightAzimuth = LimeLight.getEntry("tx");
+		this.LimeLightCoPolar = LimeLight.getEntry("ty");
+		this.LimeLightContourArea = LimeLight.getEntry("ta"); 		
   }
 
+  public double getAzimuth(){
+    return LimeLightAzimuth.getDouble(0.0);
+  }
+  public double getCoPolar(){
+    return LimeLightCoPolar.getDouble(0.0);
+  }
+  public double getContourArea(){
+    return LimeLightContourArea.getDouble(0.0);
+  }
   public void setXServoAngle(double angle) {
     XServo.setAngle(angle);
   }
