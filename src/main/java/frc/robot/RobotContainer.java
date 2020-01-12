@@ -57,6 +57,8 @@ public class RobotContainer {
   // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
   private final SetColor ColorSensorUsed = new SetColor();
   private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
+  //private final CIMClosedLoop ClosedLoop = new CIMClosedLoop(MotorToControl); //The motor we use is yet to be determined.
+  //private final EnableCIMClosedLoop ActivateClosedLoop = new EnableCIMClosedLoop(ClosedLoop);
 
 
   /**
@@ -88,7 +90,7 @@ public class RobotContainer {
    */
   public Command getTeleopCommand() {
     ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
-    ContinuousTeleop.addCommands(ActivateTurret,ColorSensorUsed);
+    ContinuousTeleop.addCommands(ActivateTurret,ColorSensorUsed/*,ActivateClosedLoop*/);
     return ContinuousTeleop;
   }
 }
