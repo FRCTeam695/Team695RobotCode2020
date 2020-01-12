@@ -10,7 +10,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ModelTurret;
-
+import java.lang.Math;
+import frc.robot.Constants;
 public class SetTurretRotation extends CommandBase {
   ModelTurret TurretControlled;
   Joystick Controller;
@@ -47,9 +48,15 @@ public class SetTurretRotation extends CommandBase {
   //second version of execute
   @Override
   public void execute() {
-
-    horizontal += Controller.getRawAxis(horizontalAxisId)*10;
-    vertical += Controller.getRawAxis(verticalAxisId)*10;
+    
+    double horizontalValue = Controller.getRawAxis(horizontalAxisId);
+    double verticalValue = Controller.getRawAxis(verticalAxisId);
+    double alteredHorizontal = horizontal + horizontalValue*5;
+    double alteredVerical = vertical+ verticalValue*5;
+    if ((Math.abs(horizontalValue) >= 0.1) && (0 <= alteredHorizontal && alteredHorizontal < 200) )
+      horizontal = alteredHorizontal;
+    if ((Math.abs(verticalValue) >= 0.1) && (0 <= alteredVerical && alteredVerical < 100))
+      vertical = alteredVerical;
 
     TurretControlled.setXServoAngle(horizontal);
     TurretControlled.setYServoAngle(vertical);

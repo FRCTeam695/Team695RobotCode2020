@@ -16,4 +16,6 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final double TURRET_VERTICAL_MAX_POSITION = 100;
+    public static final double TURRET_HORIZONTAL_MAX_POSITION = 200;
 }
