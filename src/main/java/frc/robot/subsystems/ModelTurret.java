@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -52,14 +53,24 @@ public class ModelTurret extends SubsystemBase {
     return LimeLightContourArea.getDouble(0.0);
   }
 
-  public void setXServoPosition(double position) {
-    XServo.setAngle(position);
-    horizontal = position;
+  public void setXServoPosition(double position) throws Exception {
+    if(0 <= position && position <= Constants.TURRET_HORIZONTAL_MAX_POSITION) {
+      XServo.setAngle(position);
+      horizontal = position;
+    }
+    else {
+      throw(new Exception("Attempt to set turret to an unreasonably high elevation."));
+    }
   }
 
-  public void setYServoPosition(double position) {
-    YServo.setAngle(position);
-    vertical = position;
+  public void setYServoPosition(double position) throws Exception {
+    if(0 <= position && position <= Constants.TURRET_VERTICAL_MAX_POSITION) {
+      YServo.setAngle(position);
+      vertical = position;
+    }
+    else {
+      throw(new Exception("Attempt to set turret to an unreasonably high elevation."));
+    }
   }
   @Override
   public void periodic() {

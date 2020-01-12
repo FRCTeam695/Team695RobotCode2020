@@ -16,9 +16,8 @@ public class AutoTurretRotation extends CommandBase {
   ModelTurret TurretControlled;
   Joystick Controller;
   int ButtonId;
-  public double horizontal;
-  public double vertical;
 
+  private double panDirection = 1;
   /**
    * Creates a new SetTurretRotation.
    */
@@ -32,23 +31,30 @@ public class AutoTurretRotation extends CommandBase {
 
   @Override
   public void initialize() {
-    TurretControlled.setXServoPosition(Constants.TURRET_HORIZONTAL_MAX_POSITION/2);
-    TurretControlled.setYServoPosition(Constants.TURRET_VERTICAL_MAX_POSITION/2);
+    try{TurretControlled.setXServoPosition(Constants.TURRET_HORIZONTAL_MAX_POSITION/2);}
+    catch(Exception thrown) {}
+    try{TurretControlled.setYServoPosition(Constants.TURRET_VERTICAL_MAX_POSITION/2);}
+    catch(Exception thrown) {}
   }
 
   //second version of execute
   @Override
   public void execute() {
     
-    this.horizontal = TurretControlled.getHorizontal();
-    this.vertical = TurretControlled.getVertical();
+    double horizontal = TurretControlled.getHorizontal();
+    double vertical = TurretControlled.getVertical();
 
-    TurretControlled.setYServoPosition(vertical);
-    TurretControlled.setXServoPosition(horizontal);
-    double alteredHorizontal = horizontal+5;
-    if(alteredHorizontal <= Constants.TURRET_HORIZONTAL_MAX_POSITION)
+
+    double alteredHorizontal = horizontal+10*panDirection;
+    if(0 <= alteredHorizontal && alteredHorizontal <= Constants.TURRET_HORIZONTAL_MAX_POSITION)
       horizontal = alteredHorizontal;
-    
+    else 
+      panDirection = -panDirection;
+    System.out.println(horizontal);
+    try{TurretControlled.setYServoPosition(vertical);}
+    catch(Exception exceptionThrown) {}
+    try{TurretControlled.setXServoPosition(horizontal);}
+    catch(Exception exceptionThrown) {}
   }
 
   public boolean endCommand() {

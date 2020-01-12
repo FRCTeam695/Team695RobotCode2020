@@ -63,8 +63,8 @@ public class SetColor extends CommandBase {
      * make it difficult to accurately determine its color.
      */
     Color detectedColor = m_colorSensor.getColor();
-    System.out.print(detectedColor);
-    System.out.print("    ");
+    //System.out.print(detectedColor);
+    //System.out.print("    ");
 
     /**
      * Run the color match algorithm on our detected color

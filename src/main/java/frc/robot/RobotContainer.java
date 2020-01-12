@@ -63,7 +63,7 @@ public class RobotContainer {
   private final SetColor ColorSensorUsed = new SetColor();
   private final AutoTurretRotation Finding = new AutoTurretRotation(Turret, ControllerDrive, 1);
   private final AutoTurretFocus Focusing = new AutoTurretFocus(Turret, ControllerDrive, 1);
-  private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup(Finding, Focusing);
+  private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup();
 
 
   /**
@@ -72,6 +72,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
     //enable compressor
     //new InstantCommand(Compressor::enableCompressor,Compressor).schedule();
   }
@@ -83,7 +84,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
+    TurretGroup.addCommands(Finding,Focusing);
     AButton.whenPressed(TurretGroup);
     //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
 
@@ -98,7 +99,7 @@ public class RobotContainer {
    */
   public Command getTeleopCommand() {
     ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
-    ContinuousTeleop.addCommands(ColorSensorUsed);
+    //ContinuousTeleop.addCommands(ColorSensorUsed);
     return ContinuousTeleop;
   }
 }

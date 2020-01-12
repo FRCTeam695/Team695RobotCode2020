@@ -21,8 +21,7 @@ public class AutoTurretFocus extends CommandBase {
   ModelTurret TurretControlled;
   Joystick Controller;
   int ButtonId;
-  private double horizontal;
-  private double vertical;
+
   private double horizontalError;
   private double verticalError;
   private double horizontalAdjustment;
@@ -40,8 +39,6 @@ public class AutoTurretFocus extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.horizontal = TurretControlled.getHorizontal();
-    this.vertical = TurretControlled.getVertical();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -70,11 +67,12 @@ public class AutoTurretFocus extends CommandBase {
 		{
 			verticalAdjustment = Constants.CONSTANTY*verticalError + Constants.GAIN;
     }
-    
-    horizontal += horizontalAdjustment;
-    vertical += horizontalAdjustment;
-    TurretControlled.setXServoPosition(horizontal);
-    TurretControlled.setYServoPosition(vertical);
+    double alteredHorizontal = TurretControlled.getHorizontal() + horizontalAdjustment;
+    try {TurretControlled.setXServoPosition(alteredHorizontal);}
+    catch(Exception ExceptionThrown) {}
+    double alteredVertical = TurretControlled.getVertical() + verticalAdjustment;
+    try {TurretControlled.setYServoPosition(alteredVertical);}
+    catch(Exception ExceptionThrown) {}
   }
 
   // Called once the command ends or is interrupted.
