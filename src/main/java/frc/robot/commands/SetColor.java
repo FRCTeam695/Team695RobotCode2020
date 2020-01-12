@@ -3,6 +3,7 @@ package frc.robot.commands;
 //import static edu.wpi.first.wpilibj.templates.commandbased.Constants.colors;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.subsystems.ColorWheel;
 import edu.wpi.first.wpilibj.DriverStation;
 import com.revrobotics.ColorMatchResult;
@@ -169,6 +170,7 @@ public class SetColor extends CommandBase {
 
   @Override
   public void execute() {
+    
     Color detectedColor = ColorWheelHere.getReadColor();
 
     String colorString;
@@ -200,14 +202,13 @@ public class SetColor extends CommandBase {
     }
     DLL.Node Currforward = CurrScroll;
     DLL.Node CurrBack = CurrScroll;
-  
-    
 
-    while (Currforward.data != gameData) {
+
+    while (!Currforward.data.equals(gameData)) {
       Currforward = Currforward.next;
       forwardCount++;
     }
-    while (CurrBack.data != gameData) {
+    while (!CurrBack.data.equals(gameData)) {
       CurrBack = CurrBack.prev;
       backwardsCount--;
     }
@@ -218,9 +219,8 @@ public class SetColor extends CommandBase {
     } else {
       speedLevel = forwardCount;
     }
-
     ColorWheelHere.ColorMotorSet(speedLevel);
-
+    
   }
 
   @Override

@@ -15,6 +15,7 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ColorWheel extends SubsystemBase {
@@ -27,14 +28,15 @@ public class ColorWheel extends SubsystemBase {
   }
 
   /*******************************************************/
-  public int stick;
-  TalonFX ColorMotor = new TalonFX(0);
+  //TalonFX ColorMotor = new TalonFX(0);
   // ColorMotor.configFactoryDefault();
   // ColorMotor.openloop
   // ColorMotor.setNeutralMode(NeutralMode.brake);
   public int[] speeds = { -7, -5, -1, 0, 1, 5, 7 };
 
   public void ColorMotorSet(int speedLevel) {
+    int stick;
+    System.out.print(String.valueOf(speedLevel)+"  ");
     switch (speedLevel) {
     case -3:
       stick = speeds[0];
@@ -53,7 +55,8 @@ public class ColorWheel extends SubsystemBase {
     default:
       stick = speeds[3];
     }
-    ColorMotor.set(ControlMode.PercentOutput, stick);
+    //ColorMotor.set(ControlMode.PercentOutput, stick);
+    System.out.println(String.valueOf(stick));
   }
 
   @Override
