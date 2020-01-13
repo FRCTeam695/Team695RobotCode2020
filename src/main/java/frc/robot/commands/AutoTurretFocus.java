@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ModelTurret;
 import java.lang.Math;
 import frc.robot.Constants;
@@ -26,9 +25,8 @@ public class AutoTurretFocus extends CommandBase {
   private double verticalError;
   private double horizontalAdjustment;
   private double verticalAdjustment;
-  
 
-  public AutoTurretFocus(ModelTurret TurretControlled,Joystick Controller, int ButtonId) {
+  public AutoTurretFocus(ModelTurret TurretControlled, Joystick Controller, int ButtonId) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.TurretControlled = TurretControlled;
     this.Controller = Controller;
@@ -45,34 +43,24 @@ public class AutoTurretFocus extends CommandBase {
   @Override
   public void execute() {
 
-    horizontalError = TurretControlled.getAzimuth();
-    verticalError = TurretControlled.getCoPolar();
+    horizontalError = TurretControlled.getAzimuthToTarget();
+    verticalError = TurretControlled.getCoPolarToTarget();
 
-    horizontalAdjustment = Constants.CONSTANTY*horizontalError;
-		if (horizontalError > 3.0)
-		{
-			horizontalAdjustment = Constants.CONSTANTY*horizontalError - Constants.GAIN;
-		}
-		else if (horizontalError < 3.0)
-		{
-			horizontalAdjustment = Constants.CONSTANTY*horizontalError + Constants.GAIN;
+    horizontalAdjustment = Constants.CONSTANTY * horizontalError;
+    if (horizontalError > 3.0) {
+      horizontalAdjustment = Constants.CONSTANTY * horizontalError - Constants.GAIN;
+    } else if (horizontalError < 3.0) {
+      horizontalAdjustment = Constants.CONSTANTY * horizontalError + Constants.GAIN;
     }
 
-    verticalAdjustment = Constants.CONSTANTY*verticalError;
-		if (verticalError > 3.0)
-		{
-			verticalAdjustment = Constants.CONSTANTY*verticalError - Constants.GAIN;
-		}
-		else if (verticalError < 3.0)
-		{
-			verticalAdjustment = Constants.CONSTANTY*verticalError + Constants.GAIN;
+    verticalAdjustment = Constants.CONSTANTY * verticalError;
+    if (verticalError > 3.0) {
+      verticalAdjustment = Constants.CONSTANTY * verticalError - Constants.GAIN;
+    } else if (verticalError < 3.0) {
+      verticalAdjustment = Constants.CONSTANTY * verticalError + Constants.GAIN;
     }
-    double alteredHorizontal = TurretControlled.getHorizontal() + horizontalAdjustment;
-    try {TurretControlled.setXServoPosition(alteredHorizontal);}
-    catch(Exception ExceptionThrown) {}
-    double alteredVertical = TurretControlled.getVertical() + verticalAdjustment;
-    try {TurretControlled.setYServoPosition(alteredVertical);}
-    catch(Exception ExceptionThrown) {}
+    try {TurretControlled.incrementHorizontalPosition(horizontalAdjustment);} catch (Exception PositionOverflow) {}
+    try {TurretControlled.incrementVerticalPosition(verticalAdjustment);} catch (Exception PositionOverflow) {}
   }
 
   // Called once the command ends or is interrupted.
