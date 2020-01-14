@@ -51,21 +51,21 @@ public class AutoTurretFocus extends CommandBase {
     horizontalAdjustment = Constants.CONSTANTY*horizontalError;
 		if (horizontalError > 3.0)
 		{
-			horizontalAdjustment = Constants.CONSTANTY*horizontalError - Constants.GAIN;
+			horizontalAdjustment = Constants.CONSTANTY*horizontalError - Constants.HORIZONTALGAIN;
 		}
 		else if (horizontalError < 3.0)
 		{
-			horizontalAdjustment = Constants.CONSTANTY*horizontalError + Constants.GAIN;
+			horizontalAdjustment = Constants.CONSTANTY*horizontalError + Constants.HORIZONTALGAIN;
     }
 
     verticalAdjustment = Constants.CONSTANTY*verticalError;
 		if (verticalError > 3.0)
 		{
-			verticalAdjustment = Constants.CONSTANTY*verticalError - Constants.GAIN;
+			verticalAdjustment = Constants.CONSTANTY*verticalError - Constants.VERTICALGAIN;
 		}
 		else if (verticalError < 3.0)
 		{
-			verticalAdjustment = Constants.CONSTANTY*verticalError + Constants.GAIN;
+			verticalAdjustment = Constants.CONSTANTY*verticalError + Constants.VERTICALGAIN;
     }
     double alteredHorizontal = TurretControlled.getHorizontal() + horizontalAdjustment;
     try {TurretControlled.setXServoPosition(alteredHorizontal);}

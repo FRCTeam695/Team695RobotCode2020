@@ -18,6 +18,7 @@ package frc.robot;
 public final class Constants {
     public static final double TURRET_VERTICAL_MAX_POSITION = 100;
     public static final double TURRET_HORIZONTAL_MAX_POSITION = 200;
-    public static final double GAIN = -0.15;
-    public static final double CONSTANTY = 0.3;
+    public static final double VERTICALGAIN = -1;
+    public static final double CONSTANTY =  0.1;
+    public static final double HORIZONTALGAIN = -2;
 }
