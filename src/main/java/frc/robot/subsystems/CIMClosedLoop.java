@@ -9,7 +9,7 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CIMClosedLoop extends SubsystemBase {
 
-	private VictorSPX ControlledMotor; 
-    public CIMClosedLoop(VictorSPX MotorToControl) {
+	private TalonSRX ControlledMotor; 
+    public CIMClosedLoop(TalonSRX MotorToControl) {
         this.ControlledMotor = MotorToControl;
     }
     //StringBuilder _sb = new StringBuilder();
