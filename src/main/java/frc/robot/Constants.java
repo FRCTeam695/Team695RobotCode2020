@@ -19,11 +19,6 @@ import edu.wpi.first.wpilibj.util.Color;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final double TURRET_VERTICAL_MAX_POSITION = 100;
-    public static final double TURRET_HORIZONTAL_MAX_POSITION = 200;
-    public static final double VERTICALGAIN = -1;
-    public static final double CONSTANTY =  0.1;
-    public static final double HORIZONTALGAIN = -2;
     public static final class Colors {
         /**private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
         private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);

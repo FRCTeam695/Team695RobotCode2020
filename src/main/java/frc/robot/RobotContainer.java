@@ -61,8 +61,8 @@ public class RobotContainer {
   //private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
   // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
   private final SetColor ColorSensorUsed = new SetColor();
-  private final AutoTurretRotation Finding = new AutoTurretRotation(Turret, ControllerDrive, 1);
-  private final AutoTurretFocus Focusing = new AutoTurretFocus(Turret, ControllerDrive, 1);
+  private final AutoTurretRotation Finding = new AutoTurretRotation(Turret);
+  private final AutoTurretFocus Focusing = new AutoTurretFocus(Turret);
   private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup();
 
 

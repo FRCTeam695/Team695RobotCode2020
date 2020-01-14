@@ -13,45 +13,31 @@ import frc.robot.subsystems.ModelTurret;
 import java.lang.Math;
 import frc.robot.Constants;
 public class AutoTurretRotation extends CommandBase {
-  ModelTurret TurretControlled;
-  Joystick Controller;
-  int ButtonId;
+  private ModelTurret TurretControlled;
 
-  private double panDirection = 1;
+
+  private int panDirection = 1;
   /**
    * Creates a new SetTurretRotation.
    */
-  public AutoTurretRotation(ModelTurret TurretControlled,Joystick Controller, int ButtonId) {
+  public AutoTurretRotation(ModelTurret TurretControlled) {
     this.TurretControlled = TurretControlled;
-    this.ButtonId = ButtonId;
-    this.Controller = Controller;
     addRequirements(TurretControlled);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   @Override
   public void initialize() {
-    try{TurretControlled.setXServoPosition(Constants.TURRET_HORIZONTAL_MAX_POSITION/2);}
-    catch(Exception thrown) {}
-    try{TurretControlled.setYServoPosition(Constants.TURRET_VERTICAL_MAX_POSITION/2);}
-    catch(Exception thrown) {}
+    TurretControlled.centerBothAxes();
   }
 
   //second version of execute
   @Override
   public void execute() {
-    
-    double horizontal = TurretControlled.getHorizontal();
-    double vertical = TurretControlled.getVertical();
-
-
-    double alteredHorizontal = horizontal+10*panDirection;
-    try{TurretControlled.setYServoPosition(vertical);}
-    catch(Exception PositionOverflow) {}
     try{
-      TurretControlled.setXServoPosition(alteredHorizontal);
+      TurretControlled.incrementXServoPosition(10*panDirection);
     }
-    catch(Exception PositionOverflow) {
+    catch(IllegalArgumentException PositionOverflow) {
       panDirection = -panDirection;
     }
   }

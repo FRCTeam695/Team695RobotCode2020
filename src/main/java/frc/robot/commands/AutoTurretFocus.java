@@ -18,9 +18,13 @@ public class AutoTurretFocus extends CommandBase {
   /**
    * Creates a new AutoTurretFocus.
    */
-  ModelTurret TurretControlled;
-  Joystick Controller;
-  int ButtonId;
+  private ModelTurret TurretControlled;
+  public static final double VERTICAL_GAIN = -1;
+  public static final double VERTICAL_ADJUST =  0.1;
+  public static final double VERTICAL_GAIN_APPLICATION_THRESHOLD = 3;
+  public static final double HORIZONTAL_GAIN = -2;
+  public static final double HORIZONTAL_ADJUST = 0.1;
+  public static final double HORIZONTAL_GAIN_APPLICATION_THRESHOLD = 3;
 
   private double horizontalError;
   private double verticalError;
@@ -28,11 +32,9 @@ public class AutoTurretFocus extends CommandBase {
   private double verticalAdjustment;
   
 
-  public AutoTurretFocus(ModelTurret TurretControlled,Joystick Controller, int ButtonId) {
+  public AutoTurretFocus(ModelTurret TurretControlled) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.TurretControlled = TurretControlled;
-    this.Controller = Controller;
-    this.ButtonId = ButtonId;
     addRequirements(TurretControlled);
   }
 
@@ -48,31 +50,29 @@ public class AutoTurretFocus extends CommandBase {
     horizontalError = TurretControlled.getAzimuth();
     verticalError = TurretControlled.getCoPolar();
 
-    horizontalAdjustment = Constants.CONSTANTY*horizontalError;
-		if (horizontalError > 3.0)
+    horizontalAdjustment = HORIZONTAL_ADJUST*horizontalError;
+		if (horizontalError > HORIZONTAL_GAIN_APPLICATION_THRESHOLD)
 		{
-			horizontalAdjustment = Constants.CONSTANTY*horizontalError - Constants.HORIZONTALGAIN;
+			horizontalAdjustment -= HORIZONTAL_GAIN;
 		}
-		else if (horizontalError < 3.0)
+		else if (horizontalError < HORIZONTAL_GAIN_APPLICATION_THRESHOLD)
 		{
-			horizontalAdjustment = Constants.CONSTANTY*horizontalError + Constants.HORIZONTALGAIN;
+			horizontalAdjustment += HORIZONTAL_GAIN;
     }
 
-    verticalAdjustment = Constants.CONSTANTY*verticalError;
-		if (verticalError > 3.0)
+    verticalAdjustment = VERTICAL_ADJUST*verticalError;
+		if (verticalError > VERTICAL_GAIN_APPLICATION_THRESHOLD)
 		{
-			verticalAdjustment = Constants.CONSTANTY*verticalError - Constants.VERTICALGAIN;
+			verticalAdjustment -= VERTICAL_GAIN;
 		}
-		else if (verticalError < 3.0)
+		else if (verticalError < VERTICAL_GAIN_APPLICATION_THRESHOLD)
 		{
-			verticalAdjustment = Constants.CONSTANTY*verticalError + Constants.VERTICALGAIN;
+			verticalAdjustment += VERTICAL_GAIN;
     }
-    double alteredHorizontal = TurretControlled.getHorizontal() + horizontalAdjustment;
-    try {TurretControlled.setXServoPosition(alteredHorizontal);}
-    catch(Exception ExceptionThrown) {}
-    double alteredVertical = TurretControlled.getVertical() + verticalAdjustment;
-    try {TurretControlled.setYServoPosition(alteredVertical);}
-    catch(Exception ExceptionThrown) {}
+    try {TurretControlled.incrementXServoPosition(horizontalAdjustment);}
+    catch(IllegalArgumentException PositionOverflow) {}
+    try {TurretControlled.incrementYServoPosition(verticalAdjustment);}
+    catch(IllegalArgumentException PositionOverflow) {}
   }
 
   // Called once the command ends or is interrupted.
