@@ -31,14 +31,25 @@ public class AutoTurretRotation extends CommandBase {
 
   @Override
   public void initialize() {
-    TurretControlled.centerTurretBothAxes();
+    try{TurretControlled.setXServoPosition(Constants.TURRET_HORIZONTAL_MAX_POSITION/2);}
+    catch(Exception thrown) {}
+    try{TurretControlled.setYServoPosition(Constants.TURRET_VERTICAL_MAX_POSITION/2);}
+    catch(Exception thrown) {}
   }
 
   //second version of execute
   @Override
   public void execute() {
+    
+    double horizontal = TurretControlled.getHorizontal();
+    double vertical = TurretControlled.getVertical();
+
+
+    double alteredHorizontal = horizontal+10*panDirection;
+    try{TurretControlled.setYServoPosition(vertical);}
+    catch(Exception PositionOverflow) {}
     try{
-      TurretControlled.incrementHorizontalPosition(10*panDirection);
+      TurretControlled.setXServoPosition(alteredHorizontal);
     }
     catch(Exception PositionOverflow) {
       panDirection = -panDirection;
