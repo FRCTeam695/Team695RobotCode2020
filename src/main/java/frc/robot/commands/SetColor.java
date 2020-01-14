@@ -1,11 +1,14 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.I2C;
+//import static edu.wpi.first.wpilibj.templates.commandbased.Constants.colors;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.subsystems.ColorWheel;
 import edu.wpi.first.wpilibj.DriverStation;
-import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
+
+
 import com.revrobotics.ColorMatch;
 
 /**
@@ -13,91 +16,211 @@ import com.revrobotics.ColorMatch;
  * detect pre-configured colors.
  */
 public class SetColor extends CommandBase {
-  /**
-   * Change the I2C port below to match the connection of your color sensor
-   */
-  private final I2C.Port i2cPort = I2C.Port.kOnboard;
 
-  /**
-   * A Rev Color Sensor V3 object is constructed with an I2C port as a parameter.
-   * The device will be automatically initialized with default parameters.
-   */
-  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
+  public class DLL {
+    Node head; // head of list
 
-  /**
-   * A Rev Color Match object is used to register and detect known colors. This
-   * can be calibrated ahead of time or during operation.
-   * 
-   * This object uses a simple euclidian distance to estimate the closest match
-   * with given confidence range.
-   */
+    /* Doubly Linked list Node */
+    class Node {
+      String data;
+      Node prev;
+      Node next;
+
+      // Constructor to create a new node
+      // next and prev is by default initialized as null
+      Node(String d) {
+        data = d;
+      }
+    }
+
+    // Adding a node at the front of the list
+    public void push(String new_data) {
+      /*
+       * 1. allocate node 2. put in the data
+       */
+      Node new_Node = new Node(new_data);
+
+      /* 3. Make next of new node as head and previous as NULL */
+      new_Node.next = head;
+      new_Node.prev = null;
+
+      /* 4. change prev of head node to new node */
+      if (head != null)
+        head.prev = new_Node;
+
+      /* 5. move the head to point to the new node */
+      head = new_Node;
+    }
+
+    /* Given a node as prev_node, insert a new node after the given node */
+    public void InsertAfter(Node prev_Node, String new_data) {
+
+      /* 1. check if the given prev_node is NULL */
+      if (prev_Node == null) {
+        System.out.println("The given previous node cannot be NULL ");
+        return;
+      }
+
+      /*
+       * 2. allocate node 3. put in the data
+       */
+      Node new_node = new Node(new_data);
+
+      /* 4. Make next of new node as next of prev_node */
+      new_node.next = prev_Node.next;
+
+      /* 5. Make the next of prev_node as new_node */
+      prev_Node.next = new_node;
+
+      /* 6. Make prev_node as previous of new_node */
+      new_node.prev = prev_Node;
+
+      /* 7. Change previous of new_node's next node */
+      if (new_node.next != null)
+        new_node.next.prev = new_node;
+    }
+
+    // Add a node at the end of the list
+    void append(String new_data) {
+      /*
+       * 1. allocate node 2. put in the data
+       */
+      Node new_node = new Node(new_data);
+
+      Node last = head; /* used in step 5 */
+
+      /*
+       * 3. This new node is going to be the last node, so make next of it as NULL
+       */
+      new_node.next = null;
+
+      /*
+       * 4. If the Linked List is empty, then make the new node as head
+       */
+      if (head == null) {
+        new_node.prev = null;
+        head = new_node;
+        return;
+      }
+
+      /* 5. Else traverse till the last node */
+      while (last.next != null)
+        last = last.next;
+
+      /* 6. Change the next of last node */
+      last.next = new_node;
+
+      /* 7. Make last node as previous of new node */
+      new_node.prev = last;
+
+    }
+
+    // This function prints contents of linked list starting from the given node
+    public void printlist(Node node) {
+      Node last = null;
+      System.out.println("Traversal in forward Direction");
+      while (node != null) {
+        System.out.print(node.data + " ");
+        last = node;
+        node = node.next;
+      }
+      System.out.println();
+      System.out.println("Traversal in reverse direction");
+      while (last != null) {
+        System.out.print(last.data + " ");
+        last = last.prev;
+      }
+    }
+
+  }
+
+  private ColorWheel ColorWheelHere = new ColorWheel();
   private final ColorMatch m_colorMatcher = new ColorMatch();
-
-  /**
-   * Note: Any example colors should be calibrated as the user needs, these are
-   * here as a basic example.
-   */
-  private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-  private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-  private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-  private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+  private final Color Blue = ColorMatch.makeColor(0.143, 0.427, 0.429);
+  private final Color Green = ColorMatch.makeColor(0.197, 0.561, 0.240);
+  private final Color Red = ColorMatch.makeColor(0.561, 0.232, 0.114);
+  private final Color Yellow = ColorMatch.makeColor(0.361, 0.524, 0.113);
+  private final String gameData = DriverStation.getInstance().getGameSpecificMessage();
+  public int speedLevel = 0;
+  public DLL colors = new DLL();
 
   @Override
   public void initialize() {
-    m_colorMatcher.addColorMatch(kBlueTarget);
-    m_colorMatcher.addColorMatch(kGreenTarget);
-    m_colorMatcher.addColorMatch(kRedTarget);
-    m_colorMatcher.addColorMatch(kYellowTarget);
+
+
+    colors.append("R");
+    colors.append("G");
+    colors.append("B");
+    colors.append("Y");
+
+    //// makes loop
+    DLL.Node last = colors.head;
+    while (last.next != null)
+      last = last.next;
+    last.next = colors.head;
+    colors.head.prev = last;
+    //// loop
+
+    m_colorMatcher.addColorMatch(Blue);
+    m_colorMatcher.addColorMatch(Green);
+    m_colorMatcher.addColorMatch(Red);
+    m_colorMatcher.addColorMatch(Yellow);
+
   }
 
   @Override
   public void execute() {
-    /**
-     * The method GetColor() returns a normalized color value from the sensor and
-     * can be useful if outputting the color to an RGB LED or similar. To read the
-     * raw color, use GetRawColor().
-     * 
-     * The color sensor works best when within a few inches from an object in well
-     * lit conditions (the built in LED is a big help here!). The farther an object
-     * is the more light from the surroundings will bleed into the measurements and
-     * make it difficult to accurately determine its color.
-     */
-    Color detectedColor = m_colorSensor.getColor();
-    //System.out.print(detectedColor);
-    //System.out.print("    ");
+    
+    Color detectedColor = ColorWheelHere.getReadColor();
 
-    /**
-     * Run the color match algorithm on our detected color
-     */
     String colorString;
     ColorMatchResult match = m_colorMatcher.matchClosestColor(detectedColor);
-    System.out.print(match);
-    System.out.print("    ");
 
-    if (match.color == kBlueTarget) {
-      colorString = "Blue";
-    } else if (match.color == kRedTarget) {
-      colorString = "Red";
-    } else if (match.color == kGreenTarget) {
-      colorString = "Green";
-    } else if (match.color == kYellowTarget) {
-      colorString = "Yellow";
+    /**
+     * switch ((String) match.color){ case Blue: colorString = "B" case Red:
+     * colorString = "R" case Green: colorString = "G" case Yellow: colorString =
+     * "Y" }
+     */
+
+    if (match.color == Blue) {
+      colorString = "B";
+    } else if (match.color == Red) {
+      colorString = "R";
+    } else if (match.color == Green) {
+      colorString = "G";
+    } else if (match.color == Yellow) {
+      colorString = "Y";
     } else {
-      colorString = "Unknown";
-    }
-    System.out.println(colorString);
-    String gameData;
-    gameData = DriverStation.getInstance().getGameSpecificMessage();
-    if (gameData.length() > 0) {
-      if (gameData.charAt(0) == colorString.charAt(0)) {
-        System.out.println("TRUE!!!");
-      } else {
-        System.out.println("False!!!");
-      }
-    } else {
-      // Code for no data received yet
+      colorString = "U";
     }
 
+    int forwardCount = 0;
+    int backwardsCount = 0;
+    DLL.Node CurrScroll = colors.head;  
+    while(CurrScroll.data != colorString){
+      CurrScroll = CurrScroll.next;
+    }
+    DLL.Node Currforward = CurrScroll;
+    DLL.Node CurrBack = CurrScroll;
+
+
+    while (!Currforward.data.equals(gameData)) {
+      Currforward = Currforward.next;
+      forwardCount++;
+    }
+    while (!CurrBack.data.equals(gameData)) {
+      CurrBack = CurrBack.prev;
+      backwardsCount--;
+    }
+    if (Math.abs(forwardCount) > Math.abs(backwardsCount)) {
+      speedLevel = backwardsCount;
+    } else if (Math.abs(forwardCount) < Math.abs(backwardsCount)) {
+      speedLevel = forwardCount;
+    } else {
+      speedLevel = forwardCount;
+    }
+    ColorWheelHere.ColorMotorSet(speedLevel);
+    
   }
 
   @Override
