@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -57,10 +60,8 @@ public class RobotContainer {
   // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
   //private final SetColor ColorSensorUsed = new SetColor();
   //private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
-  private final CIMClosedLoop ClosedLoop = new CIMClosedLoop(8); //The motor we use is yet to be determined.
-  private final EnableCIMClosedLoop ActivateClosedLoop = new EnableCIMClosedLoop(ClosedLoop,100);
-
-
+  private final FalconClosedLoop ClosedLoop = new FalconClosedLoop(11); //The motor we use is yet to be determined.
+  private final EnableFalconClosedLoop ActivateClosedLoop = new EnableFalconClosedLoop(ClosedLoop,200);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -90,8 +91,9 @@ public class RobotContainer {
    */
   public Command getTeleopCommand() {
     ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
+    //ContinuousTeleop.addCommands(new InstantC);
+    //test.set(ControlMode.PercentOutput,0.5);
     ContinuousTeleop.addCommands(ActivateClosedLoop);
-    //ContinuousTeleop.addCommands(ActivateTurret,ColorSensorUsed/*,ActivateClosedLoop*/);
     return ContinuousTeleop;
   }
 }

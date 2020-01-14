@@ -8,19 +8,19 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.CIMClosedLoop;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import frc.robot.subsystems.FalconClosedLoop;
 
 
-public class EnableCIMClosedLoop extends CommandBase {
+public class EnableFalconClosedLoop extends CommandBase {
   /**
    * Creates a new EnableCIMClosedLoop.
    */
-  CIMClosedLoop closedLoop;
+  FalconClosedLoop closedLoop;
   double velocity;
-  public EnableCIMClosedLoop(CIMClosedLoop loop,double velocity) {
+  public EnableFalconClosedLoop(FalconClosedLoop loop,double velocity) {
     this.closedLoop = loop;
     this.velocity = velocity;
+    addRequirements(loop);
   }
 
   // Called when the command is initially scheduled.
