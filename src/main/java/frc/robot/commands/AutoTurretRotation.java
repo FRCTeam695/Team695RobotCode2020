@@ -46,15 +46,14 @@ public class AutoTurretRotation extends CommandBase {
 
 
     double alteredHorizontal = horizontal+10*panDirection;
-    if(0 <= alteredHorizontal && alteredHorizontal <= Constants.TURRET_HORIZONTAL_MAX_POSITION)
-      horizontal = alteredHorizontal;
-    else 
-      panDirection = -panDirection;
-    System.out.println(horizontal);
     try{TurretControlled.setYServoPosition(vertical);}
-    catch(Exception exceptionThrown) {}
-    try{TurretControlled.setXServoPosition(horizontal);}
-    catch(Exception exceptionThrown) {}
+    catch(Exception PositionOverflow) {}
+    try{
+      TurretControlled.setXServoPosition(alteredHorizontal);
+    }
+    catch(Exception PositionOverflow) {
+      panDirection = -panDirection;
+    }
   }
 
   public boolean endCommand() {
