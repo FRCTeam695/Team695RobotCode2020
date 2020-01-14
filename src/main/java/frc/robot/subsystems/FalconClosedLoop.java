@@ -17,26 +17,26 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class FalconClosedLoop extends SubsystemBase {
 
-    private TalonFX ControlledMotor; 
+    private TalonFX Talon; 
     private int timeoutMs = 30;
     private int PIDLoopId = 0;
     public FalconClosedLoop(int talonId) {
-        this.ControlledMotor = new TalonFX(talonId);
-        ControlledMotor.configFactoryDefault();
-        ControlledMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 
+        this.Talon = new TalonFX(talonId);
+        Talon.configFactoryDefault();
+        Talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 
         PIDLoopId,
         timeoutMs);
-        ControlledMotor.setSensorPhase(true);
-        ControlledMotor.configNominalOutputForward(0, timeoutMs);
-		ControlledMotor.configNominalOutputReverse(0, timeoutMs);
-		ControlledMotor.configPeakOutputForward(1, timeoutMs);
-        ControlledMotor.configPeakOutputReverse(-1, timeoutMs);
+        Talon.setSensorPhase(true);
+        Talon.configNominalOutputForward(0, timeoutMs);
+		Talon.configNominalOutputReverse(0, timeoutMs);
+		Talon.configPeakOutputForward(1, timeoutMs);
+        Talon.configPeakOutputReverse(-1, timeoutMs);
         //ControlledMotor.configAllowableClosedloopError(0, PIDLoopId, timeoutMs);
 
-		ControlledMotor.config_kP(PIDLoopId, .25, timeoutMs);
-		ControlledMotor.config_kI(PIDLoopId, 0.001, timeoutMs);
-        ControlledMotor.config_kD(PIDLoopId, 20, timeoutMs);
-        ControlledMotor.config_kF(PIDLoopId, 1023.0/7200.0, timeoutMs);
+		Talon.config_kP(PIDLoopId, .25, timeoutMs);
+		Talon.config_kI(PIDLoopId, 0.001, timeoutMs);
+        Talon.config_kD(PIDLoopId, 20, timeoutMs);
+        Talon.config_kF(PIDLoopId, 1023.0/7200.0, timeoutMs);
 
 
     }
@@ -61,18 +61,9 @@ public class FalconClosedLoop extends SubsystemBase {
 
         /* 500 RPM in either direction */
 
-        ControlledMotor.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+        Talon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+        System.out.println(Talon.getSelectedSensorVelocity(PIDLoopId));
 
-
-        /* Append more signals to print when in speed mode. */
-        /*
-        _sb.append("\terr:");
-
-        _sb.append(motorS1.getClosedLoopError(PIDLoopId));
-
-        _sb.append("\ttrg:");
-
-        _sb.append(targetVelocity_UnitsPer100ms);*/
 
     }
 }
