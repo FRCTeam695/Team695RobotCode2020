@@ -41,24 +41,24 @@ public class RobotContainer {
   //private final Motors RobotDriveMotors = new Motors();
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
-  private final ModelTurret Turret = new ModelTurret(2,3);
+  //private final ModelTurret Turret = new ModelTurret(2,3);
 
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
-	private Joystick ControllerDrive = new Joystick(0);
-  private final JoystickButton AButton = new JoystickButton(ControllerDrive,1);
-  private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
-  private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
+	//private Joystick ControllerDrive = new Joystick(0);
+  //private final JoystickButton AButton = new JoystickButton(ControllerDrive,1);
+  ////private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
+  //private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
   //***************************************************************************/
   //COMMANDS INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
   //private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
   // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
-  private final SetColor ColorSensorUsed = new SetColor();
-  private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
-  //private final CIMClosedLoop ClosedLoop = new CIMClosedLoop(MotorToControl); //The motor we use is yet to be determined.
-  //private final EnableCIMClosedLoop ActivateClosedLoop = new EnableCIMClosedLoop(ClosedLoop);
+  //private final SetColor ColorSensorUsed = new SetColor();
+  //private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
+  private final CIMClosedLoop ClosedLoop = new CIMClosedLoop(8); //The motor we use is yet to be determined.
+  private final EnableCIMClosedLoop ActivateClosedLoop = new EnableCIMClosedLoop(ClosedLoop,100);
 
 
   /**
@@ -90,7 +90,8 @@ public class RobotContainer {
    */
   public Command getTeleopCommand() {
     ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
-    ContinuousTeleop.addCommands(ActivateTurret,ColorSensorUsed/*,ActivateClosedLoop*/);
+    ContinuousTeleop.addCommands(ActivateClosedLoop);
+    //ContinuousTeleop.addCommands(ActivateTurret,ColorSensorUsed/*,ActivateClosedLoop*/);
     return ContinuousTeleop;
   }
 }

@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class CIMClosedLoop extends SubsystemBase {
 
 	private TalonSRX ControlledMotor; 
-    public CIMClosedLoop(TalonSRX MotorToControl) {
-        this.ControlledMotor = MotorToControl;
+    public CIMClosedLoop(int talonId) {
+        this.ControlledMotor = new TalonSRX(talonId);
     }
     //StringBuilder _sb = new StringBuilder();
     //ON GITHUB
