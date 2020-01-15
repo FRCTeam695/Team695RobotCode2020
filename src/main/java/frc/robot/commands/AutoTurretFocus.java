@@ -19,12 +19,13 @@ public class AutoTurretFocus extends CommandBase {
    * Creates a new AutoTurretFocus.
    */
   private ModelTurret TurretControlled;
-  public static final double VERTICAL_GAIN = -1;
-  public static final double VERTICAL_ADJUST =  0.1;
-  public static final double VERTICAL_GAIN_APPLICATION_THRESHOLD = 3;
-  public static final double HORIZONTAL_GAIN = -2;
-  public static final double HORIZONTAL_ADJUST = 0.1;
-  public static final double HORIZONTAL_GAIN_APPLICATION_THRESHOLD = 3;
+  public static final double VERTICAL_GAIN = -.1;
+  public static final double VERTICAL_ADJUST =  -0.15;
+  public static final double VERTICAL_GAIN_APPLICATION_THRESHOLD = 5;
+  public static final double HORIZONTAL_GAIN = -.2;
+  public static final double HORIZONTAL_ADJUST = 0.3;
+  public static final double HORIZONTAL_GAIN_APPLICATION_THRESHOLD = 10;
+  private int i = 1;
 
   private double horizontalError;
   private double verticalError;
@@ -55,7 +56,7 @@ public class AutoTurretFocus extends CommandBase {
 		{
 			horizontalAdjustment -= HORIZONTAL_GAIN;
 		}
-		else if (horizontalError < HORIZONTAL_GAIN_APPLICATION_THRESHOLD)
+		else if (horizontalError < HORIZONTAL_GAIN_APPLICATION_THRESHOLD && horizontalError != 0)
 		{
 			horizontalAdjustment += HORIZONTAL_GAIN;
     }
@@ -65,7 +66,7 @@ public class AutoTurretFocus extends CommandBase {
 		{
 			verticalAdjustment -= VERTICAL_GAIN;
 		}
-		else if (verticalError < VERTICAL_GAIN_APPLICATION_THRESHOLD)
+		else if (verticalError < VERTICAL_GAIN_APPLICATION_THRESHOLD && verticalError != 0)
 		{
 			verticalAdjustment += VERTICAL_GAIN;
     }
@@ -73,6 +74,7 @@ public class AutoTurretFocus extends CommandBase {
     catch(IllegalArgumentException PositionOverflow) {}
     try {TurretControlled.incrementYServoPosition(verticalAdjustment);}
     catch(IllegalArgumentException PositionOverflow) {}
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -80,10 +82,20 @@ public class AutoTurretFocus extends CommandBase {
   public void end(boolean interrupted) {
   }
 
+  public void change() {
+    if(i !=0 )
+      i-=1;
+  }
+
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(i == 0) {
+      i++;
+      TurretControlled.centerBothAxes();
+      return true;
+    }
     return false;
   }
 }

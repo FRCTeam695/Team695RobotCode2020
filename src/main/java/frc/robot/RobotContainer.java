@@ -86,6 +86,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     TurretGroup.addCommands(Finding,Focusing);
     AButton.whenPressed(TurretGroup);
+    XButton.whenPressed(new InstantCommand(Focusing::change));
     //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
 
   }
