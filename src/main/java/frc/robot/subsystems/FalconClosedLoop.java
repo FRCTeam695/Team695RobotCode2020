@@ -11,6 +11,8 @@ import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -23,7 +25,7 @@ public class FalconClosedLoop extends SubsystemBase {
     public FalconClosedLoop(int talonId) {
         this.Talon = new TalonFX(talonId);
         Talon.configFactoryDefault();
-        Talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 
+        Talon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 
         PIDLoopId,
         timeoutMs);
         Talon.setSensorPhase(true);
@@ -33,10 +35,10 @@ public class FalconClosedLoop extends SubsystemBase {
         Talon.configPeakOutputReverse(-1, timeoutMs);
         //ControlledMotor.configAllowableClosedloopError(0, PIDLoopId, timeoutMs);
 
-		Talon.config_kP(PIDLoopId, .25, timeoutMs);
-		Talon.config_kI(PIDLoopId, 0.001, timeoutMs);
-        Talon.config_kD(PIDLoopId, 20, timeoutMs);
-        Talon.config_kF(PIDLoopId, 1023.0/7200.0, timeoutMs);
+		Talon.config_kP(PIDLoopId, .23, timeoutMs);
+		Talon.config_kI(PIDLoopId, 0.0004, timeoutMs);
+        Talon.config_kD(PIDLoopId, 7, timeoutMs);
+        Talon.config_kF(PIDLoopId, 0, timeoutMs);
 
 
     }
@@ -57,12 +59,8 @@ public class FalconClosedLoop extends SubsystemBase {
 
          */
     public void setVelocity(double velocity) {
-        double targetVelocity_UnitsPer100ms = (velocity * 500.0 * 4096 / 600);
-
-        /* 500 RPM in either direction */
-
+        double targetVelocity_UnitsPer100ms = (velocity * 4096 / 600);
         Talon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
-        System.out.println(Talon.getSelectedSensorVelocity(PIDLoopId));
 
 
     }

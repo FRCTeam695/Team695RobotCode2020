@@ -60,8 +60,8 @@ public class RobotContainer {
   // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
   //private final SetColor ColorSensorUsed = new SetColor();
   //private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
-  private final FalconClosedLoop ClosedLoop = new FalconClosedLoop(11); //The motor we use is yet to be determined.
-  private final EnableFalconClosedLoop ActivateClosedLoop = new EnableFalconClosedLoop(ClosedLoop,200);
+  private final FalconClosedLoop ClosedLoop = new FalconClosedLoop(12); //The motor we use is yet to be determined.
+  private final EnableFalconClosedLoop ActivateClosedLoop = new EnableFalconClosedLoop(ClosedLoop,1000);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
