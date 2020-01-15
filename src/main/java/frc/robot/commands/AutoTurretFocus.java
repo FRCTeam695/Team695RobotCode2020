@@ -93,7 +93,7 @@ public class AutoTurretFocus extends CommandBase {
   public boolean isFinished() {
     if(i == 0) {
       i++;
-      TurretControlled.centerBothAxes();
+      TurretControlled.endOperation();
       return true;
     }
     return false;

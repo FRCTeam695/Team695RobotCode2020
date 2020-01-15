@@ -132,6 +132,11 @@ public class ModelTurret extends SubsystemBase {
     XServo.centerServo();
     YServo.centerServo();
   }
+
+  public void endOperation() {
+    XServo.centerServo();
+    YServo.setAngle(100);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
