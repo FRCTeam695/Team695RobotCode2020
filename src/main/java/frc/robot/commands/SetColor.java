@@ -8,7 +8,6 @@ import frc.robot.subsystems.ColorWheel;
 import edu.wpi.first.wpilibj.DriverStation;
 import com.revrobotics.ColorMatchResult;
 
-
 import com.revrobotics.ColorMatch;
 
 /**
@@ -147,7 +146,6 @@ public class SetColor extends CommandBase {
   @Override
   public void initialize() {
 
-
     colors.append("R");
     colors.append("G");
     colors.append("B");
@@ -170,7 +168,7 @@ public class SetColor extends CommandBase {
 
   @Override
   public void execute() {
-    
+
     Color detectedColor = ColorWheelHere.getReadColor();
 
     String colorString;
@@ -196,13 +194,12 @@ public class SetColor extends CommandBase {
 
     int forwardCount = 0;
     int backwardsCount = 0;
-    DLL.Node CurrScroll = colors.head;  
-    while(CurrScroll.data != colorString){
+    DLL.Node CurrScroll = colors.head;
+    while (CurrScroll.data != colorString) {
       CurrScroll = CurrScroll.next;
     }
     DLL.Node Currforward = CurrScroll;
     DLL.Node CurrBack = CurrScroll;
-
 
     while (!Currforward.data.equals(gameData)) {
       Currforward = Currforward.next;
@@ -216,16 +213,23 @@ public class SetColor extends CommandBase {
       speedLevel = backwardsCount;
     } else if (Math.abs(forwardCount) < Math.abs(backwardsCount)) {
       speedLevel = forwardCount;
-    } else {
+    } else if (backwardsCount == 0 & forwardCount == 0) {
+      this.end(true);
+
+    } else
+
+    {
       speedLevel = forwardCount;
     }
     ColorWheelHere.ColorMotorSet(speedLevel);
-    
+
   }
 
   @Override
   public void end(boolean interrupted) {
-
+    ColorWheelHere.ColorMotorSet(1);
+    // delay 2 rotations or 0.1 seconds
+    ColorWheelHere.ColorMotorSet(0);
   }
 
   // Returns true when the command should end.

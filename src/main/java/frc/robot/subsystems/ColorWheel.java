@@ -35,28 +35,10 @@ public class ColorWheel extends SubsystemBase {
   public int[] speeds = { -7, -5, -1, 0, 1, 5, 7 };
 
   public void ColorMotorSet(int speedLevel) {
-    int stick;
-    System.out.print(String.valueOf(speedLevel)+"  ");
-    switch (speedLevel) {
-    case -3:
-      stick = speeds[0];
-    case -2:
-      stick = speeds[1];
-    case -1:
-      stick = speeds[2];
-    case 0:
-      stick = speeds[3];
-    case 1:
-      stick = speeds[4];
-    case 2:
-      stick = speeds[5];
-    case 3:
-      stick = speeds[6];
-    default:
-      stick = speeds[3];
-    }
-    //ColorMotor.set(ControlMode.PercentOutput, stick);
-    System.out.println(String.valueOf(stick));
+    //System.out.print(String.valueOf(speedLevel)+"  ");
+
+    //ColorMotor.set(ControlMode.PercentOutput, speeds[speedLevel+3]);
+    System.out.println(String.valueOf(speeds[speedLevel+3]));
   }
 
   @Override
