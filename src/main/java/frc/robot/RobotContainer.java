@@ -49,10 +49,10 @@ public class RobotContainer {
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
-	//private Joystick ControllerDrive = new Joystick(0);
-  //private final JoystickButton AButton = new JoystickButton(ControllerDrive,1);
+	private Joystick ControllerDrive = new Joystick(0);
+  private final JoystickButton AButton = new JoystickButton(ControllerDrive,1);
   ////private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
-  //private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
+  private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
   //***************************************************************************/
   //COMMANDS INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
@@ -60,8 +60,8 @@ public class RobotContainer {
   // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
   //private final SetColor ColorSensorUsed = new SetColor();
   //private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
-  private final FalconClosedLoop ClosedLoop = new FalconClosedLoop(12); //The motor we use is yet to be determined.
-  private final EnableFalconClosedLoop ActivateClosedLoop = new EnableFalconClosedLoop(ClosedLoop,1000);
+  private final FalconClosedLoop ClosedLoop = new FalconClosedLoop(12,0,30,ControlMode.Position); //The motor we use is yet to be determined.
+  private final EnableFalconVelocityClosedLoop ActivateClosedLoop = new EnableFalconVelocityClosedLoop(ClosedLoop,3000);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -79,8 +79,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
-
+   // YButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(1);}));
+    //AButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(-1);}));
   }
 
 

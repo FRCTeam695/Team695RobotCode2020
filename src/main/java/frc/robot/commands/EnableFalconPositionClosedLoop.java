@@ -7,19 +7,21 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FalconClosedLoop;
 
 
-public class EnableFalconClosedLoop extends CommandBase {
+public class EnableFalconPositionClosedLoop extends CommandBase {
   /**
    * Creates a new EnableCIMClosedLoop.
    */
   FalconClosedLoop closedLoop;
-  double velocity;
-  public EnableFalconClosedLoop(FalconClosedLoop loop,double velocity) {
+  double position;
+  public EnableFalconPositionClosedLoop(FalconClosedLoop loop) {
     this.closedLoop = loop;
-    this.velocity = velocity;
+    loop.setClosedLoopMode(ControlMode.Position);
     addRequirements(loop);
   }
 
@@ -27,11 +29,17 @@ public class EnableFalconClosedLoop extends CommandBase {
   @Override
   public void initialize() {
   }
+  public void setPosition(double newPosition) {
+    this.position = newPosition;
+  }
 
+  public void incrementPosition(double increment) {
+    position += increment;
+  }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    closedLoop.setVelocity(velocity); //Determine Velocity
+    closedLoop.setMotor(position); //Determine Velocity
   }
 
   // Called once the command ends or is interrupted.

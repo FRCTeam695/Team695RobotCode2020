@@ -15,14 +15,28 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
+class PIDCoefficients {
+    double kP,kI,kD,kF;
+    PIDCoefficients(double kP,double kI, double kD, double kF) {
+        this.kP = kP;
+        this.kI = kI;
+        this.kD = kD;
+        this.kF = kF;
+    }
+}
 
 public class FalconClosedLoop extends SubsystemBase {
 
     private TalonFX Talon; 
     private int timeoutMs = 30;
     private int PIDLoopId = 0;
-    public FalconClosedLoop(int talonId) {
+    private ControlMode CurrentControlMode;
+    private static PIDCoefficients VelocityPIDCoefficients = new PIDCoefficients(.23,0.0004,7,0);
+    private static PIDCoefficients PositionPIDCoefficients = new PIDCoefficients(1,0,0,0);
+
+    public FalconClosedLoop(int talonId,int PIDLoopId,int timeoutMs,ControlMode ClosedLoopMode) {
+        this.PIDLoopId = PIDLoopId;
+        this.timeoutMs = timeoutMs;
         this.Talon = new TalonFX(talonId);
         Talon.configFactoryDefault();
         Talon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 
@@ -33,17 +47,37 @@ public class FalconClosedLoop extends SubsystemBase {
 		Talon.configNominalOutputReverse(0, timeoutMs);
 		Talon.configPeakOutputForward(1, timeoutMs);
         Talon.configPeakOutputReverse(-1, timeoutMs);
-        //ControlledMotor.configAllowableClosedloopError(0, PIDLoopId, timeoutMs);
+        Talon.getSensorCollection().setIntegratedSensorPositionToAbsolute(timeoutMs);
+        applyPIDCoefficients(getPIDCoefficientsForControlMode(ClosedLoopMode));
+    }
+    public PIDCoefficients getPIDCoefficientsForControlMode(ControlMode ControlModeToUse) {
+        switch (ControlModeToUse) {
+            case Velocity:
+                return VelocityPIDCoefficients;
+            case Position:
+                Talon.getSensorCollection().setIntegratedSensorPositionToAbsolute(timeoutMs);
+                return PositionPIDCoefficients;
+            case PercentOutput:
+                return new PIDCoefficients(0, 0, 0, 0);
+            default:
+                throw new IllegalArgumentException("Did not specify a supported closed loop mode.");
+        } 
+    }
+    private void applyPIDCoefficients(PIDCoefficients CoefficientsToApply) {
+		Talon.config_kP(PIDLoopId, CoefficientsToApply.kP, timeoutMs);
+		Talon.config_kI(PIDLoopId, CoefficientsToApply.kI, timeoutMs);
+        Talon.config_kD(PIDLoopId, CoefficientsToApply.kD, timeoutMs);
+        Talon.config_kF(PIDLoopId, CoefficientsToApply.kF, timeoutMs);
+    }
 
-		Talon.config_kP(PIDLoopId, .23, timeoutMs);
-		Talon.config_kI(PIDLoopId, 0.0004, timeoutMs);
-        Talon.config_kD(PIDLoopId, 7, timeoutMs);
-        Talon.config_kF(PIDLoopId, 0, timeoutMs);
+
+
+    public void setClosedLoopMode(ControlMode ClosedLoopMode) {
+        this.CurrentControlMode = ClosedLoopMode;
+        applyPIDCoefficients(getPIDCoefficientsForControlMode(ClosedLoopMode));
 
 
     }
-    //StringBuilder _sb = new StringBuilder();
-    //ON GITHUB
 
         /* Velocity Closed Loop */
        //copy paste from https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/VelocityClosedLoop/src/main/java/frc/robot/Robot.java
@@ -59,9 +93,18 @@ public class FalconClosedLoop extends SubsystemBase {
 
          */
     public void setVelocity(double velocity) {
+        if (!this.CurrentControlMode.equals(ControlMode.Velocity))
+            throw new IllegalArgumentException("Cannot set control mode to velocity when motor control mode is not velocity.");
         double targetVelocity_UnitsPer100ms = (velocity * 4096 / 600);
         Talon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
+    }
+    public void setMotor(double value) {
+        value  = value* 4096/600;
+        System.out.println(value);
+        Talon.set(CurrentControlMode,value);
+    }
 
-
+    public void immediateStop() {
+        Talon.set(ControlMode.PercentOutput,0);
     }
 }
