@@ -99,8 +99,6 @@ public class FalconClosedLoop extends SubsystemBase {
         Talon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
     }
     public void setMotor(double value) {
-        value  = value* 4096/600;
-        System.out.println(value);
         Talon.set(CurrentControlMode,value);
     }
 
