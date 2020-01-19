@@ -47,6 +47,7 @@ public class RobotContainer {
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
   private final ModelTurret Turret = new ModelTurret(RobotMainNetworkTableInstance,2,3);
+  private final BallDetector Detector = new BallDetector(0);
 
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
@@ -64,6 +65,7 @@ public class RobotContainer {
   private final AutoTurretRotation Finding = new AutoTurretRotation(Turret);
   private final AutoTurretFocus Focusing = new AutoTurretFocus(Turret);
   private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup();
+  private final FindBall ReturnBall = new FindBall(Detector);
 
 
   /**
@@ -100,7 +102,7 @@ public class RobotContainer {
    */
   public Command getTeleopCommand() {
     ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
-    //ContinuousTeleop.addCommands(ColorSensorUsed);
+    ContinuousTeleop.addCommands(ReturnBall);
     return ContinuousTeleop;
   }
 }
