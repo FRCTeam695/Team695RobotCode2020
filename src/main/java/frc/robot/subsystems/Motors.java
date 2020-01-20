@@ -43,7 +43,7 @@ public class Motors extends SubsystemBase {
   }
 
   public void spinIntake(boolean boo) {
-    double motorPowerMultiplier = -.7*gain;
+    double motorPowerMultiplier = -.5*gain;
     if(boo) 
       motorIntake.set(ControlMode.PercentOutput, motorPowerMultiplier);
     else

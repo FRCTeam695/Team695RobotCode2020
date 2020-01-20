@@ -31,6 +31,10 @@ public class FindBall extends CommandBase {
   @Override
   public void execute() {
     MotorIntake.spinIntake(Detector.get());
+    if(Detector.get())
+      System.out.println("False");
+    else
+      System.out.println("True");
   }
 
   // Called once the command ends or is interrupted.
