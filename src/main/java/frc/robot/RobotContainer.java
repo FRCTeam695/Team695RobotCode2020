@@ -43,7 +43,7 @@ public class RobotContainer {
   //***************************************************************************/
   //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
   //***************************************************************************/
-  //private final Motors RobotDriveMotors = new Motors();
+  private final Motors RobotDriveMotors = new Motors();
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
   private final ModelTurret Turret = new ModelTurret(RobotMainNetworkTableInstance,2,3);
@@ -65,7 +65,7 @@ public class RobotContainer {
   private final AutoTurretRotation Finding = new AutoTurretRotation(Turret);
   private final AutoTurretFocus Focusing = new AutoTurretFocus(Turret);
   private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup();
-  private final FindBall ReturnBall = new FindBall(Detector);
+  private final FindBall ReturnBall = new FindBall(Detector, RobotDriveMotors);
 
 
   /**

@@ -19,8 +19,8 @@ public class Motors extends SubsystemBase {
   private VictorSPX motorL1 = new VictorSPX(1);
 	private VictorSPX motorL2 = new VictorSPX(2);
 	private VictorSPX motorR1 = new VictorSPX(3);
-	private VictorSPX motorR2 = new VictorSPX(4);
-  
+	private VictorSPX motorR2 = new VictorSPX(5);
+  private VictorSPX motorIntake = new VictorSPX(4);
 
   private double gain = 1;
 
@@ -41,6 +41,16 @@ public class Motors extends SubsystemBase {
     motorL1.set(ControlMode.PercentOutput, finalLeftPower);
 		motorL2.set(ControlMode.PercentOutput, finalLeftPower);
   }
+
+  public void spinIntake(boolean boo) {
+    double motorPowerMultiplier = -.7*gain;
+    if(boo) 
+      motorIntake.set(ControlMode.PercentOutput, motorPowerMultiplier);
+    else
+      motorIntake.set(ControlMode.PercentOutput, 0);
+    
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

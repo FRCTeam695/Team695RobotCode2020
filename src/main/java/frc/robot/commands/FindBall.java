@@ -15,9 +15,11 @@ public class FindBall extends CommandBase {
    * Creates a new FindBall.
    */
   BallDetector Detector;
-  public FindBall(BallDetector Detector) {
+  Motors MotorIntake;
+  public FindBall(BallDetector Detector, Motors MotorIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.Detector = Detector;
+    this.MotorIntake = MotorIntake;
   }
 
   // Called when the command is initially scheduled.
@@ -28,10 +30,7 @@ public class FindBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Detector.get())
-      System.out.println("False");
-    else
-      System.out.println("True");
+    MotorIntake.spinIntake(Detector.get());
   }
 
   // Called once the command ends or is interrupted.
