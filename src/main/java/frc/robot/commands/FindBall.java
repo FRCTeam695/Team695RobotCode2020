@@ -28,7 +28,10 @@ public class FindBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println(Detector);
+    if(Detector.get())
+      System.out.println("False");
+    else
+      System.out.println("True");
   }
 
   // Called once the command ends or is interrupted.

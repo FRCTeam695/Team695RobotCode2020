@@ -21,6 +21,10 @@ public class BallDetector extends SubsystemBase {
     
   }
 
+  public boolean get() {
+    return input.get();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
