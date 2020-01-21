@@ -35,9 +35,10 @@ public class ColorWheel extends SubsystemBase {
   // ColorMotor.configFactoryDefault();
   // ColorMotor.openloop
   // ColorMotor.setNeutralMode(NeutralMode.brake);
+  FalconClosedLoop ClosedLoop;
   public ColorWheel(FalconClosedLoop closedLoop){
     this.ClosedLoop = closedLoop;
-    private final EnableFalconVelocityClosedLoop ActivateClosedLoop = new EnableFalconVelocityClosedLoop(ClosedLoop, 0);
+    final EnableFalconVelocityClosedLoop ActivateClosedLoop = new EnableFalconVelocityClosedLoop(ClosedLoop, 0);
   }  
   double currSpeed = 0;
 
