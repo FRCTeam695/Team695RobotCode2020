@@ -107,8 +107,8 @@ public class RobotContainer {
     //AButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(-1);}));
 
     TurretGroup.addCommands(Finding,Focusing);
-    AButton.whenPressed(TurretGroup);
-    XButton.whenPressed(new InstantCommand(Focusing::change));
+    //AButton.whenPressed(TurretGroup);
+    //XButton.whenPressed(new InstantCommand(Focusing::change));
     //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
 
 
