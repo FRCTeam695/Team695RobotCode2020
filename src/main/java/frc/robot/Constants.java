@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.util.Color;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants. This class should not be used for any other
- * purpose. All constants should be declared globally (i.e. public static). Do
+ * purpose. All constants should be declared globally (i.e. public static final). Do
  * not put anything functional in this class.
  *
  * <p>
@@ -22,11 +22,12 @@ public final class Constants {
 
     //public static final int kPIDLoopIdx = 0;
     public static final int leftYstick = 0;
-    public static final class Colors {
-        /**private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-        private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-        private final Color kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-        private final Color kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);*/
+    public static final class ColorConstants {
+        public static final int[] speeds = { -7, -5, -1, 0, 1, 5, 7 };//in rpm
+        public final static Color Blue = ColorMatch.makeColor(0.143, 0.427, 0.429);
+        public final static Color Green = ColorMatch.makeColor(0.197, 0.561, 0.240);
+        public final static Color Red = ColorMatch.makeColor(0.561, 0.232, 0.114);
+        public final static Color Yellow = ColorMatch.makeColor(0.361, 0.524, 0.113);
     }
 
 }
