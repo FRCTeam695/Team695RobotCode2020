@@ -69,7 +69,7 @@ public class RobotContainer {
   private final FalconClosedLoop ClosedLoop = new FalconClosedLoop(12,0,30,ControlMode.Position); //The motor we use is yet to be determined.
   private final EnableFalconVelocityClosedLoop ActivateClosedLoop = new EnableFalconVelocityClosedLoop(ClosedLoop,3000);
   private final FalconClosedLoop ColorMotor = new FalconClosedLoop(12,0,30,ControlMode.Position);
-  private final SetColor UseSetColor = new SetColor(ColorMotor)
+  private final SetColor UseSetColor = new SetColor(ColorMotor);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
