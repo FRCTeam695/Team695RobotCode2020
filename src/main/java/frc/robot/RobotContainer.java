@@ -10,16 +10,22 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
+
 /**
  * COntroller button indicies:
  * A: 1
@@ -46,14 +52,20 @@ import edu.wpi.first.wpilibj.Joystick;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  private final NetworkTableInstance RobotMainNetworkTableInstance = NetworkTableInstance.getDefault();
   // The robot's subsystems and commands are defined here...
   //***************************************************************************/
   //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
   //***************************************************************************/
-  //private final Motors RobotDriveMotors = new Motors();
+  private final Motors RobotDriveMotors = new Motors();
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
+
   //private final ModelTurret Turret = new ModelTurret(2,3);
+
+  private final ModelTurret Turret = new ModelTurret(RobotMainNetworkTableInstance,2,3);
+  private final BallDetector Detector = new BallDetector(0);
+
 
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
@@ -72,6 +84,7 @@ public class RobotContainer {
   //***************************************************************************/
   //private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
   // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
+
   //private final SetColor ColorSensorUsed = new SetColor();
   //private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
   private final FalconClosedLoop ClosedLoopTop = new FalconClosedLoop(12,0,30,ControlMode.Velocity); //The motor we use is yet to be determined.
@@ -85,6 +98,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
     //enable compressor
     //new InstantCommand(Compressor::enableCompressor,Compressor).schedule();
   }
@@ -103,7 +117,15 @@ public class RobotContainer {
 
    // YButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(1);}));
     //AButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(-1);}));
+
+    TurretGroup.addCommands(Finding,Focusing);
+    //AButton.whenPressed(TurretGroup);
+    //XButton.whenPressed(new InstantCommand(Focusing::change));
+    //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
+
+
   }
+
 
 
   /**
@@ -115,6 +137,13 @@ public class RobotContainer {
     ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
     //test.set(ControlMode.PercentOutput,0.5);
     ContinuousTeleop.addCommands(shooterMultiVelocity);
+
+    //ContinuousTeleop.addCommands(new InstantC);
+    //test.set(ControlMode.PercentOutput,0.5);
+    ContinuousTeleop.addCommands(ActivateClosedLoop);
+
+    //ContinuousTeleop.addCommands(ReturnBall);
+
     return ContinuousTeleop;
   }
 }
