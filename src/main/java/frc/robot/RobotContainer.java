@@ -63,7 +63,7 @@ public class RobotContainer {
   //***************************************************************************/
 	private Joystick ControllerDrive = new Joystick(0);
   private final JoystickButton AButton = new JoystickButton(ControllerDrive,1);
-  ////private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
+  private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
   private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
   //***************************************************************************/
   //COMMANDS INIT & CONSTRUCTED BELOW:
