@@ -65,7 +65,7 @@ public class RobotContainer {
   private final AutoTurretRotation Finding = new AutoTurretRotation(Turret);
   private final AutoTurretFocus Focusing = new AutoTurretFocus(Turret);
   private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup();
-  private final FindBall ReturnBall = new FindBall(Detector, RobotDriveMotors);
+  private final FindBall ReturnBall = new FindBall(Detector/*, RobotDriveMotors*/);
 
 
   /**
@@ -102,7 +102,7 @@ public class RobotContainer {
    */
   public Command getTeleopCommand() {
     ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
-    ContinuousTeleop.addCommands(ReturnBall);
+    //ContinuousTeleop.addCommands(ReturnBall);
     return ContinuousTeleop;
   }
 }
