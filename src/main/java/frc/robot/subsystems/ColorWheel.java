@@ -14,7 +14,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.ColorSensorV3;
 
 import frc.robot.subsystems.FalconClosedLoop;
-import frc.robot.Constants.ColorConstants;
+import frc.robot.Constants.ColorConst;
 import frc.robot.commands.EnableFalconVelocityClosedLoop;
 
 import edu.wpi.first.wpilibj.I2C;
@@ -47,7 +47,7 @@ public class ColorWheel extends SubsystemBase {
 
     // ColorMotor.set(ControlMode.PercentOutput, speeds[speedLevel+3]);
 
-    currSpeed = ColorConstants.speeds[speedLevel + 3];
+    currSpeed = ColorConst.speeds[speedLevel + 3];
     ClosedLoop.setVelocity(currSpeed);
     System.out.println(String.valueOf(currSpeed));
   }

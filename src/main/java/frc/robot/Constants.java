@@ -22,7 +22,15 @@ public final class Constants {
 
     //public static final int kPIDLoopIdx = 0;
     public static final int leftYstick = 0;
-    public static final class ColorConstants {
+    public static final class FixColorConst{
+        public static final double finalRotationsThreshold = 4;//number of color wheel spins, better to keep it slightly lower I think
+        public static final double motorWheelRadius = 2.5;
+        public static final double colorWheelRadius = 41.5;
+    }
+    public static final class ColorConst {
+        public ColorConst(){
+
+        }
         public static final int[] speeds = { -7, -5, -1, 0, 1, 5, 7 };//in rpm
         public final static Color Blue = ColorMatch.makeColor(0.143, 0.427, 0.429);
         public final static Color Green = ColorMatch.makeColor(0.197, 0.561, 0.240);

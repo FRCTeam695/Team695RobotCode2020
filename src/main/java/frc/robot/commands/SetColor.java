@@ -8,7 +8,7 @@ import frc.robot.subsystems.ColorWheel;
 import frc.robot.subsystems.FalconClosedLoop;
 import edu.wpi.first.wpilibj.DriverStation;
 import com.revrobotics.ColorMatchResult;
-import frc.robot.Constants.ColorConstants;
+import frc.robot.Constants.ColorConst;
 
 import com.revrobotics.ColorMatch;
 
@@ -160,10 +160,10 @@ public class SetColor extends CommandBase {
     colors.head.prev = last;
     //// loop
 
-    m_colorMatcher.addColorMatch(ColorConstants.Blue);
-    m_colorMatcher.addColorMatch(ColorConstants.Green);
-    m_colorMatcher.addColorMatch(ColorConstants.Red);
-    m_colorMatcher.addColorMatch(ColorConstants.Yellow);
+    m_colorMatcher.addColorMatch(ColorConst.Blue);
+    m_colorMatcher.addColorMatch(ColorConst.Green);
+    m_colorMatcher.addColorMatch(ColorConst.Red);
+    m_colorMatcher.addColorMatch(ColorConst.Yellow);
 
   }
 
@@ -181,13 +181,13 @@ public class SetColor extends CommandBase {
      * "Y" }
      */
 
-    if (match.color == ColorConstants.Blue) {
+    if (match.color == ColorConst.Blue) {
       colorString = "B";
-    } else if (match.color == ColorConstants.Red) {
+    } else if (match.color == ColorConst.Red) {
       colorString = "R";
-    } else if (match.color == ColorConstants.Green) {
+    } else if (match.color == ColorConst.Green) {
       colorString = "G";
-    } else if (match.color == ColorConstants.Yellow) {
+    } else if (match.color == ColorConst.Yellow) {
       colorString = "Y";
     } else {
       colorString = "U";

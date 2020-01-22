@@ -7,6 +7,12 @@
 
 package frc.robot.commands;
 
+//java.util.Date javaDate = new java.util.Date();
+//FixedColorWheelConstants Constants = new FixedColorWheelConstants();
+
+import frc.robot.Constants;
+import static frc.robot.Constants.FixColorConst;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -18,22 +24,20 @@ public class ColorWheelRotations extends CommandBase {
    * Creates a new EnableCIMClosedLoop.
    */
   FalconClosedLoop closedLoop;
-  double velocity = 0;
   public ColorWheelRotations(FalconClosedLoop loop,double velocity) {
     this.closedLoop = loop;
-    this.velocity = velocity;
+    this.velocity = 0;
     loop.setClosedLoopMode(ControlMode.Velocity);
     addRequirements(loop);
   }
-  int count;
 
-  double finalRotationsThreshold = 4;
-  double motorCircumference = 2*Math.PI*2.5;//cm enter radius
-  double colorWheelCircumference = 2*Math.PI*41.5;//enter radius cm
+  double finalRotationsThreshold = FixColorConst.finalRotationsThreshold;
+  double motorCircumference = 2*Math.PI*FixColorConst.motorWheelRadius;//cm enter radius
+  double colorWheelCircumference = 2*Math.PI*FixColorConst.colorWheelRadius;//enter radius cm
   double mechAdvantage = colorWheelCircumference/motorCircumference;
-  double motorRotationsThreshold = finalRotationsThreshold*mechAdvantage;
-  double motorRotations = 0.0;
-  velocity = 1;
+  double motorRotationsThreshold = (finalRotationsThreshold*mechAdvantage);
+  double motorRotations = 0;
+  double velocity = 1;
   double maxVelocity = 10*mechAdvantage;//number is color wheel rpm
   double a = -1*(velocity - maxVelocity)/(Math.pow(motorRotationsThreshold,2)/4);
 
