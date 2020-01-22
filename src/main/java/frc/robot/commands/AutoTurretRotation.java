@@ -38,7 +38,7 @@ public class AutoTurretRotation extends CommandBase {
   @Override
   public void execute() {
     Loop2.setPosition(0);
-    if()
+    
     try{
       Loop1.setTurretVelocity(15);
     }
