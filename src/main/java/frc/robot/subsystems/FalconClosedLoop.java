@@ -8,11 +8,16 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+
+import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 class PIDCoefficients {
@@ -33,8 +38,12 @@ public class FalconClosedLoop extends SubsystemBase {
     private ControlMode CurrentControlMode;
     private static PIDCoefficients VelocityPIDCoefficients = new PIDCoefficients(.23,0.0004,7,0);
     private static PIDCoefficients PositionPIDCoefficients = new PIDCoefficients(1,0,0,0);
+    private NetworkTable LimeLight;
+    private NetworkTableEntry LimeLightAzimuth;
+    private NetworkTableEntry LimeLightCoPolar;
+    private NetworkTableEntry LimeLightContourArea;
 
-    public FalconClosedLoop(int talonId,int PIDLoopId,int timeoutMs,ControlMode ClosedLoopMode) {
+    public FalconClosedLoop(NetworkTableInstance RobotMainNetworkTableInstance, int talonId,int PIDLoopId,int timeoutMs,ControlMode ClosedLoopMode) {
         this.PIDLoopId = PIDLoopId;
         this.timeoutMs = timeoutMs;
         this.Talon = new TalonFX(talonId);
@@ -49,6 +58,10 @@ public class FalconClosedLoop extends SubsystemBase {
         Talon.configPeakOutputReverse(-1, timeoutMs);
         Talon.getSensorCollection().setIntegratedSensorPositionToAbsolute(timeoutMs);
         applyPIDCoefficients(getPIDCoefficientsForControlMode(ClosedLoopMode));
+        this.LimeLight = RobotMainNetworkTableInstance.getTable("limelight");
+        this.LimeLightAzimuth = LimeLight.getEntry("tx");
+		this.LimeLightCoPolar = LimeLight.getEntry("ty");
+		this.LimeLightContourArea = LimeLight.getEntry("ta"); 
     }
     public PIDCoefficients getPIDCoefficientsForControlMode(ControlMode ControlModeToUse) {
         switch (ControlModeToUse) {
@@ -79,6 +92,16 @@ public class FalconClosedLoop extends SubsystemBase {
 
     }
 
+    public double getAzimuth(){
+        return LimeLightAzimuth.getDouble(0.0);
+      }
+    public double getCoPolar(){
+        return LimeLightCoPolar.getDouble(0.0);
+    }
+    public double getContourArea(){
+        return LimeLightContourArea.getDouble(0.0);
+    }
+
         /* Velocity Closed Loop */
        //copy paste from https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java/VelocityClosedLoop/src/main/java/frc/robot/Robot.java
 
@@ -100,6 +123,14 @@ public class FalconClosedLoop extends SubsystemBase {
     }
     public void setMotor(double value) {
         Talon.set(CurrentControlMode,value);
+    }
+
+    public void setTurretVelocity(double angle) {
+        setMotor(angle);
+    }
+
+    public void setPosition(double position) {
+        Talon.set(CurrentControlMode, position);
     }
 
     public void immediateStop() {

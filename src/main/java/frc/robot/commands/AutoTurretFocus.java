@@ -10,6 +10,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.FalconClosedLoop;
 import frc.robot.subsystems.ModelTurret;
 import java.lang.Math;
 import frc.robot.Constants;
@@ -18,7 +19,9 @@ public class AutoTurretFocus extends CommandBase {
   /**
    * Creates a new AutoTurretFocus.
    */
-  private ModelTurret TurretControlled;
+  //private ModelTurret Loop;
+  private FalconClosedLoop Loop1;
+  private FalconClosedLoop Loop2;
   public static final double VERTICAL_GAIN = -.1;
   public static final double VERTICAL_ADJUST =  -0.15;
   public static final double VERTICAL_GAIN_APPLICATION_THRESHOLD = 5;
@@ -33,10 +36,11 @@ public class AutoTurretFocus extends CommandBase {
   private double verticalAdjustment;
   
 
-  public AutoTurretFocus(ModelTurret TurretControlled) {
+  public AutoTurretFocus(FalconClosedLoop Loop1, FalconClosedLoop Loop2) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.TurretControlled = TurretControlled;
-    addRequirements(TurretControlled);
+    this.Loop1 = Loop1;
+    this.Loop2 = Loop2;
+    addRequirements(Loop1, Loop2);
   }
 
   // Called when the command is initially scheduled.
@@ -48,31 +52,31 @@ public class AutoTurretFocus extends CommandBase {
   @Override
   public void execute() {
 
-    horizontalError = TurretControlled.getAzimuth();
-    verticalError = TurretControlled.getCoPolar();
+    horizontalError = Loop1.getAzimuth();
+    verticalError = Loop1.getCoPolar();
 
-    horizontalAdjustment = HORIZONTAL_ADJUST*horizontalError;
+    //horizontalAdjustment = HORIZONTAL_ADJUST*horizontalError;
 		if (horizontalError > HORIZONTAL_GAIN_APPLICATION_THRESHOLD)
 		{
-			horizontalAdjustment -= HORIZONTAL_GAIN;
+			horizontalError -= HORIZONTAL_GAIN;
 		}
 		else if (horizontalError < HORIZONTAL_GAIN_APPLICATION_THRESHOLD && horizontalError != 0)
 		{
-			horizontalAdjustment += HORIZONTAL_GAIN;
+			horizontalError += HORIZONTAL_GAIN;
     }
 
-    verticalAdjustment = VERTICAL_ADJUST*verticalError;
+    //verticalAdjustment = VERTICAL_ADJUST*verticalError;
 		if (verticalError > VERTICAL_GAIN_APPLICATION_THRESHOLD)
 		{
-			verticalAdjustment -= VERTICAL_GAIN;
+			verticalError -= VERTICAL_GAIN;
 		}
 		else if (verticalError < VERTICAL_GAIN_APPLICATION_THRESHOLD && verticalError != 0)
 		{
-			verticalAdjustment += VERTICAL_GAIN;
+			verticalError += VERTICAL_GAIN;
     }
-    try {TurretControlled.incrementXServoPosition(horizontalAdjustment);}
+    try {Loop1.setVelocity(horizontalAdjustment);}
     catch(IllegalArgumentException PositionOverflow) {}
-    try {TurretControlled.incrementYServoPosition(verticalAdjustment);}
+    try {Loop2.setVelocity(verticalAdjustment);}
     catch(IllegalArgumentException PositionOverflow) {}
     
   }
@@ -91,11 +95,6 @@ public class AutoTurretFocus extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(i == 0) {
-      i++;
-      TurretControlled.endOperation();
-      return true;
-    }
-    return false;
+    return horizontalError < 10 && horizontalError > -10 && verticalError > 10 && verticalError > -10;
   }
 }

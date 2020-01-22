@@ -73,12 +73,14 @@ public class RobotContainer {
 
   //private final SetColor ColorSensorUsed = new SetColor();
   //private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
-  private final FalconClosedLoop ClosedLoop = new FalconClosedLoop(12,0,30,ControlMode.Position); //The motor we use is yet to be determined.
+  private final FalconClosedLoop ClosedLoop = new FalconClosedLoop(RobotMainNetworkTableInstance, 12,0,30,ControlMode.Position); //The motor we use is yet to be determined.
+  private final FalconClosedLoop TurretLoop1 = new FalconClosedLoop(RobotMainNetworkTableInstance, 1, 0, 30, ControlMode.Velocity);
+  private final FalconClosedLoop TurretLoop2 = new FalconClosedLoop(RobotMainNetworkTableInstance, 2, 0, 30, ControlMode.Velocity);
   private final EnableFalconVelocityClosedLoop ActivateClosedLoop = new EnableFalconVelocityClosedLoop(ClosedLoop,3000);
 
   private final SetColor ColorSensorUsed = new SetColor();
-  private final AutoTurretRotation Finding = new AutoTurretRotation(Turret);
-  private final AutoTurretFocus Focusing = new AutoTurretFocus(Turret);
+  private final AutoTurretRotation Finding = new AutoTurretRotation(TurretLoop1, TurretLoop2);
+  private final AutoTurretFocus Focusing = new AutoTurretFocus(TurretLoop1, TurretLoop2);
   private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup();
   private final FindBall ReturnBall = new FindBall(Detector/*, RobotDriveMotors*/);
 
