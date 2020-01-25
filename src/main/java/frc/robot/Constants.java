@@ -7,6 +7,8 @@
 
 package frc.robot;
 import com.revrobotics.ColorMatch;
+
+import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.util.Color;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -19,7 +21,20 @@ import edu.wpi.first.wpilibj.util.Color;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final class DriveConstants{
 
+		public static final int kLeftMotor1Port = 0;
+		public static final int kLeftMotor2Port = 0;
+		public static final int kRightMotor1Port = 0;
+		public static final int kRightMotor2Port = 0;
+		public static final DigitalSource[] kLeftEncoderPorts = null;
+		public static final DigitalSource kLeftEncoderReversed = null;
+		public static final DigitalSource[] kRightEncoderPorts = null;
+		public static final DigitalSource kRightEncoderReversed = null;
+		public static final double kEncoderDistancePerPulse = 0;
+		public static final boolean kGyroReversed = false;
+
+    }
     //public static final int kPIDLoopIdx = 0;
     public static final int leftYstick = 0;
     public static final class Colors {
