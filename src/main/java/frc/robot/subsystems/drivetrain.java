@@ -56,7 +56,7 @@ public class drivetrain extends SubsystemBase {
   private final Gyro m_gyro = new ADXRS450_Gyro();
 
   // Odometry class for tracking robot pose
-  private final DifferentialDriveOdometry m_odometry;
+  private DifferentialDriveOdometry m_odometry;
 
   /**
    * Creates a new DriveSubsystem.
