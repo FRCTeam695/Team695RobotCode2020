@@ -118,7 +118,7 @@ public class RobotContainer {
    // YButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(1);}));
     //AButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(-1);}));
 
-    TurretGroup.addCommands(Finding,Focusing);
+    //TurretGroup.addCommands(Finding,Focusing);
     //AButton.whenPressed(TurretGroup);
     //XButton.whenPressed(new InstantCommand(Focusing::change));
     //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
@@ -140,7 +140,7 @@ public class RobotContainer {
 
     //ContinuousTeleop.addCommands(new InstantC);
     //test.set(ControlMode.PercentOutput,0.5);
-    ContinuousTeleop.addCommands(ActivateClosedLoop);
+    //ContinuousTeleop.addCommands(ActivateClosedLoop);
 
     //ContinuousTeleop.addCommands(ReturnBall);
 
