@@ -37,12 +37,10 @@ public class AutoTurretRotation extends CommandBase {
   //second version of execute
   @Override
   public void execute() {
-    Loop2.setPosition(0);
+    Loop2.setPosition(75);
     
-    try{
-      Loop1.setTurretVelocity(15);
-    }
-    catch(IllegalArgumentException PositionOverflow) {}
+    Loop1.setTurretVelocity(15);
+    
   }
 
   public boolean endCommand() {

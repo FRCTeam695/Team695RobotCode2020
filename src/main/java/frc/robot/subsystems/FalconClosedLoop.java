@@ -129,8 +129,8 @@ public class FalconClosedLoop extends SubsystemBase {
         setMotor(angle);
     }
 
-    public void setPosition(double position) {
-        Talon.set(CurrentControlMode, position);
+    public void setPosition(int position) {
+        Talon.setSelectedSensorPosition(position);
     }
 
     public void immediateStop() {
