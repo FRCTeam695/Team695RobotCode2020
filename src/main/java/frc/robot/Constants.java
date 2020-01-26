@@ -9,6 +9,7 @@ package frc.robot;
 import com.revrobotics.ColorMatch;
 
 import edu.wpi.first.wpilibj.DigitalSource;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Color;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -33,6 +34,19 @@ public final class Constants {
 		public static final DigitalSource kRightEncoderReversed = null;
 		public static final double kEncoderDistancePerPulse = 0;
 		public static final boolean kGyroReversed = false;
+		public static final double ksVolts = 0;
+		public static final double kvVoltSecondsPerMeter = 0;
+		public static final double kaVoltSecondsSquaredPerMeter = 0;
+		public static final DifferentialDriveKinematics kDriveKinematics = null;
+		public static final double kPDriveVel = 0;
+
+    }
+    public static final class AutoConstants{
+
+		public static final double kMaxSpeedMetersPerSecond = 0;
+		public static final double kMaxAccelerationMetersPerSecondSquared = 0;
+		public static final double kRamseteB = 0;
+		public static final double kRamseteZeta = 0;
 
     }
     //public static final int kPIDLoopIdx = 0;
