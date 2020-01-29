@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ModelTurret;
+import frc.robot.subsystems.TurretMotor;
+
 import java.lang.Math;
 import frc.robot.Constants;
 
@@ -18,7 +20,8 @@ public class AutoTurretFocus extends CommandBase {
   /**
    * Creates a new AutoTurretFocus.
    */
-  private ModelTurret TurretControlled;
+  //private ModelTurret TurretControlled;
+  private TurretMotor motor;
   public static final double VERTICAL_GAIN = -.1;
   public static final double VERTICAL_ADJUST =  -0.15;
   public static final double VERTICAL_GAIN_APPLICATION_THRESHOLD = 5;
@@ -33,10 +36,10 @@ public class AutoTurretFocus extends CommandBase {
   private double verticalAdjustment;
   
 
-  public AutoTurretFocus(ModelTurret TurretControlled) {
+  public AutoTurretFocus(TurretMotor motor) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.TurretControlled = TurretControlled;
-    addRequirements(TurretControlled);
+    this.motor = motor;
+    addRequirements(motor);
   }
 
   // Called when the command is initially scheduled.
@@ -48,8 +51,8 @@ public class AutoTurretFocus extends CommandBase {
   @Override
   public void execute() {
 
-    horizontalError = TurretControlled.getAzimuth();
-    verticalError = TurretControlled.getCoPolar();
+    horizontalError = motor.getAzimuth();
+    verticalError = motor.getCoPolar();
 
     horizontalAdjustment = HORIZONTAL_ADJUST*horizontalError;
 		if (horizontalError > HORIZONTAL_GAIN_APPLICATION_THRESHOLD)
@@ -70,9 +73,9 @@ public class AutoTurretFocus extends CommandBase {
 		{
 			verticalAdjustment += VERTICAL_GAIN;
     }
-    try {TurretControlled.incrementXServoPosition(horizontalAdjustment);}
+    try {motor.incrementXServoPosition(horizontalAdjustment);}
     catch(IllegalArgumentException PositionOverflow) {}
-    try {TurretControlled.incrementYServoPosition(verticalAdjustment);}
+    try {motor.incrementYServoPosition(verticalAdjustment);}
     catch(IllegalArgumentException PositionOverflow) {}
     
   }
@@ -91,11 +94,11 @@ public class AutoTurretFocus extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(i == 0) {
+    /*if(i == 0) {
       i++;
-      TurretControlled.endOperation();
+      motor.endOperation();
       return true;
-    }
+    }*/
     return false;
   }
 }
