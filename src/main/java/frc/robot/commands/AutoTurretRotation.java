@@ -36,7 +36,7 @@ public class AutoTurretRotation extends CommandBase {
   //second version of execute
   @Override
   public void execute() {
-    
+    motor.setPower(.75);
   }
 
   public boolean endCommand() {

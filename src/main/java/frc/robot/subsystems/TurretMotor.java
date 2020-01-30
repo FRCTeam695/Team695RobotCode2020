@@ -36,7 +36,7 @@ public class TurretMotor extends SubsystemBase {
   }
   
   public void setPower(double power) {
-    power *= multiple*gain;
+    power *= gain;
     motor.set(ControlMode.PercentOutput, power);
   }
 

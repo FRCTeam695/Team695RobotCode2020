@@ -22,18 +22,18 @@ public class AutoTurretFocus extends CommandBase {
    */
   //private ModelTurret TurretControlled;
   private TurretMotor motor;
-  public static final double VERTICAL_GAIN = -.1;
+  /*public static final double VERTICAL_GAIN = -.1;
   public static final double VERTICAL_ADJUST =  -0.15;
-  public static final double VERTICAL_GAIN_APPLICATION_THRESHOLD = 5;
+  public static final double VERTICAL_GAIN_APPLICATION_THRESHOLD = 5;*/
   public static final double HORIZONTAL_GAIN = -.2;
   public static final double HORIZONTAL_ADJUST = 0.3;
   public static final double HORIZONTAL_GAIN_APPLICATION_THRESHOLD = 10;
   private int i = 1;
 
   private double horizontalError;
-  private double verticalError;
+  //private double verticalError;
   private double horizontalAdjustment;
-  private double verticalAdjustment;
+  //private double verticalAdjustment;
   
 
   public AutoTurretFocus(TurretMotor motor) {
@@ -52,7 +52,7 @@ public class AutoTurretFocus extends CommandBase {
   public void execute() {
 
     horizontalError = motor.getAzimuth();
-    verticalError = motor.getCoPolar();
+    //verticalError = motor.getCoPolar();
 
     horizontalAdjustment = HORIZONTAL_ADJUST*horizontalError;
 		if (horizontalError > HORIZONTAL_GAIN_APPLICATION_THRESHOLD)
@@ -64,7 +64,7 @@ public class AutoTurretFocus extends CommandBase {
 			horizontalAdjustment += HORIZONTAL_GAIN;
     }
 
-    verticalAdjustment = VERTICAL_ADJUST*verticalError;
+    /*verticalAdjustment = VERTICAL_ADJUST*verticalError;
 		if (verticalError > VERTICAL_GAIN_APPLICATION_THRESHOLD)
 		{
 			verticalAdjustment -= VERTICAL_GAIN;
@@ -72,11 +72,11 @@ public class AutoTurretFocus extends CommandBase {
 		else if (verticalError < VERTICAL_GAIN_APPLICATION_THRESHOLD && verticalError != 0)
 		{
 			verticalAdjustment += VERTICAL_GAIN;
-    }
-    try {motor.incrementXServoPosition(horizontalAdjustment);}
+    }*/
+    try {motor.setPower(horizontalAdjustment);}
     catch(IllegalArgumentException PositionOverflow) {}
-    try {motor.incrementYServoPosition(verticalAdjustment);}
-    catch(IllegalArgumentException PositionOverflow) {}
+    //try {motor.setPower(verticalAdjustment);}
+    //catch(IllegalArgumentException PositionOverflow) {}
     
   }
 
