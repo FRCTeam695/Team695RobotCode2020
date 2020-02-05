@@ -48,7 +48,7 @@ public class RobotContainer {
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
   //private final ModelTurret Turret = new ModelTurret(RobotMainNetworkTableInstance,2,3);
   private final BallDetector Detector = new BallDetector(0);
-  private final TurretMotor Turret = new TurretMotor(RobotMainNetworkTableInstance, 5);
+  private final TurretMotor Turret = new TurretMotor(RobotMainNetworkTableInstance, 8);
 
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:

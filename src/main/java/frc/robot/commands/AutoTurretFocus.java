@@ -103,6 +103,6 @@ public class AutoTurretFocus extends CommandBase {
       motor.endOperation();
       return true;
     }*/
-    return horizontalError < 2 && horizontalError > -2;
+    return false;
   }
 }
