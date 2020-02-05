@@ -36,8 +36,10 @@ public class TurretMotor extends SubsystemBase {
   }
   
   public void setPower(double power) {
+    if(power > 1)
+      throw new IllegalArgumentException("Velocity is too high.");
+    motor.set(ControlMode. PercentOutput, power);
     power *= gain;
-    motor.set(ControlMode.PercentOutput, power);
   }
 
   public double getAzimuth(){
