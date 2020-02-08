@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.nio.file.Paths;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
@@ -21,6 +23,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -34,7 +37,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PIDController;
+import  edu.wpi.first.wpilibj.controller.PIDController;
 
 /**
  * COntroller button indicies:
@@ -171,9 +174,9 @@ public class RobotContainer {
         // Pass config
         config
 Yue will import trajectories
-        */
-    );
-Trajectory exampleTrajectory;
+      
+    );  */
+Trajectory exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/YourPath.wpilib.json"));;
     RamseteCommand ramseteCommand = new RamseteCommand(
         exampleTrajectory,//yue will import trajectory from json
         drivetrain::getPose,
@@ -191,7 +194,7 @@ Trajectory exampleTrajectory;
     );
 
     // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> m_robotDrive.tankDriveVolts(0, 0));
+    return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
   }
 
   /**
