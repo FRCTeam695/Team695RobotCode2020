@@ -24,10 +24,10 @@ import edu.wpi.first.wpilibj.util.Color;
 public final class Constants {
     public static final class DriveConstants{
 
-		public static final int kLeftMotor1Port = 0;
-		public static final int kLeftMotor2Port = 0;
-		public static final int kRightMotor1Port = 0;
-		public static final int kRightMotor2Port = 0;
+		public static final int kLeftMotor1ID = 0;
+		public static final int kLeftMotor2ID = 0;
+		public static final int kRightMotor1ID = 0;
+		public static final int kRightMotor2ID = 0;
 		public static final DigitalSource[] kLeftEncoderPorts = null;
 		public static final DigitalSource kLeftEncoderReversed = null;
 		public static final DigitalSource[] kRightEncoderPorts = null;
