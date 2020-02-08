@@ -14,6 +14,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class TurretMotor extends SubsystemBase {
   /**
@@ -50,6 +51,10 @@ public class TurretMotor extends SubsystemBase {
   }
   public double getContourArea(){
     return LimeLightContourArea.getDouble(0.0);
+  }
+
+  public double getDistanceToContour() {
+    return (82.0-Constants.LIMELIGHT_MOUNT_HEIGHT)/Math.tan(Math.toRadians(Constants.LIMELIGHT_MOUNT_ANGLE+getCoPolar()));
   }
 
   @Override

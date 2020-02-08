@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.util.Color;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final double LIMELIGHT_MOUNT_HEIGHT = 23.0; //inches
+    public static final double LIMELIGHT_MOUNT_ANGLE = 15.0; //degrees
     public static final class Colors {
         /**private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
         private final Color kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
