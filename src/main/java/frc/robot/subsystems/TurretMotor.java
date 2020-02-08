@@ -20,8 +20,8 @@ public class TurretMotor extends SubsystemBase {
    * Creates a new TurretMotor.
    */
   private VictorSPX motor;
-  private double gain = 1;
-  private double multiple = .75;
+  private double gain = .4;
+  //private double multiple = .3;
   private NetworkTable LimeLight;
   private NetworkTableEntry LimeLightAzimuth;
   private NetworkTableEntry LimeLightCoPolar;
@@ -38,8 +38,8 @@ public class TurretMotor extends SubsystemBase {
   public void setPower(double power) {
     if(power > 1)
       throw new IllegalArgumentException("Velocity is too high.");
-    motor.set(ControlMode. PercentOutput, power);
     power *= gain;
+    motor.set(ControlMode. PercentOutput, power);
   }
 
   public double getAzimuth(){
