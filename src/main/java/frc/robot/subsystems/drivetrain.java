@@ -11,8 +11,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.Constants.DriveConstants;
-import frc.robot.Constants.feedForward;;
+import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -34,10 +33,10 @@ import edu.wpi.first.wpilibj.util.Units;
 public class DriveSubsystem extends SubsystemBase {
 
       //Motors
-      TalonFX leftDrivePrimary = new TalonFX(DriveConstants.kLeftMotor1ID);//Change This
-      TalonFX leftDriveBack = new TalonFX(DriveConstants.kLeftMotor2ID);
-      TalonFX rightDrivePrimary = new TalonFX(DriveConstants.kRightMotor1ID);
-      TalonFX rightDriveBack = new TalonFX(DriveConstants.kRightMotor2ID);
+      TalonFX leftDrivePrimary = new TalonFX(20);//Change This
+      TalonFX leftDriveBack = new TalonFX(11);
+      TalonFX rightDrivePrimary = new TalonFX(12);
+      TalonFX rightDriveBack = new TalonFX(13);
       //Gyro
       AHRS navx = new AHRS(SPI.Port.kMXP);
   
@@ -45,7 +44,7 @@ public class DriveSubsystem extends SubsystemBase {
       DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(Constants.distBetweenWheelsInches));
       DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
   
-      SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(feedForward.kS, feedForward.kV, feedForward.kA);
+      SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.kS, Constants.kV, Constants.kA);
   
       PIDController leftPIDController = new PIDController(Constants.kP, 0.0, 0.0);
   
