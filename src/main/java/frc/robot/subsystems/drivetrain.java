@@ -5,218 +5,198 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//mostly copied from team 4206
-
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpiutil.math.MathUtil;
-import frc.robot.Constants;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.Encoder;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-
-import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Units;
+import frc.robot.Constants.DriveConstants;
 
 
-public class DriveSubsystem extends SubsystemBase {
+public class drivetrain extends SubsystemBase {
+  /**
+   * Creates a new drivetrain.
+   */
+  //public drivetrain() {
 
-      //Motors
-      TalonFX leftDrivePrimary = new TalonFX(20);//Change This
-      TalonFX leftDriveBack = new TalonFX(11);
-      TalonFX rightDrivePrimary = new TalonFX(12);
-      TalonFX rightDriveBack = new TalonFX(13);
-      //Gyro
-      AHRS navx = new AHRS(SPI.Port.kMXP);
-  
-      //Ramsete Stuff
-      DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(Constants.distBetweenWheelsInches));
-      DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
-  
-      SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.kS, Constants.kV, Constants.kA);
-  
-      PIDController leftPIDController = new PIDController(Constants.kP, 0.0, 0.0);
-  
-      PIDController rightPIDController = new PIDController(Constants.kP, 0.0, 0.0);
+  //}
+  // The motors on the left side of the drive.
+  private final SpeedControllerGroup m_leftMotors =
+      new SpeedControllerGroup(new TalonFX(DriveConstants.kLeftMotor1ID),
+                               new TalonFX(DriveConstants.kLeftMotor2ID));
 
-      Pose2d pose;
+  // The motors on the right side of the drive.
+  private final SpeedControllerGroup m_rightMotors =
+      new SpeedControllerGroup(new TalonFX(DriveConstants.kRightMotor1ID),
+                               new TalonFX(DriveConstants.kRightMotor2ID));
 
-  public DriveSubsystem() {
-    leftDrivePrimary.setInverted(true);
-    leftDriveBack.setInverted(true);
-    rightDrivePrimary.setInverted(false);
-    rightDriveBack.setInverted(false);
+  // The robot's drive
+  private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
 
-    leftDriveBack.follow(leftDrivePrimary);
-    rightDriveBack.follow(rightDrivePrimary);
+  // The left-side drive encoder
+  private final Encoder m_leftEncoder =
+      new Encoder(DriveConstants.kLeftEncoderPorts[0], DriveConstants.kLeftEncoderPorts[1],
+                  DriveConstants.kLeftEncoderReversed);
+
+  // The right-side drive encoder
+  private final Encoder m_rightEncoder =
+      new Encoder(DriveConstants.kRightEncoderPorts[0], DriveConstants.kRightEncoderPorts[1],
+                  DriveConstants.kRightEncoderReversed);
+
+  // The gyro sensor
+  private final Gyro m_gyro = new ADXRS450_Gyro();
+
+  // Odometry class for tracking robot pose
+  private DifferentialDriveOdometry m_odometry;
+
+  /**
+   * Creates a new DriveSubsystem.
+   * 
+   * @return
+   */
+  public void DriveSubsystem() {
+    // Sets the distance per pulse for the encoders
+    m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+
+    resetEncoders();
+    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   }
-  //---------------------------Place Setters Here-------------------------------
-  public void set(double leftVoltage, double rightVoltage) {
-    System.out.println("L: " + leftVoltage);
-    System.out.println("R: " + rightVoltage);
-    leftDrivePrimary.set(ControlMode.PercentOutput, leftVoltage/12);
-    rightDrivePrimary.set(ControlMode.PercentOutput, rightVoltage/12);
-  }
-
-
-
-  //---------------------------Place Getters Here-------------------------------
-
-  //Name: Jack DeRuntz
-  //About: Gets the angle of the robot
-  public double getYaw(){
-    return -navx.getAngle();
-  }
-  //Name: Jack DeRuntz
-  //About: Gets the angle of the robot
-  public Rotation2d getHeading(){
-    return Rotation2d.fromDegrees(Math.IEEEremainder(getYaw(), 360.0d));
-  }
-
-  public PIDController getLeftPIDController() {
-    return leftPIDController;
-  }
-
-  public PIDController getRightPIDController() {
-    return rightPIDController;
-  }
-
-  public SimpleMotorFeedforward getFeedForward() {
-    return feedForward;
-  }
-
-  public DifferentialDriveKinematics getKinematics() {
-    return kinematics;
-  }
-
-  public Pose2d getPose() {
-    return pose;
-  }
-
-  public double getLeftEncoderDistanceMeters(){
-    double leftDistance;
-    leftDistance = leftDrivePrimary.getSelectedSensorPosition() / Constants.encoderTicksPerRev * Constants.gearRatio * Units.inchesToMeters(Constants.wheelCircumferenceInches);
-    return leftDistance;
-  }
-
-  public double getRightEncoderDistanceMeters(){
-    double rightDistance;
-    rightDistance = rightDrivePrimary.getSelectedSensorPosition() / Constants.encoderTicksPerRev * Constants.gearRatio * Units.inchesToMeters(Constants.wheelCircumferenceInches);
-    return rightDistance;
-  }
-
-  public double getLeftEncoderVelocityMS(){
-    double leftSpeed;
-    leftSpeed = leftDrivePrimary.getSelectedSensorVelocity() * Constants.gearRatio * 10.0 / Constants.encoderTicksPerRev * Units.inchesToMeters(Constants.wheelCircumferenceInches);
-    return leftSpeed;
-  }
-
-  public double getRightEncoderVelocityMS(){
-    double rightSpeed;
-    rightSpeed = rightDrivePrimary.getSelectedSensorVelocity() * Constants.gearRatio * 10.0 / Constants.encoderTicksPerRev * Units.inchesToMeters(Constants.wheelCircumferenceInches);
-    return rightSpeed;
-  }
-
-
-
-
-
-  //---------------------------Place Others Here--------------------------------
-  public void resetEncoders() {
-    leftDrivePrimary.setSelectedSensorPosition(0);
-    rightDrivePrimary.setSelectedSensorPosition(0);
-  }
-
-  public void resetHeading() {
-    navx.reset();
-  }
-
-  public void resetOdometry() {
-    odometry.resetPosition(new Pose2d(), getHeading());
-  }
-
-  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
-    return new DifferentialDriveWheelSpeeds(
-      getLeftEncoderVelocityMS(),
-      getRightEncoderVelocityMS()
-      );
-  }
-
-
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    pose = odometry.update(getHeading(), getLeftEncoderDistanceMeters(), getRightEncoderDistanceMeters());
-    
-    SmartDashboard.putNumber("left encoder pos", leftDrivePrimary.getSelectedSensorPosition());
-    SmartDashboard.putNumber("right encoder pos", rightDrivePrimary.getSelectedSensorPosition());
-
-    SmartDashboard.putNumber("heading", getYaw());
-
-    SmartDashboard.putNumber("left encoder vel", leftDrivePrimary.getSelectedSensorVelocity());
-    SmartDashboard.putNumber("right encoder vel", rightDrivePrimary.getSelectedSensorVelocity());
-
-    SmartDashboard.putNumber("X pose", odometry.getPoseMeters().getTranslation().getX());
-    SmartDashboard.putNumber("Y pose", odometry.getPoseMeters().getTranslation().getY());
+    // Update the odometry in the periodic block
+    m_odometry.update(Rotation2d.fromDegrees(getHeading()), m_leftEncoder.getDistance(),
+                      m_rightEncoder.getDistance());
   }
 
-  //----------------------------------------------------------------------------------------------------//
-  //----------------------------------PLEASE DO NOT TOUCH THIS------------------------------------------//
-  //----------------------------------------------------------------------------------------------------//
-
-  /*
-  I ported the WPI Arcade Drive so that we do not have to use the WPI_TalonFX class. I think that it
-  will help with all of the problems we were having. Hopefully thats the only thing y'all need.
-  https://www.chiefdelphi.com/t/paper-arcade-drive/168720
-  */
-  public void PortedArcadeDrive(double xSpeed, double zRotation){
-
-    double m_rightSideInvertMultiplier = -1.0;
-    double m_maxOutput = 1;
-    double maxInput = Math.copySign(Math.max(Math.abs(xSpeed), Math.abs(zRotation)), xSpeed);
-    
-    double leftMotorOutput;
-    double rightMotorOutput;
-
-    xSpeed = MathUtil.clamp(xSpeed, -1.0, 1.0); //Clamp Joysticks to Max of 1 and -1
-    zRotation = MathUtil.clamp(zRotation, -1.0, 1.0);
-
-    //Divide the different speeds into four quadrants to linear interpolate
-    if (xSpeed >= 0.0) {
-      // First quadrant, else second quadrant
-      if (zRotation >= 0.0) {
-        leftMotorOutput = maxInput;
-        rightMotorOutput = xSpeed - zRotation;
-      } else {
-        leftMotorOutput = xSpeed + zRotation;
-        rightMotorOutput = maxInput;
-      }
-    } else {
-      // Third quadrant, else fourth quadrant
-      if (zRotation >= 0.0) {
-        leftMotorOutput = xSpeed + zRotation;
-        rightMotorOutput = maxInput;
-      } else {
-        leftMotorOutput = maxInput;
-        rightMotorOutput = xSpeed - zRotation;
-      }
-    }
-    //Send the outputs to the motor controllers
-    leftDrivePrimary.set(ControlMode.PercentOutput, MathUtil.clamp(leftMotorOutput, -1.0, 1.0) * m_maxOutput);
-    double maxOutput = m_maxOutput * m_rightSideInvertMultiplier;
-    rightDrivePrimary.set(ControlMode.PercentOutput, MathUtil.clamp(rightMotorOutput, -1.0, 1.0) * maxOutput);
+  /**
+   * Returns the currently-estimated pose of the robot.
+   *
+   * @return The pose.
+   */
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
   }
+
+  /**
+   * Returns the current wheel speeds of the robot.
+   *
+   * @return The current wheel speeds.
+   */
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
+  }
+
+  /**
+   * Resets the odometry to the specified pose.
+   *
+   * @param pose The pose to which to set the odometry.
+   */
+  public void resetOdometry(Pose2d pose) {
+    resetEncoders();
+    m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getHeading()));
+  }
+
+  /**
+   * Drives the robot using arcade controls.
+   *
+   * @param fwd the commanded forward movement
+   * @param rot the commanded rotation
+   */
+  public void arcadeDrive(double fwd, double rot) {
+    m_drive.arcadeDrive(fwd, rot);
+  }
+
+  /**
+   * Controls the left and right sides of the drive directly with voltages.
+   *
+   * @param leftVolts  the commanded left output
+   * @param rightVolts the commanded right output
+   */
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    m_leftMotors.setVoltage(leftVolts);
+    m_rightMotors.setVoltage(-rightVolts);
+    m_drive.feed();
+  }
+
+  /**
+   * Resets the drive encoders to currently read a position of 0.
+   */
+  public void resetEncoders() {
+    m_leftEncoder.reset();
+    m_rightEncoder.reset();
+  }
+
+  /**
+   * Gets the average distance of the two encoders.
+   *
+   * @return the average of the two encoder readings
+   */
+  public double getAverageEncoderDistance() {
+    return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2.0;
+  }
+
+  /**
+   * Gets the left drive encoder.
+   *
+   * @return the left drive encoder
+   */
+  public Encoder getLeftEncoder() {
+    return m_leftEncoder;
+  }
+
+  /**
+   * Gets the right drive encoder.
+   *
+   * @return the right drive encoder
+   */
+  public Encoder getRightEncoder() {
+    return m_rightEncoder;
+  }
+
+  /**
+   * Sets the max output of the drive.  Useful for scaling the drive to drive more slowly.
+   *
+   * @param maxOutput the maximum output to which the drive will be constrained
+   */
+  public void setMaxOutput(double maxOutput) {
+    m_drive.setMaxOutput(maxOutput);
+  }
+
+  /**
+   * Zeroes the heading of the robot.
+   */
+  public void zeroHeading() {
+    m_gyro.reset();
+  }
+
+  /**
+   * Returns the heading of the robot.
+   *
+   * @return the robot's heading in degrees, from -180 to 180
+   */
+  public double getHeading() {
+    return Math.IEEEremainder(m_gyro.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
+  /**
+   * Returns the turn rate of the robot.
+   *
+   * @return The turn rate of the robot, in degrees per second
+   */
+  public double getTurnRate() {
+    return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+  }
+
 
 }
