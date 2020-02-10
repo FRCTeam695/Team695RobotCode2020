@@ -33,6 +33,7 @@ public class drivetrain extends SubsystemBase {
   private final SpeedControllerGroup m_leftMotors =
       new SpeedControllerGroup(new TalonFX(DriveConstants.kLeftMotor1ID),
                                new TalonFX(DriveConstants.kLeftMotor2ID));
+  private TalonFX leftPrimary = new TalonFX(DriveConstants.kLeftMotor1ID);
 
   // The motors on the right side of the drive.
   private final SpeedControllerGroup m_rightMotors =
@@ -67,7 +68,6 @@ public class drivetrain extends SubsystemBase {
     // Sets the distance per pulse for the encoders
     m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
     m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-
     resetEncoders();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   }
