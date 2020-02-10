@@ -124,7 +124,13 @@ rightFollow.setInverted(InvertType.FollowMaster);
   public void arcadeDrive(double fwd, double rot) {
     m_drive.arcadeDrive(fwd, rot);
   }
+  public void tankDrive(double left, double right){
+    m_drive.tankDrive(leftSpeed, rightSpeed, true);//this is doing the input squaring thing 
+  }
 
+  public void curveDrive(){
+    m_drive.curvatureDrive(xSpeed, zRotation, false);//needs testing
+  }
   /**DONT USE
    * Controls the left and right sides of the drive directly with voltages.
    *@deprecated

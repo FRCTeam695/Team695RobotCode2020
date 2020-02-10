@@ -11,6 +11,7 @@ import com.revrobotics.ColorMatch;
 import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Units;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean constants. This class should not be used for any other
@@ -29,17 +30,13 @@ public final class Constants {
 		public static final int kLeftMotor2ID = 0;
 		public static final int kRightMotor1ID = 0;
 		public static final int kRightMotor2ID = 0;
-		public static final DigitalSource[] kLeftEncoderPorts = null;
-		public static final DigitalSource kLeftEncoderReversed = null;
-		public static final DigitalSource[] kRightEncoderPorts = null;
-		public static final DigitalSource kRightEncoderReversed = null;
-		public static final double kEncoderDistancePerPulse = 0;
+		public static final double kEncoderDistancePerPulse = 0;//probably will do a bunch of math here
 		public static final boolean kGyroReversed = false;
 		public static final double ksVolts = 0;
 		public static final double kvVoltSecondsPerMeter = 0;
 		public static final double kaVoltSecondsSquaredPerMeter = 0;
     public static final double kPDriveVel = 0;
-    public static final double kTrackwidthMeters = 0.69;
+    public static final double kTrackwidthMeters = Units.inchesToMeters(20);
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
 
