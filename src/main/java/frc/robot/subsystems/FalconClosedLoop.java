@@ -27,13 +27,12 @@ class PIDCoefficients {
 
 public class FalconClosedLoop extends SubsystemBase {
 
-    public TalonFX Talon; 
+    private TalonFX Talon; 
     private int timeoutMs = 30;
     private int PIDLoopId = 0;
     private ControlMode CurrentControlMode;
     private static PIDCoefficients VelocityPIDCoefficients = new PIDCoefficients(.23,0.0004,7,0);
     private static PIDCoefficients PositionPIDCoefficients = new PIDCoefficients(1,0,0,0);
-    private int inverted = 1;//positive or negative
 
     public FalconClosedLoop(int talonId,int PIDLoopId,int timeoutMs,ControlMode ClosedLoopMode) {
         this.PIDLoopId = PIDLoopId;
@@ -49,7 +48,6 @@ public class FalconClosedLoop extends SubsystemBase {
 		Talon.configPeakOutputForward(1, timeoutMs);
         Talon.configPeakOutputReverse(-1, timeoutMs);
         Talon.getSensorCollection().setIntegratedSensorPositionToAbsolute(timeoutMs);
-        Talon.getSensorCollection().setIntegratedSensorPosition(0, timeoutMs);
         applyPIDCoefficients(getPIDCoefficientsForControlMode(ClosedLoopMode));
     }
     public PIDCoefficients getPIDCoefficientsForControlMode(ControlMode ControlModeToUse) {
@@ -79,12 +77,6 @@ public class FalconClosedLoop extends SubsystemBase {
     public double getDistance(){
         return Talon.getSelectedSensorPosition()*distancePerPulse;
     }
-    public double getRate(){
-        return Talon.getSelectedSensorVelocity()*distancePerPulse;
-    }
-    public void reset(){
-        Talon.getSensorCollection().setIntegratedSensorPosition(0, this.timeoutMs)
-    }
 
 
     public void setClosedLoopMode(ControlMode ClosedLoopMode) {
@@ -92,15 +84,6 @@ public class FalconClosedLoop extends SubsystemBase {
         applyPIDCoefficients(getPIDCoefficientsForControlMode(ClosedLoopMode));
 
 
-    }
-    public void setInverted(Boolean invert){
-        if (invert){
-            this.inverted = -1;
-        } else if (!invert){
-            this.inverted = 1;
-        }else {
-            throw new IllegalArgumentException("IDK why but this was supposed to be boolean in Falcon Closed loop set inverted")
-        }
     }
 
         /* Velocity Closed Loop */
@@ -119,7 +102,7 @@ public class FalconClosedLoop extends SubsystemBase {
     public void setVelocity(double velocity) {
         if (!this.CurrentControlMode.equals(ControlMode.Velocity))
             throw new IllegalArgumentException("Cannot set control mode to velocity when motor control mode is not velocity.");
-        double targetVelocity_UnitsPer100ms = (inverted*velocity * 4096 / 600);
+        double targetVelocity_UnitsPer100ms = (velocity * 4096 / 600);
         Talon.set(ControlMode.Velocity, targetVelocity_UnitsPer100ms);
     }
     public void setMotor(double value) {
