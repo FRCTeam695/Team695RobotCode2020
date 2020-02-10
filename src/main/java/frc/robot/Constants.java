@@ -41,6 +41,7 @@ public final class Constants {
     public static final double kTrackwidthMeters = 0.69;
     public static final DifferentialDriveKinematics kDriveKinematics =
         new DifferentialDriveKinematics(kTrackwidthMeters);
+	public static final int timeoutMs = 0;
 
     }
     public static final class AutoConstants{

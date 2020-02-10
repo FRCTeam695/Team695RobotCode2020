@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -20,6 +22,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.FalconClosedLoop;
 
 
 public class drivetrain extends SubsystemBase {
@@ -30,10 +33,16 @@ public class drivetrain extends SubsystemBase {
 
   //}
   // The motors on the left side of the drive.
-  private final SpeedControllerGroup m_leftMotors =
-      new SpeedControllerGroup(new TalonFX(DriveConstants.kLeftMotor1ID),
-                               new TalonFX(DriveConstants.kLeftMotor2ID));
-  private TalonFX leftPrimary = new TalonFX(DriveConstants.kLeftMotor1ID);
+  //private final SpeedControllerGroup m_leftMotors =
+    //  new SpeedControllerGroup(new TalonFX(DriveConstants.kLeftMotor1ID),
+     //                          new TalonFX(DriveConstants.kLeftMotor2ID));
+  private FalconClosedLoop leftPrimaryloop = new FalconClosedLoop(DriveConstants.kLeftMotor1ID, PIDLoopID, DriveConstants.timeoutMs, ControlMode.Velocity);
+  
+  private TalonFX leftFollow = new TalonFX(DriveConstants.kLeftMotor2ID);
+  leftFollow.follow(leftPrimaryloop.Talon);
+  leftPrimaryloop.setInverted(false);
+  _rghtFollower.setInverted(InvertType.FollowMaster);
+
 
   // The motors on the right side of the drive.
   private final SpeedControllerGroup m_rightMotors =
