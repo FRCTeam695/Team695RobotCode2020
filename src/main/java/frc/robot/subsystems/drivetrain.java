@@ -13,7 +13,11 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -33,30 +37,31 @@ public class drivetrain extends SubsystemBase {
 
   //}
   // The motors on the left side of the drive.
-  //private final SpeedControllerGroup m_leftMotors =
-    //  new SpeedControllerGroup(new TalonFX(DriveConstants.kLeftMotor1ID),
-     //                          new TalonFX(DriveConstants.kLeftMotor2ID));
-  private FalconClosedLoop leftPrimaryloop = new FalconClosedLoop(DriveConstants.kLeftMotor1ID, PIDLoopID, DriveConstants.timeoutMs, ControlMode.Velocity);
-  
-  private TalonFX leftFollow = new TalonFX(DriveConstants.kLeftMotor2ID);
-  leftFollow.follow(leftPrimaryloop.Talon);
-  leftPrimaryloop.setInverted(false);
-  _rghtFollower.setInverted(InvertType.FollowMaster);
+
+  private WPI_TalonFX leftPrimary = new WPI_TalonFX(DriveConstants.kLeftMotor1ID);
+  private WPI_TalonFX leftFollow = new WPI_TalonFX(DriveConstants.kLeftMotor2ID);
+  leftPrimary.setInverted(false);
+  leftFollow.follow(leftPrimary);
+  leftFollow.setInverted(InvertType.FollowMaster);
+
 
 
   // The motors on the right side of the drive.
-  private final SpeedControllerGroup m_rightMotors =
-      new SpeedControllerGroup(new TalonFX(DriveConstants.kRightMotor1ID),
-                               new TalonFX(DriveConstants.kRightMotor2ID));
+private WPI_TalonFX rightPrimary = new WPI_TalonFX(DriveConstants.kRightMotor1ID);
+private WPI_TalonFX rightFollow = new WPI_TalonFX(DriveConstants.kRightMotor2ID);
+rightPrimary.setInverted(true);//INVERT INVERSION
+rightFollow.follow(leftPrimary);
+rightFollow.setInverted(InvertType.FollowMaster);
 
   // The robot's drive
-  private final DifferentialDrive m_drive = new DifferentialDrive(m_leftMotors, m_rightMotors);
+  private final DifferentialDrive m_drive = new DifferentialDrive(leftPrimary, rightPrimary);
 
   // The left-side drive encoder
   private final Encoder m_leftEncoder =
       new Encoder(DriveConstants.kLeftEncoderPorts[0], DriveConstants.kLeftEncoderPorts[1],
                   DriveConstants.kLeftEncoderReversed);
 
+leftPrimary.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,DriveConstants.motorTimeout);
   // The right-side drive encoder
   private final Encoder m_rightEncoder =
       new Encoder(DriveConstants.kRightEncoderPorts[0], DriveConstants.kRightEncoderPorts[1],

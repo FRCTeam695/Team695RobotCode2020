@@ -22,8 +22,9 @@ import edu.wpi.first.wpilibj.util.Color;
  * wherever the constants are needed, to reduce verbosity.
  */
 public final class Constants {
+	
     public static final class DriveConstants{
-
+		public static final int motorTimeout = 30;
 		public static final int kLeftMotor1ID = 0;
 		public static final int kLeftMotor2ID = 0;
 		public static final int kRightMotor1ID = 0;
