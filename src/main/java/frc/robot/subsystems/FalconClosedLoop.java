@@ -33,7 +33,7 @@ public class FalconClosedLoop extends SubsystemBase {
     private ControlMode CurrentControlMode;
     private static PIDCoefficients VelocityPIDCoefficients = new PIDCoefficients(.23,0.0004,7,0);
     private static PIDCoefficients PositionPIDCoefficients = new PIDCoefficients(1,0,0,0);
-    private int inverted = 1;//positive or negative
+    private double inverted = 1.0;//positive or negative
 
     public FalconClosedLoop(int talonId,int PIDLoopId,int timeoutMs,ControlMode ClosedLoopMode) {
         this.PIDLoopId = PIDLoopId;
@@ -95,9 +95,9 @@ public class FalconClosedLoop extends SubsystemBase {
     }
     public void setInverted(Boolean invert){
         if (invert){
-            this.inverted = -1;
+            this.inverted = -1.0;
         } else if (!invert){
-            this.inverted = 1;
+            this.inverted = 1.0;
         }else {
             throw new IllegalArgumentException("IDK why but this was supposed to be boolean in Falcon Closed loop set inverted")
         }

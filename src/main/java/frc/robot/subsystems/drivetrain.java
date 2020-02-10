@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.FalconClosedLoop;
 
+import edu.wpi.first.wpiutil.math.MathUtil;
+
 
 public class drivetrain extends SubsystemBase {
   /**
@@ -36,11 +38,11 @@ public class drivetrain extends SubsystemBase {
   //private final SpeedControllerGroup m_leftMotors =
     //  new SpeedControllerGroup(new TalonFX(DriveConstants.kLeftMotor1ID),
      //                          new TalonFX(DriveConstants.kLeftMotor2ID));
-  private FalconClosedLoop leftPrimaryloop = new FalconClosedLoop(DriveConstants.kLeftMotor1ID, PIDLoopID, DriveConstants.timeoutMs, ControlMode.Velocity);
+  private FalconClosedLoop leftPrimaryLoop = new FalconClosedLoop(DriveConstants.kLeftMotor1ID, PIDLoopID, DriveConstants.timeoutMs, ControlMode.Velocity);
   
   private TalonFX leftFollow = new TalonFX(DriveConstants.kLeftMotor2ID);
-  leftFollow.follow(leftPrimaryloop.Talon);
-  leftPrimaryloop.setInverted(false);
+  leftFollow.follow(leftPrimaryLoop.Talon);
+  leftPrimaryLoop.setInverted(false);
   _rghtFollower.setInverted(InvertType.FollowMaster);
 
 
@@ -137,6 +139,49 @@ public class drivetrain extends SubsystemBase {
     m_rightMotors.setVoltage(-rightVolts);
     m_drive.feed();
   }
+
+  /**
+   * Tank drive method for differential drive platform.
+   * The calculated values will be squared to decrease sensitivity at low speeds.
+   *
+   * @param leftSpeed  The robot's left side speed along the X axis [-1.0..1.0]. Forward is
+   *                   positive.
+   * @param rightSpeed The robot's right side speed along the X axis [-1.0..1.0]. Forward is
+   *                   positive.
+   */
+  public void tankDrive(double leftSpeed, double rightSpeed) {
+    tankDrive(leftSpeed, rightSpeed, true);
+  }
+
+  /**
+   * Tank drive method for differential drive platform.
+   *
+   * @param leftSpeed     The robot left side's speed along the X axis [-1.0..1.0]. Forward is
+   *                      positive.
+   * @param rightSpeed    The robot right side's speed along the X axis [-1.0..1.0]. Forward is
+   *                      positive.
+   * @param squareInputs If set, decreases the input sensitivity at low speeds.
+   */
+  public void tankDrive(double leftSpeed, double rightSpeed, boolean squareInputs) {
+
+    leftSpeed = MathUtil.clamp(leftSpeed, -1.0, 1.0);
+    leftSpeed = applyDeadband(leftSpeed, m_deadband);
+
+    rightSpeed = MathUtil.clamp(rightSpeed, -1.0, 1.0);
+    rightSpeed = applyDeadband(rightSpeed, m_deadband);
+
+    // Square the inputs (while preserving the sign) to increase fine control
+    // while permitting full power.
+    if (squareInputs) {
+      leftSpeed = Math.copySign(leftSpeed * leftSpeed, leftSpeed);
+      rightSpeed = Math.copySign(rightSpeed * rightSpeed, rightSpeed);
+    }
+
+    leftPrimaryLoop.set(leftSpeed * m_maxOutput);
+    rightPrimaryLoop.set(rightSpeed * m_maxOutput);
+
+  }
+
 
   /**
    * Resets the drive encoders to currently read a position of 0.
