@@ -70,13 +70,7 @@ public class FalconClosedLoop extends SubsystemBase {
         Talon.config_kF(PIDLoopId, CoefficientsToApply.kF, timeoutMs);
     }
     //encoder stuff
-    public double distancePerPulse = 0;
-    public void setDistancePerPulse(double distancePerPulse){
-        this.distancePerPulse = distancePerPulse;
-    } 
-    public double getDistance(){
-        return Talon.getSelectedSensorPosition()*distancePerPulse;
-    }
+
 
 
     public void setClosedLoopMode(ControlMode ClosedLoopMode) {

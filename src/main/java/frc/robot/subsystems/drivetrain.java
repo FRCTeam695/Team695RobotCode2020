@@ -13,8 +13,6 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -57,15 +55,11 @@ rightFollow.setInverted(InvertType.FollowMaster);
   private final DifferentialDrive m_drive = new DifferentialDrive(leftPrimary, rightPrimary);
 
   // The left-side drive encoder
-  private final Encoder m_leftEncoder =
-      new Encoder(DriveConstants.kLeftEncoderPorts[0], DriveConstants.kLeftEncoderPorts[1],
-                  DriveConstants.kLeftEncoderReversed);
+  private final encoderFalcon m_leftEncoder =
+      new encoderFalcon(leftPrimary);
 
-leftPrimary.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,0,DriveConstants.motorTimeout);
   // The right-side drive encoder
-  private final Encoder m_rightEncoder =
-      new Encoder(DriveConstants.kRightEncoderPorts[0], DriveConstants.kRightEncoderPorts[1],
-                  DriveConstants.kRightEncoderReversed);
+  private final encoderFalcon m_rightEncoder = new encoderFalcon(rightPrimary);
 
   // The gyro sensor
   private final Gyro m_gyro = new ADXRS450_Gyro();
@@ -131,15 +125,15 @@ leftPrimary.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,
     m_drive.arcadeDrive(fwd, rot);
   }
 
-  /**
+  /**DONT USE
    * Controls the left and right sides of the drive directly with voltages.
-   *
+   *@deprecated
    * @param leftVolts  the commanded left output
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    m_leftMotors.setVoltage(leftVolts);
-    m_rightMotors.setVoltage(-rightVolts);
+    //m_leftMotors.setVoltage(leftVolts);
+    //m_rightMotors.setVoltage(-rightVolts);
     m_drive.feed();
   }
 
@@ -165,7 +159,7 @@ leftPrimary.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,
    *
    * @return the left drive encoder
    */
-  public Encoder getLeftEncoder() {
+  public encoderFalcon getLeftEncoder() {
     return m_leftEncoder;
   }
 
@@ -174,7 +168,7 @@ leftPrimary.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,
    *
    * @return the right drive encoder
    */
-  public Encoder getRightEncoder() {
+  public encoderFalcon getRightEncoder() {
     return m_rightEncoder;
   }
 
