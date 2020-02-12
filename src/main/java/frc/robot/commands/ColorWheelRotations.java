@@ -15,6 +15,9 @@ import static frc.robot.Constants.FixColorConst;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FalconClosedLoop;
 
@@ -24,11 +27,15 @@ public class ColorWheelRotations extends CommandBase {
    * Creates a new EnableCIMClosedLoop.
    */
   FalconClosedLoop closedLoop;
-  public ColorWheelRotations(FalconClosedLoop loop,double velocity) {
+  private ShuffleboardTab tab;
+  private NetworkTableEntry tabBox;
+  public ColorWheelRotations(FalconClosedLoop loop,double velocity, ShuffleboardTab tab){
     this.closedLoop = loop;
     this.velocity = 0;
+    this.tab = tab;
     loop.setClosedLoopMode(ControlMode.Velocity);
     addRequirements(loop);
+    tabBox = tab.add("ColorWheelRotations",0.0).withWidget(BuiltInWidgets.kDial).withSize(1,2).withPosition(5, 5).getEntry();
   }
 
   double finalRotationsThreshold = FixColorConst.finalRotationsThreshold;
@@ -52,6 +59,7 @@ public class ColorWheelRotations extends CommandBase {
     closedLoop.setVelocity(velocity); //Determine Velocity
     motorRotations += velocity/3000;
     velocity = -1*a*Math.pow((motorRotations-(motorRotationsThreshold/2)),2)+maxVelocity;
+    tabBox.forceSetDouble(percent());
   }
   public double percent(){
     return 100*motorRotations/motorRotationsThreshold;
