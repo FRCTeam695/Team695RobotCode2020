@@ -145,10 +145,10 @@ public class RobotContainer {
     // Create a voltage constraint to ensure we don't accelerate too fast
     var autoVoltageConstraint =
         new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                       DriveConstants.kvVoltSecondsPerMeter,
-                                       DriveConstants.kaVoltSecondsSquaredPerMeter),
-            DriveConstants.kDriveKinematics,
+            new SimpleMotorFeedforward(AutoConstants.ksVolts,
+                                       AutoConstants.kvVoltSecondsPerMeter,
+                                       AutoConstants.kaVoltSecondsSquaredPerMeter),
+            AutoConstants.kDriveKinematics,
             10);
 
     // Create config for trajectory
@@ -181,13 +181,13 @@ Trajectory exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/hom
         exampleTrajectory,//yue will import trajectory from json
         drivetrain::getPose,
         new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-        new SimpleMotorFeedforward(DriveConstants.ksVolts,
-                                   DriveConstants.kvVoltSecondsPerMeter,
-                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
+        new SimpleMotorFeedforward(AutoConstants.ksVolts,
+                                   AutoConstants.kvVoltSecondsPerMeter,
+                                   AutoConstants.kaVoltSecondsSquaredPerMeter),
         DriveConstants.kDriveKinematics,
         drivetrain::getWheelSpeeds,
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
-        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(AutoConstants.kPDriveVel, 0, 0),
+        new PIDController(AutoConstants.kPDriveVel, 0, 0),
         // RamseteCommand passes volts to the callback
         drivetrain::tankDriveVolts,
         drivetrain

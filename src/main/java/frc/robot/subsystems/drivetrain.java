@@ -31,9 +31,9 @@ public class drivetrain extends SubsystemBase {
   /**
    * Creates a new drivetrain.
    */
-  //public drivetrain() {
-
-  //}
+  public drivetrain() {
+    
+  }
   // The motors on the left side of the drive.
 
   private WPI_TalonFX leftPrimary = new WPI_TalonFX(DriveConstants.kLeftMotor1ID);
@@ -125,10 +125,10 @@ rightFollow.setInverted(InvertType.FollowMaster);
     m_drive.arcadeDrive(fwd, rot);
   }
   public void tankDrive(double left, double right){
-    m_drive.tankDrive(leftSpeed, rightSpeed, true);//this is doing the input squaring thing 
+    m_drive.tankDrive(left , right, true);//this is doing the input squaring thing 
   }
 
-  public void curveDrive(){
+  public void curveDrive(double xSpeed, double zRotation){
     m_drive.curvatureDrive(xSpeed, zRotation, false);//needs testing
   }
   /**DONT USE
