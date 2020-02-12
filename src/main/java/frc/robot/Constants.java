@@ -57,6 +57,10 @@ public final class Constants {
   // public static final int kPIDLoopIdx = 0;
   public static final int leftYstick = 0;
 
+  public static final class dashConstants {
+    public static final String gyroTabTitle = "hello";
+
+  }
   public static final class Colors {
     /**
      * private final Color kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
