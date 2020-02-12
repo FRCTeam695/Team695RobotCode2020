@@ -53,7 +53,9 @@ public class ColorWheelRotations extends CommandBase {
     motorRotations += velocity/3000;
     velocity = -1*a*Math.pow((motorRotations-(motorRotationsThreshold/2)),2)+maxVelocity;
   }
-
+  public double percent(){
+    return 100*motorRotations/motorRotationsThreshold;
+  }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
