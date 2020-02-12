@@ -70,8 +70,8 @@ public class RobotContainer {
   //***************************************************************************/
   //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
   //***************************************************************************/
-  private final Motors RobotDriveMotors = new Motors();
-  private final drivetrain drivetrain = new drivetrain();
+  //private final Motors RobotDriveMotors = new Motors();
+  //private final drivetrain drivetrain = new drivetrain();
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
 
@@ -79,7 +79,7 @@ public class RobotContainer {
 
   private final ModelTurret Turret = new ModelTurret(RobotMainNetworkTableInstance,2,3);
   private final BallDetector Detector = new BallDetector(0);
-
+  private final gyroTest gyro = new gyroTest();
 
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
@@ -92,7 +92,7 @@ public class RobotContainer {
   private final POVButton POVBottomLeft = new POVButton(ControllerDrive, 135);
   private final POVButton POVBottomRight = new POVButton(ControllerDrive, 225);
   private final POVButton POVTopLeft = new POVButton(ControllerDrive, 315);
-
+  
   //***************************************************************************/
   //COMMANDS INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
@@ -124,10 +124,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    POVTopRight.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(0,500);}));
-    POVTopLeft.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(0,-500);}));
-    POVBottomRight.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(1,500);}));
-    POVBottomLeft.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(1,-500);}));
+    //POVTopRight.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(0,500);}));
+    //POVTopLeft.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(0,-500);}));
+    //POVBottomRight.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(1,500);}));
+    //POVBottomLeft.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(1,-500);}));
 
    // YButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(1);}));
     //AButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(-1);}));
@@ -139,7 +139,7 @@ public class RobotContainer {
 
 
   }
-
+/*
   public Command getAutonomousCommand() {
 
     // Create a voltage constraint to ensure we don't accelerate too fast
@@ -156,7 +156,7 @@ public class RobotContainer {
         new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
                              AutoConstants.kMaxAccelerationMetersPerSecondSquared)
             // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(DriveConstants.kDriveKinematics)
+            .setKinematics(AutoConstants.kDriveKinematics)
             // Apply the voltage constraint
             .addConstraint(autoVoltageConstraint);
 
@@ -175,7 +175,7 @@ public class RobotContainer {
         config
 Yue will import trajectories
       
-    );  */
+    );  
 Trajectory exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/YourPath.wpilib.json"));;
     RamseteCommand ramseteCommand = new RamseteCommand(
         exampleTrajectory,//yue will import trajectory from json
@@ -184,7 +184,7 @@ Trajectory exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/hom
         new SimpleMotorFeedforward(AutoConstants.ksVolts,
                                    AutoConstants.kvVoltSecondsPerMeter,
                                    AutoConstants.kaVoltSecondsSquaredPerMeter),
-        DriveConstants.kDriveKinematics,
+        AutoConstants.kDriveKinematics,
         drivetrain::getWheelSpeeds,
         new PIDController(AutoConstants.kPDriveVel, 0, 0),
         new PIDController(AutoConstants.kPDriveVel, 0, 0),
@@ -196,7 +196,7 @@ Trajectory exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/hom
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
   }
-
+*/
   /**
    * Use this to pass the teleop command to the main {@link Robot} class.
    *
@@ -205,7 +205,7 @@ Trajectory exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/hom
   public Command getTeleopCommand() {
     ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
     //test.set(ControlMode.PercentOutput,0.5);
-    ContinuousTeleop.addCommands(shooterMultiVelocity);
+    ContinuousTeleop.addCommands(gyro);
 
     //ContinuousTeleop.addCommands(new InstantC);
     //test.set(ControlMode.PercentOutput,0.5);

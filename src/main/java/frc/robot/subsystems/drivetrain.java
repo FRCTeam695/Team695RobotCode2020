@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -24,20 +25,22 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.FalconClosedLoop;
-
 
 public class drivetrain extends SubsystemBase {
   /**
    * Creates a new drivetrain.
-   */
-  public drivetrain() {
-    
-  }
-  // The motors on the left side of the drive.
-
+   */  
   private WPI_TalonFX leftPrimary = new WPI_TalonFX(DriveConstants.kLeftMotor1ID);
   private WPI_TalonFX leftFollow = new WPI_TalonFX(DriveConstants.kLeftMotor2ID);
+  private WPI_TalonFX rightPrimary = new WPI_TalonFX(DriveConstants.kRightMotor1ID);
+  private WPI_TalonFX rightFollow = new WPI_TalonFX(DriveConstants.kRightMotor2ID);
+  
+  public drivetrain() {
+    shuffleInit();
+  
+  // The motors on the left side of the drive.
+
+
   leftPrimary.setInverted(false);
   leftFollow.follow(leftPrimary);
   leftFollow.setInverted(InvertType.FollowMaster);
@@ -45,12 +48,11 @@ public class drivetrain extends SubsystemBase {
 
 
   // The motors on the right side of the drive.
-private WPI_TalonFX rightPrimary = new WPI_TalonFX(DriveConstants.kRightMotor1ID);
-private WPI_TalonFX rightFollow = new WPI_TalonFX(DriveConstants.kRightMotor2ID);
-rightPrimary.setInverted(true);//INVERT INVERSION
-rightFollow.follow(leftPrimary);
-rightFollow.setInverted(InvertType.FollowMaster);
 
+  rightPrimary.setInverted(true);//INVERT INVERSION
+  rightFollow.follow(leftPrimary);
+  rightFollow.setInverted(InvertType.FollowMaster);
+  }
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(leftPrimary, rightPrimary);
 
@@ -94,6 +96,10 @@ rightFollow.setInverted(InvertType.FollowMaster);
    */
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
+  }
+
+  private void shuffleInit(){
+   // ShuffleBoardTab 
   }
 
   /**
@@ -140,7 +146,7 @@ rightFollow.setInverted(InvertType.FollowMaster);
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     //m_leftMotors.setVoltage(leftVolts);
     //m_rightMotors.setVoltage(-rightVolts);
-    m_drive.feed();
+    //m_drive.feed();
   }
 
   /**
