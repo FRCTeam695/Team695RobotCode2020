@@ -47,7 +47,9 @@ public class ColorWheelRotations extends CommandBase {
   double velocity = 1;
   double maxVelocity = 10*mechAdvantage;//number is color wheel rpm
   double a = -1*(velocity - maxVelocity)/(Math.pow(motorRotationsThreshold,2)/4);
-
+/*
+TODO
+PD Controller*/
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
