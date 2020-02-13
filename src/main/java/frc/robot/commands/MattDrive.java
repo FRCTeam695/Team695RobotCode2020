@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Motors;
+import frc.robot.subsystems.drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -29,11 +30,14 @@ public class MattDrive extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public MattDrive(Motors RobotMotorControllers,Joystick Controller, int leftSideAxisID,int rightSideAxisID) {
+
+  private drivetrain drivetrain;
+  public MattDrive(Motors RobotMotorControllers,Joystick Controller, int leftSideAxisID,int rightSideAxisID,drivetrain drivetrainVar) {
     this.RobotMotorControllers = RobotMotorControllers;
     this.leftSideAxisID = leftSideAxisID;
     this.rightSideAxisID = rightSideAxisID;
     this.Controller = Controller;
+    this.drivetrain = drivetrainVar;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotMotorControllers);
   }
@@ -49,11 +53,11 @@ public class MattDrive extends CommandBase {
   public void execute() {
     forward = Controller.getRawAxis(leftSideAxisID);
     right = Controller.getRawAxis(rightSideAxisID);
-
-    rightPower = forward + right;
-    leftPower = forward - right;
+    drivetrain.arcadeDrive(forward, right);
+    //rightPower = forward + right;
+    //leftPower = forward - right;
     
-    RobotMotorControllers.setPower(leftPower, rightPower);
+    //RobotMotorControllers.setPower(leftPower, rightPower);
 
   }
 

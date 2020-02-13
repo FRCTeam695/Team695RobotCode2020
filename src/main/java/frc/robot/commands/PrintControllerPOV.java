@@ -7,19 +7,17 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.*;
 
-public class FindBall extends CommandBase {
+public class PrintControllerPOV extends CommandBase {
   /**
-   * Creates a new FindBall.
+   * Creates a new PrintControllerPOV.
    */
-  BallDetector Detector;
-  Motors MotorIntake;
-  public FindBall(BallDetector Detector/*, Motors MotorIntake*/) {
+  private Joystick PrintedController;
+  public PrintControllerPOV(Joystick ControllerPOVToPrint) {
+    this.PrintedController = ControllerPOVToPrint;
     // Use addRequirements() here to declare subsystem dependencies.
-    this.Detector = Detector;
-    //this.MotorIntake = MotorIntake;
   }
 
   // Called when the command is initially scheduled.
@@ -30,11 +28,7 @@ public class FindBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //MotorIntake.spinIntake(Detector.get());
-    if(Detector.get())
-      System.out.println("False");
-    else
-      System.out.println("True");
+    System.out.println(PrintedController.getPOV());
   }
 
   // Called once the command ends or is interrupted.
@@ -47,5 +41,4 @@ public class FindBall extends CommandBase {
   public boolean isFinished() {
     return false;
   }
-  //test
 }
