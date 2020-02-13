@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+
 import java.nio.file.Paths;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -99,6 +100,7 @@ public class RobotContainer {
   //private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
   // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
 
+
   //private final SetColor ColorSensorUsed = new SetColor();
   //private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
   private final FalconClosedLoop ClosedLoopTop = new FalconClosedLoop(12,0,30,ControlMode.Velocity); //The motor we use is yet to be determined.
@@ -106,6 +108,7 @@ public class RobotContainer {
   //  private final EnableFalconVelocityClosedLoop ActivateClosedLoop = new EnableFalconVelocityClosedLoop(ClosedLoop,3000);
   //private final PrintControllerPOV PrintController = new PrintControllerPOV(ControllerDrive);
   private final MultipleFalconClosedVelocity shooterMultiVelocity = new MultipleFalconClosedVelocity(new double[]{0.0,0.0},new FalconClosedLoop[]{ClosedLoopTop,ClosedLoopBottom});
+
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -124,6 +127,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+
     //POVTopRight.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(0,500);}));
     //POVTopLeft.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(0,-500);}));
     //POVBottomRight.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(1,500);}));
@@ -131,7 +135,6 @@ public class RobotContainer {
 
    // YButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(1);}));
     //AButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(-1);}));
-
     //TurretGroup.addCommands(Finding,Focusing);
     //AButton.whenPressed(TurretGroup);
     //XButton.whenPressed(new InstantCommand(Focusing::change));
@@ -204,6 +207,7 @@ Trajectory exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/hom
    */
   public Command getTeleopCommand() {
     ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
+
     //test.set(ControlMode.PercentOutput,0.5);
     ContinuousTeleop.addCommands(gyro);
 

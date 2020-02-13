@@ -5,8 +5,10 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.subsystems.ColorWheel;
+import frc.robot.subsystems.FalconClosedLoop;
 import edu.wpi.first.wpilibj.DriverStation;
 import com.revrobotics.ColorMatchResult;
+import frc.robot.Constants.ColorConst;
 
 import com.revrobotics.ColorMatch;
 
@@ -132,13 +134,12 @@ public class SetColor extends CommandBase {
     }
 
   }
-
-  private ColorWheel ColorWheelHere = new ColorWheel();
+  
+  private ColorWheel ColorWheelHere;
+  public SetColor(FalconClosedLoop closedLoop){
+    this.ColorWheelHere = new ColorWheel(closedLoop);
+  }
   private final ColorMatch m_colorMatcher = new ColorMatch();
-  private final Color Blue = ColorMatch.makeColor(0.143, 0.427, 0.429);
-  private final Color Green = ColorMatch.makeColor(0.197, 0.561, 0.240);
-  private final Color Red = ColorMatch.makeColor(0.561, 0.232, 0.114);
-  private final Color Yellow = ColorMatch.makeColor(0.361, 0.524, 0.113);
   private final String gameData = DriverStation.getInstance().getGameSpecificMessage();
   public int speedLevel = 0;
   public DLL colors = new DLL();
@@ -159,10 +160,10 @@ public class SetColor extends CommandBase {
     colors.head.prev = last;
     //// loop
 
-    m_colorMatcher.addColorMatch(Blue);
-    m_colorMatcher.addColorMatch(Green);
-    m_colorMatcher.addColorMatch(Red);
-    m_colorMatcher.addColorMatch(Yellow);
+    m_colorMatcher.addColorMatch(ColorConst.Blue);
+    m_colorMatcher.addColorMatch(ColorConst.Green);
+    m_colorMatcher.addColorMatch(ColorConst.Red);
+    m_colorMatcher.addColorMatch(ColorConst.Yellow);
 
   }
 
@@ -180,13 +181,13 @@ public class SetColor extends CommandBase {
      * "Y" }
      */
 
-    if (match.color == Blue) {
+    if (match.color == ColorConst.Blue) {
       colorString = "B";
-    } else if (match.color == Red) {
+    } else if (match.color == ColorConst.Red) {
       colorString = "R";
-    } else if (match.color == Green) {
+    } else if (match.color == ColorConst.Green) {
       colorString = "G";
-    } else if (match.color == Yellow) {
+    } else if (match.color == ColorConst.Yellow) {
       colorString = "Y";
     } else {
       colorString = "U";

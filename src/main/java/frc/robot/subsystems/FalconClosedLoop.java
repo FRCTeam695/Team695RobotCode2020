@@ -69,7 +69,7 @@ public class FalconClosedLoop extends SubsystemBase {
         Talon.config_kD(PIDLoopId, CoefficientsToApply.kD, timeoutMs);
         Talon.config_kF(PIDLoopId, CoefficientsToApply.kF, timeoutMs);
     }
-    //encoder stuff
+
 
 
 

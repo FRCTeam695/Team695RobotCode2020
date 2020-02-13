@@ -13,13 +13,16 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.ColorSensorV3;
 
+import frc.robot.subsystems.FalconClosedLoop;
+import frc.robot.Constants.ColorConst;
+import frc.robot.commands.EnableFalconVelocityClosedLoop;
+
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ColorWheel extends SubsystemBase {
-
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
   private final ColorSensorV3 ColorSensor = new ColorSensorV3(i2cPort);
 
@@ -28,17 +31,25 @@ public class ColorWheel extends SubsystemBase {
   }
 
   /*******************************************************/
-  //TalonFX ColorMotor = new TalonFX(0);
+  // TalonFX ColorMotor = new TalonFX(0);
   // ColorMotor.configFactoryDefault();
   // ColorMotor.openloop
   // ColorMotor.setNeutralMode(NeutralMode.brake);
-  public int[] speeds = { -7, -5, -1, 0, 1, 5, 7 };
+  FalconClosedLoop ClosedLoop;
+  public ColorWheel(FalconClosedLoop closedLoop){
+    this.ClosedLoop = closedLoop;
+    final EnableFalconVelocityClosedLoop ActivateClosedLoop = new EnableFalconVelocityClosedLoop(ClosedLoop, 0);
+  }  
+  double currSpeed = 0;
 
   public void ColorMotorSet(int speedLevel) {
-    //System.out.print(String.valueOf(speedLevel)+"  ");
+    // System.out.print(String.valueOf(speedLevel)+" ");
 
-    //ColorMotor.set(ControlMode.PercentOutput, speeds[speedLevel+3]);
-    System.out.println(String.valueOf(speeds[speedLevel+3]));
+    // ColorMotor.set(ControlMode.PercentOutput, speeds[speedLevel+3]);
+
+    currSpeed = ColorConst.speeds[speedLevel + 3];
+    ClosedLoop.setVelocity(currSpeed);
+    System.out.println(String.valueOf(currSpeed));
   }
 
   @Override

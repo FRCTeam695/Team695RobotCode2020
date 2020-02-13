@@ -18,6 +18,7 @@ public class MultipleFalconClosedVelocity extends CommandBase {
    * Creates a new EnableCIMClosedLoop.
    */
   FalconClosedLoop[] closedLoops;
+
   double[] velocities;
   public MultipleFalconClosedVelocity(double[] velocities,FalconClosedLoop[] loops) {
     this.velocities = velocities;
@@ -38,6 +39,7 @@ public class MultipleFalconClosedVelocity extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     for (int i = 0;i<closedLoops.length;i++) {
       setSpecificVelocity(i,velocities[i]); //Determine Velocity
     }
@@ -59,6 +61,7 @@ public class MultipleFalconClosedVelocity extends CommandBase {
   public void setVelocityInData(int velocityIndex,double velocity) {
     velocities[velocityIndex] = velocity;
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
