@@ -27,15 +27,14 @@ public class ColorWheelRotations extends CommandBase {
    * Creates a new EnableCIMClosedLoop.
    */
   FalconClosedLoop closedLoop;
-  private ShuffleboardTab tab;
+  private ShuffleboardTab dashboard;
   private NetworkTableEntry tabBox;
-  public ColorWheelRotations(FalconClosedLoop loop,double velocity, ShuffleboardTab tab){
+  public ColorWheelRotations(FalconClosedLoop loop,double velocity, dashboard dash){
     this.closedLoop = loop;
     this.velocity = 0;
-    this.tab = tab;
+    this.dashboard = dash;
     loop.setClosedLoopMode(ControlMode.Velocity);
     addRequirements(loop);
-    tabBox = tab.add("ColorWheelRotations",0.0).withWidget(BuiltInWidgets.kDial).withSize(1,2).withPosition(5, 5).getEntry();
   }
 
   double finalRotationsThreshold = FixColorConst.finalRotationsThreshold;
@@ -61,7 +60,6 @@ PD Controller*/
     closedLoop.setVelocity(velocity); //Determine Velocity
     motorRotations += velocity/3000;
     velocity = -1*a*Math.pow((motorRotations-(motorRotationsThreshold/2)),2)+maxVelocity;
-    tabBox.forceSetDouble(percent());
   }
   public double percent(){
     return 100*motorRotations/motorRotationsThreshold;

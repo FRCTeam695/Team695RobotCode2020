@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-
 import java.nio.file.Paths;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -21,6 +20,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -35,8 +36,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.Utility.Tuple;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.dashTab.box;
 import edu.wpi.first.wpilibj.Joystick;
 import  edu.wpi.first.wpilibj.controller.PIDController;
 
@@ -75,12 +78,15 @@ public class RobotContainer {
   //private final drivetrain drivetrain = new drivetrain();
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
+  private final dash dashboard = new dash();
 
   //private final ModelTurret Turret = new ModelTurret(2,3);
 
-  private final ModelTurret Turret = new ModelTurret(RobotMainNetworkTableInstance,2,3);
-  private final BallDetector Detector = new BallDetector(0);
-  private final gyroTest gyro = new gyroTest();
+  //private final ModelTurret Turret = new ModelTurret(RobotMainNetworkTableInstance,2,3);
+  //private final BallDetector Detector = new BallDetector(0);
+  private final gyroTest gyro = new gyroTest(dashboard);   
+   
+  private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup(gyro);
 
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
@@ -93,7 +99,7 @@ public class RobotContainer {
   private final POVButton POVBottomLeft = new POVButton(ControllerDrive, 135);
   private final POVButton POVBottomRight = new POVButton(ControllerDrive, 225);
   private final POVButton POVTopLeft = new POVButton(ControllerDrive, 315);
-  
+   
   //***************************************************************************/
   //COMMANDS INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
@@ -103,11 +109,11 @@ public class RobotContainer {
 
   //private final SetColor ColorSensorUsed = new SetColor();
   //private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
-  private final FalconClosedLoop ClosedLoopTop = new FalconClosedLoop(12,0,30,ControlMode.Velocity); //The motor we use is yet to be determined.
-  private final FalconClosedLoop ClosedLoopBottom = new FalconClosedLoop(10,0,30,ControlMode.Velocity); 
+ // private final FalconClosedLoop ClosedLoopTop = new FalconClosedLoop(12,0,30,ControlMode.Velocity); //The motor we use is yet to be determined.
+  //private final FalconClosedLoop ClosedLoopBottom = new FalconClosedLoop(10,0,30,ControlMode.Velocity); 
   //  private final EnableFalconVelocityClosedLoop ActivateClosedLoop = new EnableFalconVelocityClosedLoop(ClosedLoop,3000);
   //private final PrintControllerPOV PrintController = new PrintControllerPOV(ControllerDrive);
-  private final MultipleFalconClosedVelocity shooterMultiVelocity = new MultipleFalconClosedVelocity(new double[]{0.0,0.0},new FalconClosedLoop[]{ClosedLoopTop,ClosedLoopBottom});
+ // private final MultipleFalconClosedVelocity shooterMultiVelocity = new MultipleFalconClosedVelocity(new double[]{0.0,0.0},new FalconClosedLoop[]{ClosedLoopTop,ClosedLoopBottom});
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -116,10 +122,10 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    
     //enable compressor
     //new InstantCommand(Compressor::enableCompressor,Compressor).schedule();
   }
-
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -127,96 +133,16 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
-    //POVTopRight.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(0,500);}));
-    //POVTopLeft.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(0,-500);}));
-    //POVBottomRight.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(1,500);}));
-    //POVBottomLeft.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(1,-500);}));
-
-   // YButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(1);}));
-    //AButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(-1);}));
-    //TurretGroup.addCommands(Finding,Focusing);
-    //AButton.whenPressed(TurretGroup);
-    //XButton.whenPressed(new InstantCommand(Focusing::change));
-    //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
-
-
   }
-/*
-  public Command getAutonomousCommand() {
 
-    // Create a voltage constraint to ensure we don't accelerate too fast
-    var autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(AutoConstants.ksVolts,
-                                       AutoConstants.kvVoltSecondsPerMeter,
-                                       AutoConstants.kaVoltSecondsSquaredPerMeter),
-            AutoConstants.kDriveKinematics,
-            10);
-
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
-                             AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(AutoConstants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-
-    // An example trajectory to follow.  All units in meters.
-    /*Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(
-            new Translation2d(1, 1),
-            new Translation2d(2, -1)
-        ),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
-        // Pass config
-        config
-Yue will import trajectories
-      
-    );  
-Trajectory exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/YourPath.wpilib.json"));;
-    RamseteCommand ramseteCommand = new RamseteCommand(
-        exampleTrajectory,//yue will import trajectory from json
-        drivetrain::getPose,
-        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-        new SimpleMotorFeedforward(AutoConstants.ksVolts,
-                                   AutoConstants.kvVoltSecondsPerMeter,
-                                   AutoConstants.kaVoltSecondsSquaredPerMeter),
-        AutoConstants.kDriveKinematics,
-        drivetrain::getWheelSpeeds,
-        new PIDController(AutoConstants.kPDriveVel, 0, 0),
-        new PIDController(AutoConstants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        drivetrain::tankDriveVolts,
-        drivetrain
-    );
-
-    // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
-  }
-*/
   /**
    * Use this to pass the teleop command to the main {@link Robot} class.
    *
    * @return the command to run in teleop
    */
   public Command getTeleopCommand() {
-    ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
 
-    //test.set(ControlMode.PercentOutput,0.5);
-    ContinuousTeleop.addCommands(gyro);
-
-    //ContinuousTeleop.addCommands(new InstantC);
-    //test.set(ControlMode.PercentOutput,0.5);
-    //ContinuousTeleop.addCommands(ActivateClosedLoop);
-
-    //ContinuousTeleop.addCommands(ReturnBall);
-
+    dashboard.initDash(gyro.getGyro());
     return ContinuousTeleop;
   }
 }
