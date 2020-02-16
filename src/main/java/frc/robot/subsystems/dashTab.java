@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -39,14 +41,21 @@ public class dashTab extends SubsystemBase {
  * @param widget BuiltInWidgets.
  * @param size tuple of ints
  * @param pos tuple of ints
+ * @param properties Map.of("min", 0, "max", 1)
  * @return box type
  */
-  public box newBox(String name,Object defaultValue, BuiltInWidgets widget, Tuple<Integer,Integer> size, Tuple<Integer,Integer> pos) {
+  public box newBox(String name,Object defaultValue, BuiltInWidgets widget, Tuple<Integer,Integer> size, Tuple<Integer,Integer> pos, Map<String,Object> properties) {
     return new box(
-        thisTab.add(name, defaultValue).withWidget(widget).withSize( size.x,size.y).withPosition(pos.x, pos.y).getEntry());
+        thisTab.add(name, defaultValue).withWidget(widget).withProperties(properties).withSize( size.x,size.y).withPosition(pos.x, pos.y).getEntry());
   }
   public box newBox(String name, BuiltInWidgets widget, Tuple<Integer,Integer> size, Tuple<Integer,Integer> pos){
     return newBox(name, 0.0, widget, size, pos);
+  }
+  public box newBox(String name,Object defaultValue, BuiltInWidgets widget, Tuple<Integer,Integer> size, Tuple<Integer,Integer> pos){
+    return newBox(name, defaultValue, widget, size, pos,Map.of());
+  }
+  public box newBox(String name, BuiltInWidgets widget, Tuple<Integer,Integer> size, Tuple<Integer,Integer> pos,Map<String,Object> properties){
+    return newBox(name, 0.0, widget, size, pos,properties);
   }
   /**
    * 

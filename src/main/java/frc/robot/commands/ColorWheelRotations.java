@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.FalconClosedLoop;
+import frc.robot.subsystems.dashTab.box;
+import frc.robot.dash;
 
 
 public class ColorWheelRotations extends CommandBase {
@@ -27,12 +29,11 @@ public class ColorWheelRotations extends CommandBase {
    * Creates a new EnableCIMClosedLoop.
    */
   FalconClosedLoop closedLoop;
-  private ShuffleboardTab dashboard;
-  private NetworkTableEntry tabBox;
-  public ColorWheelRotations(FalconClosedLoop loop,double velocity, dashboard dash){
+  private box dashBox;
+  public ColorWheelRotations(FalconClosedLoop loop,double velocity, dash dash){
     this.closedLoop = loop;
     this.velocity = 0;
-    this.dashboard = dash;
+    this.dashBox = dash.getFixedColorWheel();
     loop.setClosedLoopMode(ControlMode.Velocity);
     addRequirements(loop);
   }
@@ -60,6 +61,7 @@ PD Controller*/
     closedLoop.setVelocity(velocity); //Determine Velocity
     motorRotations += velocity/3000;
     velocity = -1*a*Math.pow((motorRotations-(motorRotationsThreshold/2)),2)+maxVelocity;
+   dashBox.set(percent());
   }
   public double percent(){
     return 100*motorRotations/motorRotationsThreshold;
