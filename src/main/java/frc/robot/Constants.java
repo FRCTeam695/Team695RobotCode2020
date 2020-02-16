@@ -55,8 +55,7 @@ public final class Constants {
   }
 
   // public static final int kPIDLoopIdx = 0;
-  public static final int leftYstick = 0;
-public static final double rawAxisMaxValue = 0;
+public static final double rawAxisMaxValue = 1;//do not touch
 
   public static final class Colors {
     /**
