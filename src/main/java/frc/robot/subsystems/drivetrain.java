@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import frc.robot.Constants.DriveConstants;
 
-public class drivetrain extends SubsystemBase {
+public class Drivetrain extends SubsystemBase {
   /**
    * Creates a new drivetrain.
    */  
@@ -35,7 +35,7 @@ public class drivetrain extends SubsystemBase {
   private WPI_TalonFX rightPrimary = new WPI_TalonFX(DriveConstants.kRightMotor1ID);
   private WPI_TalonFX rightFollow = new WPI_TalonFX(DriveConstants.kRightMotor2ID);
   
-  public drivetrain() {
+  public Drivetrain() {
     shuffleInit();
   
   // The motors on the left side of the drive.
@@ -134,8 +134,8 @@ public class drivetrain extends SubsystemBase {
     m_drive.tankDrive(left , right, true);//this is doing the input squaring thing 
   }
 
-  public void curveDrive(double xSpeed, double zRotation){
-    m_drive.curvatureDrive(xSpeed, zRotation, false);//needs testing
+  public void curveDrive(double xSpeed, double zRotation, Boolean isQuickTurn){
+    m_drive.curvatureDrive(xSpeed, zRotation,(boolean) isQuickTurn);//needs testing
   }
   /**DONT USE
    * Controls the left and right sides of the drive directly with voltages.

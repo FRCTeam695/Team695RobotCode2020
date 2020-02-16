@@ -7,37 +7,40 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.DriveConstants;
+import frc.robot.Constants;
+import frc.robot.subsystems.Drivetrain;
 
-public class gyroTest extends CommandBase {
+public class CurveDrive extends CommandBase {
+  private Drivetrain drivetrain;
+  private Joystick Controller;
+  private int leftAxis, rightAxis, buttonID;
+  private Boolean isQuickTurn = false;
+  
   /**
-   * Creates a new gyroTest.
+   * Creates a new CurveDrive.
    */
-
-  private final Gyro m_gyro = new ADXRS450_Gyro();
-
-  public gyroTest() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    
+  public CurveDrive(Drivetrain drive, Joystick Controller, int leftAxis, int rightAxis, int buttonID) {
+    this.drivetrain = drive;
+    this.Controller = Controller;
+    this.leftAxis = leftAxis;
+    this.rightAxis = rightAxis;
+    this.buttonID = buttonID;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //ShuffleboardTab tab = Shuffleboard.getTab("Gyro")
-  }
 
+  }
+  public void toggleQuickTurn(){
+    isQuickTurn = !isQuickTurn;
+  }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("head", Math.IEEEremainder(m_gyro.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0));
-    SmartDashboard.putNumber("rate", m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0));
-
+    drivetrain.curveDrive(Controller.getRawAxis(leftAxis)/Constants.rawAxisMaxValue, Controller.getRawAxis(rightAxis)/Constants.rawAxisMaxValue,isQuickTurn);
   }
 
   // Called once the command ends or is interrupted.

@@ -8,6 +8,8 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Motors;
+import frc.robot.Constants;
+import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -15,23 +17,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  * An example command that uses an example subsystem.
  */
 public class TankDrive extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final Motors RobotMotorControllers;
-  private final int leftSideAxisID;
-  private final int rightSideAxisID;
+  private final Drivetrain Drivetrain;
   private final Joystick Controller;
+  private final int leftSideAxisID, rightSideAxisID;
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public TankDrive(Motors RobotMotorControllers,Joystick Controller, int leftSideAxisID,int rightSideAxisID) {
-    this.RobotMotorControllers = RobotMotorControllers;
+  public TankDrive(Drivetrain Drivetrain, Joystick Controller, int leftSideAxisID,int rightSideAxisID) {
     this.leftSideAxisID = leftSideAxisID;
     this.rightSideAxisID = rightSideAxisID;
     this.Controller = Controller;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotMotorControllers);
+    this.Drivetrain = Drivetrain;
   }
 
   // Called when the command is initially scheduled.
@@ -42,7 +40,7 @@ public class TankDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotMotorControllers.setPower(Controller.getRawAxis(leftSideAxisID), Controller.getRawAxis(rightSideAxisID));
+    Drivetrain.tankDrive(Controller.getRawAxis(leftSideAxisID)/Constants.rawAxisMaxValue, Controller.getRawAxis(rightSideAxisID)/Constants.rawAxisMaxValue);
   }
 
   // Called once the command ends or is interrupted.

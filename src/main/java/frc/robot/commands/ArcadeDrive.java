@@ -8,38 +8,34 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Motors;
-import frc.robot.subsystems.drivetrain;
+import frc.robot.Constants;
+import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class MattDrive extends CommandBase {
+public class ArcadeDrive extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-  private final Motors RobotMotorControllers;
   private final int leftSideAxisID;
   private final int rightSideAxisID;
   private final Joystick Controller;
   private double forward = 0;
   private double right = 0;
-  private double rightPower = 0;
-  private double leftPower = 0;
+  private Drivetrain Drivetrain;
+
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
 
-  private drivetrain drivetrain;
-  public MattDrive(Motors RobotMotorControllers,Joystick Controller, int leftSideAxisID,int rightSideAxisID,drivetrain drivetrainVar) {
-    this.RobotMotorControllers = RobotMotorControllers;
+  public ArcadeDrive(Drivetrain drive,Joystick Controller, int leftSideAxisID,int rightSideAxisID) {
     this.leftSideAxisID = leftSideAxisID;
     this.rightSideAxisID = rightSideAxisID;
     this.Controller = Controller;
-    this.drivetrain = drivetrainVar;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotMotorControllers);
+    this.Drivetrain = drive;
   }
 
   // Called when the command is initially scheduled.
@@ -51,9 +47,9 @@ public class MattDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    forward = Controller.getRawAxis(leftSideAxisID);
-    right = Controller.getRawAxis(rightSideAxisID);
-    drivetrain.arcadeDrive(forward, right);
+    forward = Controller.getRawAxis(leftSideAxisID)/Constants.rawAxisMaxValue;
+    right = Controller.getRawAxis(rightSideAxisID)/Constants.rawAxisMaxValue;
+    Drivetrain.arcadeDrive(forward, right);
     //rightPower = forward + right;
     //leftPower = forward - right;
     
