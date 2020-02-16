@@ -25,8 +25,8 @@ public class SetColor extends CommandBase {
   private ColorWheel ColorWheelHere;
   private box dashBox;
 
-  public SetColor(FalconClosedLoop closedLoop, dash dashboard) {
-    this.ColorWheelHere = new ColorWheel(closedLoop);
+  public SetColor(dash dashboard) {
+    this.ColorWheelHere = new ColorWheel();
     this.dashBox = dashboard.getDetectColorWheel();
   }
 
@@ -115,7 +115,7 @@ public class SetColor extends CommandBase {
   }
 private void setStuff(){
       speedLevel = measure();
-    ColorWheelHere.ColorMotorSet(speedLevel);
+    ColorWheelHere.setDistanceFrom(speedLevel);
     dashBox.set(speedLevel * 100 / 4);
 }
   @Override
@@ -125,9 +125,9 @@ private void setStuff(){
 
   @Override
   public void end(boolean interrupted) {
-    ColorWheelHere.ColorMotorSet(1);
+    ColorWheelHere.setDistanceFrom(1);
     
-    ColorWheelHere.ColorMotorSet(0);
+    ColorWheelHere.setDistanceFrom(0);
     while (measure() != 0){
       setStuff();
     }

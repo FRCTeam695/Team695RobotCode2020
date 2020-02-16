@@ -19,65 +19,58 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ColorWheel;
 import frc.robot.subsystems.FalconClosedLoop;
 import frc.robot.subsystems.dashTab.box;
 import frc.robot.dash;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 
-public class ColorWheelRotations extends CommandBase {
+
+
+public class ColorWheelRotations extends PIDCommand {
   /**
    * Creates a new EnableCIMClosedLoop.
    */
   FalconClosedLoop closedLoop;
-  private box dashBox;
-  public ColorWheelRotations(FalconClosedLoop loop,double velocity, dash dash){
-    this.closedLoop = loop;
-    this.velocity = 0;
-    this.dashBox = dash.getFixedColorWheel();
-    loop.setClosedLoopMode(ControlMode.Velocity);
-    addRequirements(loop);
+  private static box dashBox;
+  private static double finalRotationsThreshold = FixColorConst.finalRotationsThreshold;
+  private static double motorCircumference = 2 * Math.PI * FixColorConst.motorWheelRadius;// cm enter radius
+  private static double colorWheelCircumference = 2 * Math.PI * FixColorConst.colorWheelRadius;// enter radius cm
+  private static double mechAdvantage = colorWheelCircumference / motorCircumference;
+  private static double motorRotationsThreshold = (finalRotationsThreshold * mechAdvantage);
+  private double motorRotations = 0;
+  private double velocity = 1;
+  private double maxVelocity = 10 * mechAdvantage;// number is color wheel rpm
+  private double a = -1 * (velocity - maxVelocity) / (Math.pow(motorRotationsThreshold, 2) / 4);
+  private static ColorWheel wheel;
+
+  public ColorWheelRotations(ColorWheel wheel, dash dash) {
+
+    super(new PIDController(FixColorConst.kTurnP, 0, FixColorConst.kTurnD),
+        // Close loop on heading
+        wheel::getDistanceRotations,
+        // Set reference to target
+        motorRotationsThreshold,
+        // Pipe output to turn robot
+        output -> execFunction(output, wheel,dash));
+
   }
 
-  double finalRotationsThreshold = FixColorConst.finalRotationsThreshold;
-  double motorCircumference = 2*Math.PI*FixColorConst.motorWheelRadius;//cm enter radius
-  double colorWheelCircumference = 2*Math.PI*FixColorConst.colorWheelRadius;//enter radius cm
-  double mechAdvantage = colorWheelCircumference/motorCircumference;
-  double motorRotationsThreshold = (finalRotationsThreshold*mechAdvantage);
-  double motorRotations = 0;
-  double velocity = 1;
-  double maxVelocity = 10*mechAdvantage;//number is color wheel rpm
-  double a = -1*(velocity - maxVelocity)/(Math.pow(motorRotationsThreshold,2)/4);
-/*
-TODO
-PD Controller*/
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-  }
+  private static void execFunction(double input, ColorWheel wheel, dash dash) {
+    wheel.setVelocity(input);
+    dash.getFixedColorWheel().set(wheel.getDistanceRotations() / motorRotationsThreshold * 100);
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    closedLoop.setVelocity(velocity); //Determine Velocity
-    motorRotations += velocity/3000;
-    velocity = -1*a*Math.pow((motorRotations-(motorRotationsThreshold/2)),2)+maxVelocity;
-   dashBox.set(percent());
-  }
-  public double percent(){
-    return 100*motorRotations/motorRotationsThreshold;
-  }
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-  }
+}
 
-  // Returns true when the command should end.
+
+  
+
+
   @Override
   public boolean isFinished() {
-    if (motorRotations >= motorRotationsThreshold){
-      return true;
-    } else {
-      return false;
-    }
+    // End when the controller is at the reference.
+    return getController().atSetpoint();
   }
 }

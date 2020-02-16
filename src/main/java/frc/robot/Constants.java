@@ -38,6 +38,8 @@ public final class Constants {
                                                            // lower I think
     public static final double motorWheelRadius = 2.5;
     public static final double colorWheelRadius = 41.5;
+	public static final double kTurnP = 0;
+	public static final double kTurnD = 0;
   }
 
   public static final class ColorConst {
@@ -47,6 +49,9 @@ public final class Constants {
     public final static Color Green = ColorMatch.makeColor(0.197, 0.561, 0.240);
     public final static Color Red = ColorMatch.makeColor(0.561, 0.232, 0.114);
     public final static Color Yellow = ColorMatch.makeColor(0.361, 0.524, 0.113);
+	public static final int PIDLoopId = 0;
+	public static final int timoutMs = 0;
+	public static int motorID=0;
   }
 
   public static final class DriveConstants {

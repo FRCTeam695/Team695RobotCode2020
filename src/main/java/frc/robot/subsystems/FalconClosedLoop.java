@@ -33,7 +33,7 @@ public class FalconClosedLoop extends SubsystemBase {
     private ControlMode CurrentControlMode;
     private static PIDCoefficients VelocityPIDCoefficients = new PIDCoefficients(.23,0.0004,7,0);
     private static PIDCoefficients PositionPIDCoefficients = new PIDCoefficients(1,0,0,0);
-
+    public double distancePerPulse = 2048;
     public FalconClosedLoop(int talonId,int PIDLoopId,int timeoutMs,ControlMode ClosedLoopMode) {
         this.PIDLoopId = PIDLoopId;
         this.timeoutMs = timeoutMs;
@@ -106,4 +106,17 @@ public class FalconClosedLoop extends SubsystemBase {
     public void immediateStop() {
         Talon.set(ControlMode.PercentOutput,0);
     }
+
+    public void setDistancePerPulse(double distancePerPulse){
+        this.distancePerPulse = distancePerPulse;
+      }
+    public void resetEncoder(){
+        Talon.setSelectedSensorPosition(0);
+      }
+      public double getEncoderDistance(){
+        return Talon.getSelectedSensorPosition()*distancePerPulse;
+      }
+      public double getEncoderRate(){
+        return Talon.getSelectedSensorVelocity()*distancePerPulse;
+      }
 }

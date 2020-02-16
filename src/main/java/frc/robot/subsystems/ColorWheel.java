@@ -15,7 +15,6 @@ import com.revrobotics.ColorSensorV3;
 
 import frc.robot.subsystems.FalconClosedLoop;
 import frc.robot.Constants.ColorConst;
-import frc.robot.commands.EnableFalconVelocityClosedLoop;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.util.Color;
@@ -35,21 +34,25 @@ public class ColorWheel extends SubsystemBase {
   // ColorMotor.configFactoryDefault();
   // ColorMotor.openloop
   // ColorMotor.setNeutralMode(NeutralMode.brake);
-  FalconClosedLoop ClosedLoop;
-  public ColorWheel(FalconClosedLoop closedLoop){
-    this.ClosedLoop = closedLoop;
-    final EnableFalconVelocityClosedLoop ActivateClosedLoop = new EnableFalconVelocityClosedLoop(ClosedLoop, 0);
+  FalconClosedLoop ClosedLoop = new FalconClosedLoop(ColorConst.motorID, ColorConst.PIDLoopId, ColorConst.timoutMs, ControlMode.Velocity);
+  public ColorWheel(){
+    
   }  
   double currSpeed = 0;
 
-  public void ColorMotorSet(int speedLevel) {
-    // System.out.print(String.valueOf(speedLevel)+" ");
-
-    // ColorMotor.set(ControlMode.PercentOutput, speeds[speedLevel+3]);
-
+  public void setDistanceFrom(int speedLevel) {
     currSpeed = ColorConst.speeds[speedLevel + 3];
     ClosedLoop.setVelocity(currSpeed);
-    System.out.println(String.valueOf(currSpeed));
+    //System.out.println(String.valueOf(currSpeed));
+  }
+  public void setVelocity(double velocity){
+    ClosedLoop.setVelocity(velocity);
+  }
+  public void resetEncoder(){
+    ClosedLoop.resetEncoder();
+  }
+  public double getDistanceRotations(){
+   return ClosedLoop.getEncoderDistance()/2048;
   }
 
   @Override
