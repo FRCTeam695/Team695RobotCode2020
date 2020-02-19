@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import frc.robot.Constants.DriveConstants;
 
-public class Drivetrain extends SubsystemBase {
+public class drivetrain extends SubsystemBase {
   /**
    * Creates a new drivetrain.
    */  
@@ -35,7 +35,7 @@ public class Drivetrain extends SubsystemBase {
   private WPI_TalonFX rightPrimary = new WPI_TalonFX(DriveConstants.kRightMotor1ID);
   private WPI_TalonFX rightFollow = new WPI_TalonFX(DriveConstants.kRightMotor2ID);
   
-  public Drivetrain() {
+  public drivetrain() {
     shuffleInit();
   
   // The motors on the left side of the drive.
@@ -55,6 +55,7 @@ public class Drivetrain extends SubsystemBase {
   }
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(leftPrimary, rightPrimary);
+  
 
   // The left-side drive encoder
   private final encoderFalcon m_leftEncoder =
@@ -144,9 +145,9 @@ public class Drivetrain extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    //m_leftMotors.setVoltage(leftVolts);
-    //m_rightMotors.setVoltage(-rightVolts);
-    //m_drive.feed();
+    leftPrimary.setVoltage(leftVolts);
+    rightPrimary.setVoltage(rightVolts);
+    m_drive.feed();
   }
 
   /**

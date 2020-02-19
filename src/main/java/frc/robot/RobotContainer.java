@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -71,7 +72,7 @@ public class RobotContainer {
   //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
   //***************************************************************************/
   //private final Motors RobotDriveMotors = new Motors();
-  //private final drivetrain drivetrain = new drivetrain();
+  private final drivetrain drivetrain = new drivetrain();
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
 
@@ -80,6 +81,13 @@ public class RobotContainer {
   private final ModelTurret Turret = new ModelTurret(RobotMainNetworkTableInstance,2,3);
   private final BallDetector Detector = new BallDetector(0);
   private final gyroTest gyro = new gyroTest();
+
+  // Create a voltage constraint to ensure we don't accelerate too fast
+  private final SimpleMotorFeedforward forwardMotor = new SimpleMotorFeedforward(AutoConstants.ksVolts, AutoConstants.kvVoltSecondsPerMeter, AutoConstants.kaVoltSecondsSquaredPerMeter);
+  private final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(forwardMotor, AutoConstants.kDriveKinematics, 10);
+
+  // Create config for trajectory
+  private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
@@ -129,7 +137,7 @@ public class RobotContainer {
     //POVBottomRight.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(1,500);}));
     //POVBottomLeft.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(1,-500);}));
 
-   // YButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(1);}));
+    //YButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(1);}));
     //AButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(-1);}));
 
     //TurretGroup.addCommands(Finding,Focusing);
@@ -139,26 +147,14 @@ public class RobotContainer {
 
 
   }
-/*
+
   public Command getAutonomousCommand() {
 
-    // Create a voltage constraint to ensure we don't accelerate too fast
-    var autoVoltageConstraint =
-        new DifferentialDriveVoltageConstraint(
-            new SimpleMotorFeedforward(AutoConstants.ksVolts,
-                                       AutoConstants.kvVoltSecondsPerMeter,
-                                       AutoConstants.kaVoltSecondsSquaredPerMeter),
-            AutoConstants.kDriveKinematics,
-            10);
-
-    // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond,
-                             AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+    
             // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(AutoConstants.kDriveKinematics)
+    config.setKinematics(AutoConstants.kDriveKinematics);
             // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
+    config.addConstraint(autoVoltageConstraint);
 
     // An example trajectory to follow.  All units in meters.
     /*Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
@@ -173,9 +169,9 @@ public class RobotContainer {
         new Pose2d(3, 0, new Rotation2d(0)),
         // Pass config
         config
-Yue will import trajectories
+//Yue will import trajectories
       
-    );  
+    );*/
 Trajectory exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/YourPath.wpilib.json"));;
     RamseteCommand ramseteCommand = new RamseteCommand(
         exampleTrajectory,//yue will import trajectory from json
@@ -196,7 +192,7 @@ Trajectory exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/hom
     // Run path following command, then stop at the end.
     return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
   }
-*/
+
   /**
    * Use this to pass the teleop command to the main {@link Robot} class.
    *
