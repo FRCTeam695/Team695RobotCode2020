@@ -91,7 +91,7 @@ public class RobotContainer {
   // Create config for trajectory
   private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
-  private final TrajectoryCommand trajectory1 = new TrajectoryCommand("src/main/deploy/Greate.wpilib.json", drivetrain);
+  private final TrajectoryCommand trajectory1 = new TrajectoryCommand("src/main/deploy/paths/FindBall.wpilib.json", drivetrain);
 
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
