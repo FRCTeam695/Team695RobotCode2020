@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -15,7 +16,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
@@ -72,7 +74,7 @@ public class RobotContainer {
   //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
   //***************************************************************************/
   //private final Motors RobotDriveMotors = new Motors();
-  private final drivetrain drivetrain = new drivetrain();
+  private final Drivetrain drivetrain = new Drivetrain();
   //private final CompressorController Compressor = new CompressorController();
   //private final HatchGrabber HatchSolenoid = new HatchGrabber(0);
 
@@ -88,6 +90,8 @@ public class RobotContainer {
 
   // Create config for trajectory
   private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+
+  private Trajectory trajectory = new Trajectory(null);
 
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
@@ -172,9 +176,17 @@ public class RobotContainer {
 //Yue will import trajectories
       
     );*/
-Trajectory exampleTrajectory = TrajectoryUtil.fromPathweaverJson(Paths.get("/home/lvuser/deploy/YourPath.wpilib.json"));;
+    
+
+    String trajectoryJSON = "src/main/deploy/Greate.wpilib.json";
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    }
     RamseteCommand ramseteCommand = new RamseteCommand(
-        exampleTrajectory,//yue will import trajectory from json
+        trajectory,//yue will import trajectory from json
         drivetrain::getPose,
         new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
         new SimpleMotorFeedforward(AutoConstants.ksVolts,

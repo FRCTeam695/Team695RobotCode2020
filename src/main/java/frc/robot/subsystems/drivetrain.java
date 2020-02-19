@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import frc.robot.Constants.DriveConstants;
 
-public class drivetrain extends SubsystemBase {
+public class Drivetrain extends SubsystemBase {
   /**
    * Creates a new drivetrain.
    */  
@@ -35,7 +35,7 @@ public class drivetrain extends SubsystemBase {
   private WPI_TalonFX rightPrimary = new WPI_TalonFX(DriveConstants.kRightMotor1ID);
   private WPI_TalonFX rightFollow = new WPI_TalonFX(DriveConstants.kRightMotor2ID);
   
-  public drivetrain() {
+  public Drivetrain() {
     shuffleInit();
   
   // The motors on the left side of the drive.
