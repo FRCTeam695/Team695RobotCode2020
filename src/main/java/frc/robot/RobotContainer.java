@@ -91,7 +91,7 @@ public class RobotContainer {
   // Create config for trajectory
   private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
-  private Trajectory trajectory = new Trajectory(null);
+  private final TrajectoryCommand trajectory1 = new TrajectoryCommand("src/main/deploy/Greate.wpilib.json", drivetrain);
 
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
@@ -176,33 +176,11 @@ public class RobotContainer {
 //Yue will import trajectories
       
     );*/
-    
-
-    String trajectoryJSON = "src/main/deploy/Greate.wpilib.json";
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    }
-    RamseteCommand ramseteCommand = new RamseteCommand(
-        trajectory,//yue will import trajectory from json
-        drivetrain::getPose,
-        new RamseteController(AutoConstants.kRamseteB, AutoConstants.kRamseteZeta),
-        new SimpleMotorFeedforward(AutoConstants.ksVolts,
-                                   AutoConstants.kvVoltSecondsPerMeter,
-                                   AutoConstants.kaVoltSecondsSquaredPerMeter),
-        AutoConstants.kDriveKinematics,
-        drivetrain::getWheelSpeeds,
-        new PIDController(AutoConstants.kPDriveVel, 0, 0),
-        new PIDController(AutoConstants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        drivetrain::tankDriveVolts,
-        drivetrain
-    );
+    SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup();
+    sequentialTrajectory.addCommands(trajectory1.Runner());
 
     // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> drivetrain.tankDriveVolts(0, 0));
+    return sequentialTrajectory;
   }
 
   /**

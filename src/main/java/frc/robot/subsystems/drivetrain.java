@@ -146,7 +146,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftPrimary.setVoltage(leftVolts);
-    rightPrimary.setVoltage(rightVolts);
+    rightPrimary.setVoltage(-rightVolts);
     m_drive.feed();
   }
 
