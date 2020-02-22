@@ -148,6 +148,8 @@ public class RobotContainer {
     //AButton.whenPressed(TurretGroup);
     //XButton.whenPressed(new InstantCommand(Focusing::change));
     //YButton.whenPressed(new InstantCommand(HatchSolenoid::toggleHatchState, HatchSolenoid));
+    //BButton.whenPressed(driving.toggleQuickTurn());
+    //ZButton.whenPressed(driving.toggleDrive());
 
 
   }
