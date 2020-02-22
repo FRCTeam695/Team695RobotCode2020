@@ -27,17 +27,22 @@ import edu.wpi.first.wpilibj.util.Units;
 public final class Constants {
 
   public static final class DriveConstants {
-    public static final int motorTimeout = 30;//ms
+    public static final int motorTimeout = 30;// ms
     public static final int kLeftMotor1ID = 0;
     public static final int kLeftMotor2ID = 0;
     public static final int kRightMotor1ID = 0;
     public static final int kRightMotor2ID = 0;
     public static final double kEncoderDistancePerPulse = 0;// probably will do a bunch of math here
     public static final boolean kGyroReversed = false;
-
     public static final double kTrackwidthMeters = Units.inchesToMeters(20);
-    
 
+  }
+
+  public final class ControllerConst {
+    public static final int leftSideAxisId = 0;
+    public static final int rightSideAxisId = 1;
+    public static final int curveDriveButton = 0;
+    
   }
 
   public static final class AutoConstants {
@@ -55,7 +60,7 @@ public final class Constants {
   }
 
   // public static final int kPIDLoopIdx = 0;
-public static final double rawAxisMaxValue = 1;//do not touch
+  public static final double rawAxisMaxValue = 1;// do not touch
 
   public static final class Colors {
     /**

@@ -15,18 +15,17 @@ import frc.robot.subsystems.Drivetrain;
 public class CurveDrive extends CommandBase {
   private Drivetrain drivetrain;
   private Joystick Controller;
-  private int leftAxis, rightAxis, buttonID;
+  private int leftAxis, rightAxis;
   private Boolean isQuickTurn = false;
   
   /**
    * Creates a new CurveDrive.
    */
-  public CurveDrive(Drivetrain drive, Joystick Controller, int leftAxis, int rightAxis, int buttonID) {
+  public CurveDrive(Drivetrain drive, Joystick Controller, int leftAxis, int rightAxis) {
     this.drivetrain = drive;
     this.Controller = Controller;
     this.leftAxis = leftAxis;
     this.rightAxis = rightAxis;
-    this.buttonID = buttonID;
   }
 
   // Called when the command is initially scheduled.
