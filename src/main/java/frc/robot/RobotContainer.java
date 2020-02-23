@@ -139,8 +139,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-
-    
     // Add kinematics to ensure max speed is actually obeyed
     config.setKinematics(AutoConstants.kDriveKinematics);
     // Apply the voltage constraint

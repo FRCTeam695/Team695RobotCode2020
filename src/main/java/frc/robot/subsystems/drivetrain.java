@@ -37,29 +37,21 @@ public class Drivetrain extends SubsystemBase {
   
   public Drivetrain() {
     shuffleInit();
-  
-  // The motors on the left side of the drive.
-
-
-  leftPrimary.setInverted(false);
-  leftFollow.follow(leftPrimary);
-  leftFollow.setInverted(InvertType.FollowMaster);
-
-
-
-  // The motors on the right side of the drive.
-
-  rightPrimary.setInverted(true);//INVERT INVERSION
-  rightFollow.follow(leftPrimary);
-  rightFollow.setInverted(InvertType.FollowMaster);
+    // The motors on the left side of the drive.
+    leftPrimary.setInverted(false);
+    leftFollow.follow(leftPrimary);
+    leftFollow.setInverted(InvertType.FollowMaster);
+    // The motors on the right side of the drive.
+    rightPrimary.setInverted(true);//INVERT INVERSION
+    rightFollow.follow(leftPrimary);
+    rightFollow.setInverted(InvertType.FollowMaster);
   }
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(leftPrimary, rightPrimary);
   
 
   // The left-side drive encoder
-  private final EncoderFalcon m_leftEncoder =
-      new EncoderFalcon(leftPrimary);
+  private final EncoderFalcon m_leftEncoder = new EncoderFalcon(leftPrimary);
 
   // The right-side drive encoder
   private final EncoderFalcon m_rightEncoder = new EncoderFalcon(rightPrimary);
