@@ -32,8 +32,8 @@ public final class Constants {
     public static final int LEFT_MOTOR2_ID = 12;
     public static final int RIGHT_MOTOR1_ID = 13;
     public static final int RIGHT_MOTOR_2_ID = 14;
-    public static final double ENCODER_DISTANCE_PER_WHEEL_ROTATION = 17305.6*Math.PI*WHEEL_DIAMETER;// probably will do a bunch of math here
     public static final double WHEEL_DIAMETER = Units.inchesToMeters(6);
+    public static final double ENCODER_DISTANCE_PER_WHEEL_ROTATION = 17305.6*Math.PI*WHEEL_DIAMETER;// probably will do a bunch of math here
     public static final boolean IS_GYRO_REVERSED = false;
     public static final double TRACK_WIDTH = Units.inchesToMeters(19.5);//19.5 inch between, each wheel is inch thick
 
