@@ -20,16 +20,15 @@ enum DriveState {
 }
 
 //make sure class names are uppercase on the first letter
-public class Driving extends CommandBase {
+public class DriveModeController extends CommandBase {
   /**
    * Creates a new driving.
    */
-  private Drivetrain Drive;
+  private Drivetrain Drivetrain_inst;
   private Joystick Controller;
   private int leftSideAxisID = ControllerConst.leftSideAxisId;
   private int rightSideAxisID = ControllerConst.rightSideAxisId;
-  private int curveButtonId = ControllerConst.curveDriveButton;
-  private int driveSwitchButtonId = ControllerConst.curveDriveButton;
+
 
   private DriveState CurrentDriveState = DriveState.TANK_DRIVE;
 
@@ -38,11 +37,11 @@ public class Driving extends CommandBase {
   private CurveDrive Curve;
   private TankDrive Tank;
 
-  public Driving(Drivetrain Drive, Joystick Controller) {
+  public DriveModeController(Drivetrain Drivetrain_inst, Joystick Controller) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.Drive = Drive;
+    this.Drivetrain_inst = Drivetrain_inst;
     this.Controller = Controller;
-    addRequirements(Drive);
+    addRequirements(Drivetrain_inst);
   }
   public void toggleQuickTurn(){
     Curve.toggleQuickTurn();
@@ -50,9 +49,9 @@ public class Driving extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Arcade = new ArcadeDrive(Drive, Controller, leftSideAxisID, rightSideAxisID);
-    Curve = new CurveDrive(Drive, Controller, leftSideAxisID, rightSideAxisID);
-    Tank = new TankDrive(Drive, Controller, leftSideAxisID, rightSideAxisID);
+    Arcade = new ArcadeDrive(Drivetrain_inst, Controller, leftSideAxisID, rightSideAxisID);
+    Curve = new CurveDrive(Drivetrain_inst, Controller, leftSideAxisID, rightSideAxisID);
+    Tank = new TankDrive(Drivetrain_inst, Controller, leftSideAxisID, rightSideAxisID);
     Arcade.initialize();
     Curve.initialize();
     Tank.initialize();

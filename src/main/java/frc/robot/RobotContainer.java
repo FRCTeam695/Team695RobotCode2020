@@ -89,9 +89,10 @@ public class RobotContainer {
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
-	private Joystick ControllerDrive = new Joystick(0);
+  private final Joystick ControllerDrive = new Joystick(0);
   private final JoystickButton AButton = new JoystickButton(ControllerDrive,1);
-  ////private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
+  private final JoystickButton BButton = new JoystickButton(ControllerDrive,2);
+  private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
   private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
   private final POVButton POVTopRight = new POVButton(ControllerDrive, 45);
   private final POVButton POVBottomLeft = new POVButton(ControllerDrive, 135);
@@ -103,9 +104,16 @@ public class RobotContainer {
   //***************************************************************************/
 
 
-  private final Driving DrivingController = new Driving(Drivetrain_inst, ControllerDrive);
-  private final AutoTurretRotation Finding = new AutoTurretRotation(Turret_Inst);
-  private final TurretFocusPID FocusingPID = new TurretFocusPID(Turret_Inst,new PIDController(0.1, 0.001, 0));
+  private final DriveModeController DriveModeController_Inst = new DriveModeController(Drivetrain_inst, ControllerDrive);
+  private final AutoTurretRotation AutoTurretRotation_inst = new AutoTurretRotation(Turret_Inst);
+  private final TurretFocusPID TurretFocusPID_inst = new TurretFocusPID(Turret_Inst,new PIDController(0.1, 0.001, 0));
+  private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup(AutoTurretRotation_inst,TurretFocusPID_inst);
+
+  //auton
+  private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup(trajectory1.Runner());
+
+  //teleop
+  private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup(DriveModeController_Inst);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -124,18 +132,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //POVTopRight.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(0,500);}));
-    //POVTopLeft.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(0,-500);}));
-    //POVBottomRight.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(1,500);}));
-    //POVBottomLeft.whenPressed(new InstantCommand(() -> {shooterMultiVelocity.incrementSpecificVelocity(1,-500);}));
-
-    //YButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(1);}));
-    //AButton.whenPressed(new InstantCommand(() -> {ActivateClosedLoop.incrementPosition(-1);}));
-
-    //AButton.whenPressed(TurretGroup);
-    //XButton.whenPressed(new InstantCommand(Focusing::change));
-    //BButton.whenPressed(driving.toggleQuickTurn());
-    //ZButton.whenPressed(driving.toggleDrive());
+    BButton.whenPressed(TurretGroup);
+    XButton.whenPressed(() -> DriveModeController_Inst.toggleDrive());
 
 
   }
@@ -147,8 +145,6 @@ public class RobotContainer {
     config.setKinematics(AutoConstants.kDriveKinematics);
     // Apply the voltage constraint
     config.addConstraint(autoVoltageConstraint);
-    SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup();
-    sequentialTrajectory.addCommands(trajectory1.Runner());
     return sequentialTrajectory;
   }
 

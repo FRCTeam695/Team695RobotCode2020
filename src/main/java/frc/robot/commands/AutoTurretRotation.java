@@ -9,19 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
-
+import frc.robot.enums.RotationDirection;;
 
 public class AutoTurretRotation extends CommandBase {
-  public enum SearchDirection {
-    COUNTER_CLOCKWISE(-1), CLOCKWISE(1);
-    public int rotationDirectionModifier;
-    private SearchDirection(int rotationDirectionModifier) {
-      this.rotationDirectionModifier = rotationDirectionModifier;
-    }
-  }
+
   //private ModelTurret TurretControlled;
   private Turret Turret_Inst;
-  private SearchDirection CurrentDirection;
+  private RotationDirection CurrentDirection;
   private final double velocity = .5;
 
   //private int panDirection = 1;
@@ -43,12 +37,12 @@ public class AutoTurretRotation extends CommandBase {
   @Override
   public void execute() {
     if(Turret_Inst.isTooFarLeft()) {
-      CurrentDirection = SearchDirection.CLOCKWISE;
+      CurrentDirection = RotationDirection.CLOCKWISE;
     }
     if(Turret_Inst.isTooFarRight()) {
-      CurrentDirection = SearchDirection.COUNTER_CLOCKWISE;
+      CurrentDirection = RotationDirection.COUNTER_CLOCKWISE;
     }
-    Turret_Inst.setPower(CurrentDirection.rotationDirectionModifier*velocity);
+    Turret_Inst.setPower(CurrentDirection.SIGN_MODIFIER*velocity);
 
     
   }

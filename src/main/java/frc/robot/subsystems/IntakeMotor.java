@@ -11,10 +11,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.enums.RotationDirection;;
 
 public class IntakeMotor extends SubsystemBase {
   private VictorSPX ControlledMotor;
+  private RotationDirection CurrentDirection;
   /**
    * Creates a new IntakeMotor.
    */
@@ -25,15 +26,9 @@ public class IntakeMotor extends SubsystemBase {
   public void setPower(double powerPercent){
     ControlledMotor.set(ControlMode.PercentOutput, powerPercent);
   }
-  public void setPowerUnrestricted(double powerPercent) {
-    ControlledMotor.set(ControlMode.PercentOutput, powerPercent);
-  }
 
-  public void spinIntake(boolean boo){
-    if(boo)
-      setPower(-.5);
-    else
-      setPower(0);
+  public void setDirection(RotationDirection Direction) {
+    CurrentDirection = Direction;
   }
 
   @Override
