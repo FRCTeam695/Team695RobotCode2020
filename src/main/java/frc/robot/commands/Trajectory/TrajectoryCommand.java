@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.Trajectory;
 
 import java.io.IOException;
 import java.nio.file.Path;

@@ -68,5 +68,13 @@ public final class Constants {
     public static final double LIMELIGHT_MOUNT_ANGLE = 15.0; //degrees
   }
 
+  public static final class AuxiliaryMotorIds {
+    public static final int HOPPER_VICTOR_ID = 6;
+    public static final int INTAKE_VICTOR_ID = 5;
+    public static final int TURRET_DRIVER_SRX_ID = 7;
+    public static final int BOTTOM_SHOOTER_FALCON_ID = 22;
+    public static final int TOP_SHOOTER_FALCON_ID = 21;
+
+  }
 
 }

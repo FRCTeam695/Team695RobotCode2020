@@ -5,12 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.Driving;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ControllerConst;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.commands.Driving.DriveModes.ArcadeDrive;
+import frc.robot.commands.Driving.DriveModes.CurveDrive;
+import frc.robot.commands.Driving.DriveModes.TankDrive;
 import frc.robot.subsystems.Drivetrain;
 
 enum DriveState {

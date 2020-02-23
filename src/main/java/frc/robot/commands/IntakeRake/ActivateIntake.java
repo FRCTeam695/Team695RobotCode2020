@@ -5,41 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.IntakeRake;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.IntakeRake;
 
-public class CurveDrive extends CommandBase {
-  private Drivetrain drivetrain;
-  private Joystick Controller;
-  private int leftAxis, rightAxis;
-  private Boolean isQuickTurn = false;
-  
+public class ActivateIntake extends CommandBase {
   /**
-   * Creates a new CurveDrive.
+   * Creates a new ActivateIntake.
    */
-  public CurveDrive(Drivetrain drive, Joystick Controller, int leftAxis, int rightAxis) {
-    this.drivetrain = drive;
-    this.Controller = Controller;
-    this.leftAxis = leftAxis;
-    this.rightAxis = rightAxis;
+  public ActivateIntake(IntakeRake InstakeRake_Inst) {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+  }
 
-  }
-  public void toggleQuickTurn(){
-    isQuickTurn = !isQuickTurn;
-  }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.curveDrive(Controller.getRawAxis(leftAxis)/Constants.rawAxisMaxValue, Controller.getRawAxis(rightAxis)/Constants.rawAxisMaxValue,isQuickTurn);
   }
 
   // Called once the command ends or is interrupted.
