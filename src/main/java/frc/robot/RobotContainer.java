@@ -38,6 +38,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Driving.*;
+import frc.robot.commands.Driving.ConventionalDrive.ConventionalCurveDrive;
 import frc.robot.commands.Trajectory.*;
 import frc.robot.commands.Turret.*;
 import frc.robot.subsystems.*;
@@ -75,7 +76,7 @@ public class RobotContainer {
   //***************************************************************************/
   //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
   //***************************************************************************/
-  private final Drivetrain Drivetrain_inst = new Drivetrain();
+  //private final Drivetrain Drivetrain_inst = new Drivetrain();
   //private final CompressorController Compressor_inst = new CompressorController();
   // Create a voltage constraint to ensure we don't accelerate too fast
   //private final SimpleMotorFeedforward forwardMotor = new SimpleMotorFeedforward(AutoConstants.ksVolts, AutoConstants.kvVoltSecondsPerMeter, AutoConstants.kaVoltSecondsSquaredPerMeter);
@@ -89,6 +90,8 @@ public class RobotContainer {
   //tirrets
 
   private final Turret Turret_Inst = new Turret(RobotMainNetworkTableInstance, 0);
+  private final ConventionalDriveTrain ConventionalDriveTrain_Inst = new ConventionalDriveTrain();
+
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
@@ -107,16 +110,17 @@ public class RobotContainer {
   //***************************************************************************/
 
 
-  private final DriveModeController DriveModeController_Inst = new DriveModeController(Drivetrain_inst, ControllerDrive);
+  //private final DriveModeController DriveModeController_Inst = new DriveModeController(Drivetrain_inst, ControllerDrive);
   private final AutoTurretRotation AutoTurretRotation_inst = new AutoTurretRotation(Turret_Inst);
   private final TurretFocusPID TurretFocusPID_inst = new TurretFocusPID(Turret_Inst,new PIDController(0.1, 0.001, 0));
   private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup(AutoTurretRotation_inst,TurretFocusPID_inst);
-
+  private final ConventionalCurveDrive ConventionalCurveDrive_Inst = new ConventionalCurveDrive(ConventionalDriveTrain_Inst, ControllerDrive);
   //auton
   //private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup(trajectory1.Runner());
   private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup();
+
   //teleop
-  private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup(DriveModeController_Inst);
+  private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup(ConventionalCurveDrive_Inst);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -136,7 +140,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     BButton.whenPressed(TurretGroup);
-    XButton.whenPressed(() -> DriveModeController_Inst.toggleDrive());
+    //XButton.whenPressed(() -> DriveModeController_Inst.toggleDrive());
 
 
   }
