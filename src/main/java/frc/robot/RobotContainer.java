@@ -37,7 +37,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.commands.*;
 import frc.robot.commands.Driving.*;
 import frc.robot.commands.Trajectory.*;
 import frc.robot.commands.Turret.*;
@@ -77,16 +76,16 @@ public class RobotContainer {
   //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
   //***************************************************************************/
   private final Drivetrain Drivetrain_inst = new Drivetrain();
-  private final CompressorController Compressor_inst = new CompressorController();
+  //private final CompressorController Compressor_inst = new CompressorController();
   // Create a voltage constraint to ensure we don't accelerate too fast
-  private final SimpleMotorFeedforward forwardMotor = new SimpleMotorFeedforward(AutoConstants.ksVolts, AutoConstants.kvVoltSecondsPerMeter, AutoConstants.kaVoltSecondsSquaredPerMeter);
-  private final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(forwardMotor, AutoConstants.kDriveKinematics, 10);
-  private final AdjustableVictor BallHopperController = new AdjustableVictor(AuxiliaryMotorIds.HOPPER_VICTOR_ID);
-
+  //private final SimpleMotorFeedforward forwardMotor = new SimpleMotorFeedforward(AutoConstants.ksVolts, AutoConstants.kvVoltSecondsPerMeter, AutoConstants.kaVoltSecondsSquaredPerMeter);
+  //private final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(forwardMotor, AutoConstants.kDriveKinematics, 10);
+  //private final AdjustableVictor BallHopperController = new AdjustableVictor(AuxiliaryMotorIds.HOPPER_VICTOR_ID);
+  //private final IntakeRake IntakeRake_Inst = new IntakeRake();
   // Create config for trajectory
-  private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+  //private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
-  private final TrajectoryCommand trajectory1 = new TrajectoryCommand("src/main/deploy/paths/FindBall.wpilib.json", Drivetrain_inst);
+  //private final TrajectoryCommand trajectory1 = new TrajectoryCommand("src/main/deploy/paths/FindBall.wpilib.json", Drivetrain_inst);
   //tirrets
 
   private final Turret Turret_Inst = new Turret(RobotMainNetworkTableInstance, 0);
@@ -114,8 +113,8 @@ public class RobotContainer {
   private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup(AutoTurretRotation_inst,TurretFocusPID_inst);
 
   //auton
-  private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup(trajectory1.Runner());
-
+  //private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup(trajectory1.Runner());
+  private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup();
   //teleop
   private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup(DriveModeController_Inst);
   /**
@@ -144,9 +143,9 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // Add kinematics to ensure max speed is actually obeyed
-    config.setKinematics(AutoConstants.kDriveKinematics);
+    //config.setKinematics(AutoConstants.kDriveKinematics);
     // Apply the voltage constraint
-    config.addConstraint(autoVoltageConstraint);
+    //config.addConstraint(autoVoltageConstraint);
     return sequentialTrajectory;
   }
 
