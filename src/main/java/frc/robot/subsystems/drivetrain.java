@@ -43,7 +43,7 @@ public class Drivetrain extends SubsystemBase {
     leftFollow.setInverted(InvertType.FollowMaster);
     // The motors on the right side of the drive.
     rightPrimary.setInverted(true);//INVERT INVERSION
-    rightFollow.follow(leftPrimary);
+    rightFollow.follow(rightPrimary);
     rightFollow.setInverted(InvertType.FollowMaster);
 
         // Sets the distance per pulse for the encoders
