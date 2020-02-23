@@ -38,7 +38,7 @@ public final class Constants {
 
   }
 
-  public final class ControllerConst {
+  public static final class ControllerConst {
     public static final int leftSideAxisId = 0;
     public static final int rightSideAxisId = 1;
     public static final int curveDriveButton = 0;
@@ -66,5 +66,6 @@ public final class Constants {
     public static final double LIMELIGHT_MOUNT_HEIGHT = 23.0; //inches
     public static final double LIMELIGHT_MOUNT_ANGLE = 15.0; //degrees
   }
+
 
 }

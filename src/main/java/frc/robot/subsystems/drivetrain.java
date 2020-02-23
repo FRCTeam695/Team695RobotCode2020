@@ -140,7 +140,7 @@ public class Drivetrain extends SubsystemBase {
   }
   /**DONT USE
    * Controls the left and right sides of the drive directly with voltages.
-   *@deprecated
+   *
    * @param leftVolts  the commanded left output
    * @param rightVolts the commanded right output
    */

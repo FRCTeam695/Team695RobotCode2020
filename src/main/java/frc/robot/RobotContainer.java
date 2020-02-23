@@ -101,11 +101,7 @@ public class RobotContainer {
   //***************************************************************************/
   //COMMANDS INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
-  //private final TankDrive ActivateTankDrive = new TankDrive(RobotDriveMotors,ControllerDrive,1,5);
-  // final MattDrive ActivateMattDrive = new MattDrive(RobotDriveMotors,ControllerDrive,1,4);
 
-  //private final SetColor ColorSensorUsed = new SetColor();
-  //private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
 
   private final Driving DrivingController = new Driving(Drivetrain_inst, ControllerDrive);
   private final AutoTurretRotation Finding = new AutoTurretRotation(Turret_Inst);
@@ -147,31 +143,12 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     
-            // Add kinematics to ensure max speed is actually obeyed
+    // Add kinematics to ensure max speed is actually obeyed
     config.setKinematics(AutoConstants.kDriveKinematics);
-            // Apply the voltage constraint
+    // Apply the voltage constraint
     config.addConstraint(autoVoltageConstraint);
-
-    // An example trajectory to follow.  All units in meters.
-    /*Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(
-            new Translation2d(1, 1),
-            new Translation2d(2, -1)
-        ),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
-        // Pass config
-        config
-//Yue will import trajectories
-      
-    );*/
     SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup();
     sequentialTrajectory.addCommands(trajectory1.Runner());
-
-    // Run path following command, then stop at the end.
     return sequentialTrajectory;
   }
 
@@ -181,14 +158,6 @@ public class RobotContainer {
    * @return the command to run in teleop
    */
   public Command getTeleopCommand() {
-    ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
-    //test.set(ControlMode.PercentOutput,0.5);
-
-    //ContinuousTeleop.addCommands(new InstantC);
-    //test.set(ControlMode.PercentOutput,0.5);
-    //ContinuousTeleop.addCommands(ActivateClosedLoop);
-
-    //ContinuousTeleop.addCommands(ReturnBall);
 
     return ContinuousTeleop;
   }
