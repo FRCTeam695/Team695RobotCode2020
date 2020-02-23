@@ -8,9 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -22,7 +20,7 @@ public class Turret extends SubsystemBase {
   /**
    * Creates a new TurretMotor.
    */
-  private TalonFX motor;
+  private TalonSRX motor;
   private FalconClosedLoop TopShooterMotor;
   private FalconClosedLoop BottomShooterMotor;
   private double gain = .3;
@@ -34,14 +32,14 @@ public class Turret extends SubsystemBase {
   //private DigitalInput LimitSwitchLeft = new DigitalInput(0);
   //private DigitalInput LimitSwitchRight = new DigitalInput(0);
 
-  public Turret(NetworkTableInstance RobotMainNetworkTableInstance, int motorNum,FalconClosedLoop TopShootorMotor,FalconClosedLoop BottomShootorMotor) {
+  public Turret(NetworkTableInstance RobotMainNetworkTableInstance, int driverNum) {
     this.LimeLight = RobotMainNetworkTableInstance.getTable("limelight");
     this.LimeLightAzimuth = LimeLight.getEntry("tx");
 		this.LimeLightCoPolar = LimeLight.getEntry("ty");
     this.LimeLightContourArea = LimeLight.getEntry("ta");
-    this.motor = new TalonFX(motorNum);
-    this.TopShooterMotor = TopShootorMotor;
-    this.BottomShooterMotor = BottomShootorMotor;
+    this.motor = new TalonSRX(driverNum);
+    this.TopShooterMotor = new FalconClosedLoop(21,0,30,ControlMode.Velocity); //The motor we use is yet to be determined.
+    this.BottomShooterMotor = new FalconClosedLoop(22,0,30,ControlMode.Velocity); 
     this.TopShooterMotor.setClosedLoopMode(ControlMode.Velocity);
     this.BottomShooterMotor.setClosedLoopMode(ControlMode.Velocity);
 

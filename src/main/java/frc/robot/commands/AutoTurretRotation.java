@@ -7,27 +7,30 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Turret;
 
-import java.lang.Math;
-import frc.robot.Constants;
+
 public class AutoTurretRotation extends CommandBase {
+  public enum SearchDirection {
+    COUNTER_CLOCKWISE(-1), CLOCKWISE(1);
+    public int rotationDirectionModifier;
+    private SearchDirection(int rotationDirectionModifier) {
+      this.rotationDirectionModifier = rotationDirectionModifier;
+    }
+  }
   //private ModelTurret TurretControlled;
-  private Turret motor;
-  private int t = 0;
-  private int i = 0;
-  private final int finalLimit = 1000;
+  private Turret Turret_Inst;
+  private SearchDirection CurrentDirection;
   private final double velocity = .5;
 
   //private int panDirection = 1;
   /**
    * Creates a new SetTurretRotation.
    */
-  public AutoTurretRotation(Turret motor) {
-    this.motor = motor;
-    addRequirements(motor);
+  public AutoTurretRotation(Turret Turret_Inst) {
+    this.Turret_Inst = Turret_Inst;
+    addRequirements(Turret_Inst);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -39,24 +42,19 @@ public class AutoTurretRotation extends CommandBase {
   //second version of execute
   @Override
   public void execute() {
-    if(!motor.isTooFarLeft() && !motor.isTooFarRight() && i==0)
-      motor.setPower(velocity);
-    if(!motor.isTooFarLeft() && !motor.isTooFarRight() && i==1)
-      motor.setPower(-velocity);
-    if(motor.isTooFarLeft()) {
-      i=1;
-      motor.setPower(-velocity);
+    if(Turret_Inst.isTooFarLeft()) {
+      CurrentDirection = SearchDirection.CLOCKWISE;
     }
-    if(motor.isTooFarRight()) {
-      i=0;
-      motor.setPower(velocity);
+    if(Turret_Inst.isTooFarRight()) {
+      CurrentDirection = SearchDirection.COUNTER_CLOCKWISE;
     }
+    Turret_Inst.setPower(CurrentDirection.rotationDirectionModifier*velocity);
+
     
   }
 
   public boolean endCommand() {
-    System.out.println(motor.getAzimuth());
-    return motor.getContourArea() >= 0.02;
+    return Turret_Inst.getContourArea() >= 0.02;
   }
 
   // Returns true when the command should end.

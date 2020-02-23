@@ -73,9 +73,8 @@ public class RobotContainer {
   //***************************************************************************/
   //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
   //***************************************************************************/
-  private final Drivetrain Drivetrain_Inst = new Drivetrain();
-  private final CompressorController Compressor = new CompressorController();
-  private final BallDetector Detector = new BallDetector(0);
+  private final Drivetrain Drivetrain_inst = new Drivetrain();
+  private final CompressorController Compressor_inst = new CompressorController();
   // Create a voltage constraint to ensure we don't accelerate too fast
   private final SimpleMotorFeedforward forwardMotor = new SimpleMotorFeedforward(AutoConstants.ksVolts, AutoConstants.kvVoltSecondsPerMeter, AutoConstants.kaVoltSecondsSquaredPerMeter);
   private final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(forwardMotor, AutoConstants.kDriveKinematics, 10);
@@ -83,11 +82,10 @@ public class RobotContainer {
   // Create config for trajectory
   private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
-  private final TrajectoryCommand trajectory1 = new TrajectoryCommand("src/main/deploy/paths/FindBall.wpilib.json", Drivetrain_Inst);
+  private final TrajectoryCommand trajectory1 = new TrajectoryCommand("src/main/deploy/paths/FindBall.wpilib.json", Drivetrain_inst);
   //tirrets
-  private final FalconClosedLoop ClosedLoopTop = new FalconClosedLoop(12,0,30,ControlMode.Velocity); //The motor we use is yet to be determined.
-  private final FalconClosedLoop ClosedLoopBottom = new FalconClosedLoop(10,0,30,ControlMode.Velocity); 
-  private final Turret Turret_Inst = new Turret(RobotMainNetworkTableInstance, 0, ClosedLoopBottom, ClosedLoopBottom);
+
+  private final Turret Turret_Inst = new Turret(RobotMainNetworkTableInstance, 0);
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
@@ -109,9 +107,9 @@ public class RobotContainer {
   //private final SetColor ColorSensorUsed = new SetColor();
   //private final SetTurretRotation ActivateTurret = new SetTurretRotation(Turret, ControllerDrive, 0, 1);
 
-  private final Driving DrivingController = new Driving(Drivetrain_Inst, ControllerDrive);
-  private final AutoTurretRotation Finding = new AutoTurretRotation(Turret);
-  private final TurretFocusPID FocusingPID = new TurretFocusPID(Turret,new PIDController(0.1, 0.001, 0));
+  private final Driving DrivingController = new Driving(Drivetrain_inst, ControllerDrive);
+  private final AutoTurretRotation Finding = new AutoTurretRotation(Turret_Inst);
+  private final TurretFocusPID FocusingPID = new TurretFocusPID(Turret_Inst,new PIDController(0.1, 0.001, 0));
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
