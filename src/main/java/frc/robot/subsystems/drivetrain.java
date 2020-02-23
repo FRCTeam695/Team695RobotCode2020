@@ -42,7 +42,7 @@ public class Drivetrain extends SubsystemBase {
     leftFollow.follow(leftPrimary);
     leftFollow.setInverted(InvertType.FollowMaster);
     // The motors on the right side of the drive.
-    rightPrimary.setInverted(true);//INVERT INVERSION
+    rightPrimary.setInverted(false);//INVERT INVERSION
     rightFollow.follow(rightPrimary);
     rightFollow.setInverted(InvertType.FollowMaster);
 
