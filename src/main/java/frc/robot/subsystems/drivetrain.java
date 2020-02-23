@@ -77,8 +77,8 @@ public class Drivetrain extends SubsystemBase {
    */
   public void DriveSubsystem() {
     // Sets the distance per pulse for the encoders
-    m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-    m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    m_leftEncoder.setDistancePerPulse(DriveConstants.ENCODER_DISTANCE_PER_WHEEL_ROTATION);
+    m_rightEncoder.setDistancePerPulse(DriveConstants.ENCODER_DISTANCE_PER_WHEEL_ROTATION);
     resetEncoders();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   }
@@ -207,7 +207,7 @@ public class Drivetrain extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return Math.IEEEremainder(m_gyro.getAngle(), 360) * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return Math.IEEEremainder(m_gyro.getAngle(), 360) * (DriveConstants.IS_GYRO_REVERSED ? -1.0 : 1.0);
   }
 
   /**
@@ -216,7 +216,7 @@ public class Drivetrain extends SubsystemBase {
    * @return The turn rate of the robot, in degrees per second
    */
   public double getTurnRate() {
-    return m_gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+    return m_gyro.getRate() * (DriveConstants.IS_GYRO_REVERSED ? -1.0 : 1.0);
   }
 
 
