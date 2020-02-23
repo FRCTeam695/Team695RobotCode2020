@@ -38,10 +38,13 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.*;
+import frc.robot.commands.Driving.*;
+import frc.robot.commands.Trajectory.*;
+import frc.robot.commands.Turret.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
 import  edu.wpi.first.wpilibj.controller.PIDController;
-
+import frc.robot.Constants.AuxiliaryMotorIds;
 /**
  * COntroller button indicies:
  * A: 1
@@ -78,6 +81,7 @@ public class RobotContainer {
   // Create a voltage constraint to ensure we don't accelerate too fast
   private final SimpleMotorFeedforward forwardMotor = new SimpleMotorFeedforward(AutoConstants.ksVolts, AutoConstants.kvVoltSecondsPerMeter, AutoConstants.kaVoltSecondsSquaredPerMeter);
   private final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(forwardMotor, AutoConstants.kDriveKinematics, 10);
+  private final AdjustableVictor BallHopperController = new AdjustableVictor(AuxiliaryMotorIds.HOPPER_VICTOR_ID);
 
   // Create config for trajectory
   private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);

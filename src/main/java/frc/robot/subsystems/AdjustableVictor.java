@@ -13,18 +13,19 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.enums.RotationDirection;;
 
-public class IntakeMotor extends SubsystemBase {
+public class AdjustableVictor extends SubsystemBase {
   private VictorSPX ControlledMotor;
   private RotationDirection CurrentDirection;
   /**
    * Creates a new IntakeMotor.
    */
-  public IntakeMotor(int deviceNumber) {
+  public AdjustableVictor(int deviceNumber) {
     this.ControlledMotor = new VictorSPX(deviceNumber);
+    this.CurrentDirection = RotationDirection.CLOCKWISE;
   }
 
   public void setPower(double powerPercent){
-    ControlledMotor.set(ControlMode.PercentOutput, powerPercent);
+    ControlledMotor.set(ControlMode.PercentOutput, CurrentDirection.SIGN_MODIFIER*powerPercent);
   }
 
   public void setDirection(RotationDirection Direction) {
