@@ -9,13 +9,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.TurretMotor;
+import frc.robot.subsystems.Turret;
 
 import java.lang.Math;
 import frc.robot.Constants;
 public class AutoTurretRotation extends CommandBase {
   //private ModelTurret TurretControlled;
-  private TurretMotor motor;
+  private Turret motor;
   private int t = 0;
   private int i = 0;
   private final int finalLimit = 1000;
@@ -25,7 +25,7 @@ public class AutoTurretRotation extends CommandBase {
   /**
    * Creates a new SetTurretRotation.
    */
-  public AutoTurretRotation(TurretMotor motor) {
+  public AutoTurretRotation(Turret motor) {
     this.motor = motor;
     addRequirements(motor);
     // Use addRequirements() here to declare subsystem dependencies.

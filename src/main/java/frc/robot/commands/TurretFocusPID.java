@@ -9,18 +9,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.subsystems.TurretMotor;
+import frc.robot.subsystems.Turret;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class TurretFocusPID extends PIDCommand {
-  private TurretMotor Motor;
+  private Turret Motor;
   private static double timeOutOfSetpoint = 0;
   /**
    * Creates a new TurretFocusPID.
    */
-  public TurretFocusPID(TurretMotor Motor,PIDController PID) {
+  public TurretFocusPID(Turret Motor,PIDController PID) {
     super(
       // The controller that the command will use
       PID,

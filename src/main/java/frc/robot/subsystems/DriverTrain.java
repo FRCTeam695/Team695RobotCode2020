@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Motors extends SubsystemBase {
+public class DriverTrain extends SubsystemBase {
   /**
    * Creates a new ExampleSubsystem.
    */
@@ -28,7 +28,7 @@ public class Motors extends SubsystemBase {
 		gain = changeGainTo;
 	}
 
-  public Motors() {
+  public DriverTrain() {
 
   }
 

@@ -17,9 +17,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-
-public class TurretMotor extends SubsystemBase {
+import frc.robot.Constants.LimelightMounting;
+public class Turret extends SubsystemBase {
   /**
    * Creates a new TurretMotor.
    */
@@ -35,7 +34,7 @@ public class TurretMotor extends SubsystemBase {
   //private DigitalInput LimitSwitchLeft = new DigitalInput(0);
   //private DigitalInput LimitSwitchRight = new DigitalInput(0);
 
-  public TurretMotor(NetworkTableInstance RobotMainNetworkTableInstance, int motorNum,FalconClosedLoop TopShootorMotor,FalconClosedLoop BottomShootorMotor) {
+  public Turret(NetworkTableInstance RobotMainNetworkTableInstance, int motorNum,FalconClosedLoop TopShootorMotor,FalconClosedLoop BottomShootorMotor) {
     this.LimeLight = RobotMainNetworkTableInstance.getTable("limelight");
     this.LimeLightAzimuth = LimeLight.getEntry("tx");
 		this.LimeLightCoPolar = LimeLight.getEntry("ty");
@@ -75,7 +74,7 @@ public class TurretMotor extends SubsystemBase {
   }
 
   public double getDistanceToContour() {
-    return (82.0-Constants.LIMELIGHT_MOUNT_HEIGHT)/Math.tan(Math.toRadians(Constants.LIMELIGHT_MOUNT_ANGLE+getCoPolar()));
+    return (82.0-LimelightMounting.LIMELIGHT_MOUNT_HEIGHT)/Math.tan(Math.toRadians(LimelightMounting.LIMELIGHT_MOUNT_ANGLE+getCoPolar()));
   }
 
   public double getDistanceToContourInFeet() {

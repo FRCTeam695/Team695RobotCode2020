@@ -7,19 +7,23 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.*;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class FindBall extends CommandBase {
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.FalconClosedLoop;
+
+
+public class EnableFalconVelocityClosedLoop extends CommandBase {
   /**
-   * Creates a new FindBall.
+   * Creates a new EnableCIMClosedLoop.
    */
-  BallDetector Detector;
-  DriverTrain MotorIntake;
-  public FindBall(BallDetector Detector/*, Motors MotorIntake*/) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.Detector = Detector;
-    //this.MotorIntake = MotorIntake;
+  FalconClosedLoop closedLoop;
+  double velocity;
+  public EnableFalconVelocityClosedLoop(FalconClosedLoop loop,double velocity) {
+    this.closedLoop = loop;
+    this.velocity = velocity;
+    loop.setClosedLoopMode(ControlMode.Velocity);
+    addRequirements(loop);
   }
 
   // Called when the command is initially scheduled.
@@ -30,11 +34,7 @@ public class FindBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //MotorIntake.spinIntake(Detector.get());
-    if(Detector.get())
-      System.out.println("False");
-    else
-      System.out.println("True");
+    closedLoop.setVelocity(velocity); //Determine Velocity
   }
 
   // Called once the command ends or is interrupted.
@@ -47,5 +47,4 @@ public class FindBall extends CommandBase {
   public boolean isFinished() {
     return false;
   }
-  //test
 }

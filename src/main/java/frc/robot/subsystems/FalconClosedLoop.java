@@ -14,6 +14,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -49,6 +51,7 @@ public class FalconClosedLoop extends SubsystemBase {
 		Talon.configNominalOutputReverse(0, timeoutMs);
 		Talon.configPeakOutputForward(1, timeoutMs);
         Talon.configPeakOutputReverse(-1, timeoutMs);
+        Talon.getSensorCollection().setIntegratedSensorPositionToAbsolute(timeoutMs);
         applyPIDCoefficients(getPIDCoefficientsForControlMode(ClosedLoopMode));
     }
     public PIDCoefficients getPIDCoefficientsForControlMode(ControlMode ControlModeToUse) {
@@ -56,6 +59,7 @@ public class FalconClosedLoop extends SubsystemBase {
             case Velocity:
                 return VelocityPIDCoefficients;
             case Position:
+                Talon.getSensorCollection().setIntegratedSensorPositionToAbsolute(timeoutMs);
                 return PositionPIDCoefficients;
             case PercentOutput:
                 return new PIDCoefficients(0, 0, 0, 0);
@@ -69,6 +73,7 @@ public class FalconClosedLoop extends SubsystemBase {
         Talon.config_kD(PIDLoopId, CoefficientsToApply.kD, timeoutMs);
         Talon.config_kF(PIDLoopId, CoefficientsToApply.kF, timeoutMs);
     }
+    //encoder stuff
 
 
 
