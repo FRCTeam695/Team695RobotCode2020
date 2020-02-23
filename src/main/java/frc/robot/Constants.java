@@ -32,7 +32,8 @@ public final class Constants {
     public static final int LEFT_MOTOR2_ID = 12;
     public static final int RIGHT_MOTOR1_ID = 13;
     public static final int RIGHT_MOTOR_2_ID = 14;
-    public static final double ENCODER_DISTANCE_PER_WHEEL_ROTATION = 17305.6;// probably will do a bunch of math here
+    public static final double ENCODER_DISTANCE_PER_WHEEL_ROTATION = 17305.6*Math.PI*WHEEL_DIAMETER;// probably will do a bunch of math here
+    public static final double WHEEL_DIAMETER = Units.inchesToMeters(6);
     public static final boolean IS_GYRO_REVERSED = false;
     public static final double TRACK_WIDTH = Units.inchesToMeters(19.5);//19.5 inch between, each wheel is inch thick
 
@@ -51,9 +52,9 @@ public final class Constants {
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
-    public static final double ksVolts = 0;
-    public static final double kvVoltSecondsPerMeter = 0;
-    public static final double kaVoltSecondsSquaredPerMeter = 0;
+    public static final double ksVolts = 0.165;
+    public static final double kvVoltSecondsPerMeter = 1.91;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.125;
     public static final double kPDriveVel = 0;
     public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
         DriveConstants.TRACK_WIDTH);

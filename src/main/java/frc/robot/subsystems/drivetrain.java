@@ -45,6 +45,12 @@ public class Drivetrain extends SubsystemBase {
     rightPrimary.setInverted(true);//INVERT INVERSION
     rightFollow.follow(leftPrimary);
     rightFollow.setInverted(InvertType.FollowMaster);
+
+        // Sets the distance per pulse for the encoders
+        m_leftEncoder.setDistancePerPulse(DriveConstants.ENCODER_DISTANCE_PER_WHEEL_ROTATION);
+        m_rightEncoder.setDistancePerPulse(DriveConstants.ENCODER_DISTANCE_PER_WHEEL_ROTATION);
+        resetEncoders();
+        m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   }
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(leftPrimary, rightPrimary);
