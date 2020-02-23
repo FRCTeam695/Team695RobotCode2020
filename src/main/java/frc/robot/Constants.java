@@ -27,11 +27,11 @@ import edu.wpi.first.wpilibj.util.Units;
 public final class Constants {
 
   public static final class DriveConstants {
-    public static final int motorTimeout = 30;// ms
-    public static final int kLeftMotor1ID = 0;
-    public static final int kLeftMotor2ID = 0;
-    public static final int kRightMotor1ID = 0;
-    public static final int kRightMotor2ID = 0;
+    public static final int MOTOR_TIMEOUT = 30;// ms
+    public static final int LEFT_MOTOR1_ID = 11;
+    public static final int LEFT_MOTOR2_ID = 12;
+    public static final int RIGHT_MOTOR1_ID = 13;
+    public static final int RIGHT_MOTOR_2_ID = 14;
     public static final double kEncoderDistancePerPulse = 0;// probably will do a bunch of math here
     public static final boolean kGyroReversed = false;
     public static final double kTrackwidthMeters = Units.inchesToMeters(20);

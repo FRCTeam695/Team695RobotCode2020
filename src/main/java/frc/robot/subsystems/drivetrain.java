@@ -30,10 +30,10 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Creates a new drivetrain.
    */  
-  private WPI_TalonFX leftPrimary = new WPI_TalonFX(DriveConstants.kLeftMotor1ID);
-  private WPI_TalonFX leftFollow = new WPI_TalonFX(DriveConstants.kLeftMotor2ID);
-  private WPI_TalonFX rightPrimary = new WPI_TalonFX(DriveConstants.kRightMotor1ID);
-  private WPI_TalonFX rightFollow = new WPI_TalonFX(DriveConstants.kRightMotor2ID);
+  private WPI_TalonFX leftPrimary = new WPI_TalonFX(DriveConstants.LEFT_MOTOR1_ID);
+  private WPI_TalonFX leftFollow = new WPI_TalonFX(DriveConstants.LEFT_MOTOR2_ID);
+  private WPI_TalonFX rightPrimary = new WPI_TalonFX(DriveConstants.RIGHT_MOTOR1_ID);
+  private WPI_TalonFX rightFollow = new WPI_TalonFX(DriveConstants.RIGHT_MOTOR_2_ID);
   
   public Drivetrain() {
     shuffleInit();
