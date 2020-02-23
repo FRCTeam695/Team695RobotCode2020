@@ -17,6 +17,8 @@ import frc.robot.subsystems.Turret;
 public class TurretFocusPID extends PIDCommand {
   private Turret Motor;
   private static double timeOutOfSetpoint = 0;
+  private boolean status = false;
+  
   /**
    * Creates a new TurretFocusPID.
    */
@@ -52,9 +54,13 @@ public class TurretFocusPID extends PIDCommand {
     // Configure additional PID options by calling `getController` here.
   }
 
+  public void stopCommand() {
+    status = true;
+  }
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return status;
   }
 }

@@ -109,7 +109,7 @@ public class RobotContainer {
   private final TurretFocusPID TurretFocusPID_inst = new TurretFocusPID(Turret_Inst,new PIDController(0.1, 0.001, 0));
   private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup(AutoTurretRotation_inst,TurretFocusPID_inst);
 
-  //auton
+  //autonomous
   private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup(trajectory1.Runner());
 
   //teleop
@@ -120,6 +120,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    AButton.whenPressed(() -> TurretFocusPID_inst.stopCommand());
 
     //enable compressor
     //new InstantCommand(Compressor::enableCompressor,Compressor).schedule();
