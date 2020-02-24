@@ -39,6 +39,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Driving.*;
 import frc.robot.commands.Driving.ConventionalDrive.ConventionalArcadeDrive;
+import frc.robot.commands.HopperDriver.VictorControlJoystickAxis;
 import frc.robot.commands.Trajectory.*;
 import frc.robot.commands.Turret.*;
 import frc.robot.driverinput.LogitechF310;
@@ -64,7 +65,7 @@ public class RobotContainer {
   // Create a voltage constraint to ensure we don't accelerate too fast
   //private final SimpleMotorFeedforward forwardMotor = new SimpleMotorFeedforward(AutoConstants.ksVolts, AutoConstants.kvVoltSecondsPerMeter, AutoConstants.kaVoltSecondsSquaredPerMeter);
   //private final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(forwardMotor, AutoConstants.kDriveKinematics, 10);
-  private final AdjustableVictor BallHopperController = new AdjustableVictor(AuxiliaryMotorIds.HOPPER_VICTOR_ID);
+  private final AdjustableVictor BallHopperVictor = new AdjustableVictor(AuxiliaryMotorIds.HOPPER_VICTOR_ID);
   private final IntakeRake IntakeRake_Inst = new IntakeRake();
   // Create config for trajectory
   //private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
@@ -133,7 +134,7 @@ public class RobotContainer {
 
     ControllerShoot.AButton.whenPressed(() -> TurretFocusPID_inst.stopCommand());
     ControllerShoot.BButton.whenPressed(TurretGroup);
-    ContinuousTeleop.addCommands();
+    ContinuousTeleop.addCommands(new VictorControlJoystickAxis(BallHopperVictor, ControllerShoot.LeftJoystick));
   }
 
   public Command getAutonomousCommand() {
