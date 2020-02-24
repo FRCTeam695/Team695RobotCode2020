@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
@@ -43,7 +45,10 @@ import frc.robot.commands.HopperDriver.VictorControlJoystickAxis;
 import frc.robot.commands.Trajectory.*;
 import frc.robot.commands.Turret.*;
 import frc.robot.driverinput.LogitechF310;
+import frc.robot.Utility.Tuple;
+import frc.robot.commands.*;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.dashTab.box;
 import edu.wpi.first.wpilibj.Joystick;
 import  edu.wpi.first.wpilibj.controller.PIDController;
 import frc.robot.Constants.AuxiliaryMotorIds;
@@ -67,6 +72,7 @@ public class RobotContainer {
   //private final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(forwardMotor, AutoConstants.kDriveKinematics, 10);
   private final AdjustableVictor BallHopperVictor = new AdjustableVictor(AuxiliaryMotorIds.HOPPER_VICTOR_ID);
   private final IntakeRake IntakeRake_Inst = new IntakeRake();
+  private final Dashboard Dashboard_Inst = new Dashboard();
   // Create config for trajectory
   //private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
@@ -114,7 +120,6 @@ public class RobotContainer {
     //enable compressor
     new InstantCommand(Compressor_inst::enableCompressor,Compressor_inst).schedule();
   }
-
   /**
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -152,6 +157,7 @@ public class RobotContainer {
    */
   public Command getTeleopCommand() {
 
+    Dashboard_Inst.initDash();
     return ContinuousTeleop;
   }
 }
