@@ -87,7 +87,7 @@ public class Turret extends SubsystemBase {
     double distance = getDistanceToContourInFeet();
     return (103.9625-6.687958*distance+0.6078882*Math.pow(distance,2)-0.01795044*Math.pow(distance,3))/100;
   }
-  public void setMotorPowers(double topPercent,double bottomPercent) {
+  public void setShooterWheelPowers(double topPercent,double bottomPercent) {
     TopShooterMotor.setVelocityPercent(topPercent);
     BottomShooterMotor.setVelocityPercent(bottomPercent);
 
