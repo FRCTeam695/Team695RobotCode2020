@@ -38,7 +38,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Driving.*;
-import frc.robot.commands.Driving.ConventionalDrive.ConventionalCurveDrive;
+import frc.robot.commands.Driving.ConventionalDrive.ConventionalArcadeDrive;
 import frc.robot.commands.Trajectory.*;
 import frc.robot.commands.Turret.*;
 import frc.robot.subsystems.*;
@@ -114,7 +114,7 @@ public class RobotContainer {
   private final AutoTurretRotation AutoTurretRotation_inst = new AutoTurretRotation(Turret_Inst);
   private final TurretFocusPID TurretFocusPID_inst = new TurretFocusPID(Turret_Inst,new PIDController(0.1, 0.001, 0));
   private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup(AutoTurretRotation_inst,TurretFocusPID_inst);
-  private final ConventionalCurveDrive ConventionalCurveDrive_Inst = new ConventionalCurveDrive(ConventionalDriveTrain_Inst, ControllerDrive);
+  private final ConventionalArcadeDrive ConventionalCurveDrive_Inst = new ConventionalArcadeDrive(ConventionalDriveTrain_Inst, ControllerDrive);
   //auton
   //private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup(trajectory1.Runner());
   private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup();

@@ -9,21 +9,27 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-public class ControllerAxisEnableDetector extends SubsystemBase {
-  Joystick ControllerWatched;
-  int axisId;
+public class ControllerAxisToggle extends Button {
+  private Joystick ControllerWatched;
+  private int axisId;
+  private double lastAxisReading = 0;
   /**
    * Creates a new AxisEnableDetector.
    */
-  public ControllerAxisEnableDetector(Joystick ControllerWatched, int axisId) {
+  public ControllerAxisToggle(Joystick ControllerWatched, int axisId) {
     this.ControllerWatched = ControllerWatched;
     this.axisId = axisId;
   }
-
-  @Override 
-  public void periodic() {
-
-    // This method will be called once per scheduler run
+  public boolean get() {
+    double axisReading = ControllerWatched.getRawAxis(axisId);
+    if (axisReading < 0.0001) {
+      axisReading = 0;
+    }
+    boolean readingChanged = axisReading != lastAxisReading;
+    lastAxisReading = axisReading;
+    return readingChanged;
   }
 }

@@ -13,7 +13,9 @@ import frc.robot.Constants.AuxiliaryMotorIds;
 import frc.robot.enums.RotationDirection;
 
 public class IntakeRake extends SubsystemBase {
-  private Solenoid RakePneumaticCylinder = new Solenoid(0);
+  private Solenoid RakePneumaticCylinderLeft = new Solenoid(0); 
+  private Solenoid RakePneumaticCylinderRight = new Solenoid(0);
+
   private AdjustableVictor IntakeDriverMotor = new AdjustableVictor(AuxiliaryMotorIds.INTAKE_VICTOR_ID);
   /**
    * Creates a new IntakeRake.
@@ -37,11 +39,15 @@ public class IntakeRake extends SubsystemBase {
   }
 
   public void raiseRake() {
-    RakePneumaticCylinder.set(true);
+    RakePneumaticCylinderLeft.set(true);
+    RakePneumaticCylinderRight.set(true);
+
   }
 
   public void lowerRake() {
-    RakePneumaticCylinder.set(false);
+    RakePneumaticCylinderLeft.set(false);
+    RakePneumaticCylinderRight.set(false);
+
   }
 
   @Override
