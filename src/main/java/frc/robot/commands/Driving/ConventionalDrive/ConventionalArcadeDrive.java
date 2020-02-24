@@ -7,22 +7,20 @@
 
 package frc.robot.commands.Driving.ConventionalDrive;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.driverinput.LogitechF310;
 import frc.robot.subsystems.ConventionalDriveTrain;
 
 public class ConventionalArcadeDrive extends CommandBase {
-  private Joystick ControllerDrive;
-  private double forward = 0;
-  private double right = 0;
+  private LogitechF310 ControllerDrive;
   private double rightPower = 0;
   private double leftPower = 0;
   private ConventionalDriveTrain ConventionalDriveTrain_Inst;
   /**
    * Creates a new ConventionalTankDrive.
    */
-  public ConventionalArcadeDrive(ConventionalDriveTrain ConventionalDriveTrain_Inst,Joystick ControllerDrive) {
+  public ConventionalArcadeDrive(ConventionalDriveTrain ConventionalDriveTrain_Inst,LogitechF310 ControllerDrive) {
     this.ControllerDrive = ControllerDrive;
     this.ConventionalDriveTrain_Inst = ConventionalDriveTrain_Inst;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -37,11 +35,11 @@ public class ConventionalArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    forward = ControllerDrive.getRawAxis(Constants.ControllerConst.leftSideAxisId);
-    right = ControllerDrive.getRawAxis(Constants.ControllerConst.rightSideAxisId);
+    double throttle = ControllerDrive.LeftJoystick.get().x;
+    double steer = ControllerDrive.RightJoystick.get().y;
 
-    rightPower = forward + right;
-    leftPower = forward - right;
+    rightPower = throttle + steer;
+    leftPower = throttle - steer;
     
     ConventionalDriveTrain_Inst.setPowers(rightPower,leftPower);
 

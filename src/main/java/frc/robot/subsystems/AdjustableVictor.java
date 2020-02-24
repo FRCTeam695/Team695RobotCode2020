@@ -16,15 +16,22 @@ import frc.robot.enums.RotationDirection;;
 public class AdjustableVictor extends SubsystemBase {
   private VictorSPX ControlledMotor;
   private RotationDirection CurrentDirection;
+  private double powerPercent = 0;
   /**
    * Creates a new IntakeMotor.
    */
   public AdjustableVictor(int deviceNumber) {
     this.ControlledMotor = new VictorSPX(deviceNumber);
-    this.CurrentDirection = RotationDirection.CLOCKWISE;
+    this.CurrentDirection = RotationDirection.NO_MODIFICATION;
+  }
+
+  public AdjustableVictor(int deviceNumber,RotationDirection StartingDirection) {
+    this(deviceNumber);
+    this.CurrentDirection = StartingDirection;
   }
 
   public void setPower(double powerPercent){
+    this.powerPercent = powerPercent;
     ControlledMotor.set(ControlMode.PercentOutput, CurrentDirection.SIGN_MODIFIER*powerPercent);
   }
 
@@ -34,6 +41,7 @@ public class AdjustableVictor extends SubsystemBase {
 
   @Override
   public void periodic() {
+    setPower(powerPercent);
     // This method will be called once per scheduler run
   }
 }

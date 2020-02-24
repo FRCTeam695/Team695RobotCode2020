@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.Vector2d;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import jdk.internal.jshell.tool.resources.version;
 
 /*
  * COntroller button indicies:
@@ -44,6 +43,7 @@ public class LogitechF310 {
     public final JoystickButton YButton;
     public final Supplier<Vector2d> LeftJoystick, RightJoystick;
     public final DoubleSupplier LeftTrigger,RightTrigger;
+    public final ControllerAxisToggle RightTriggerAsButton,LeftTriggerAsButton;
     public final POVButton POVTop,POVTopRight,POVRight,POVBottomRight,POVBottom,POVBottomLeft,POVLeft,POVTopLeft;
     public final JoystickButton LeftBumper,RightBumper;
 
@@ -57,8 +57,11 @@ public class LogitechF310 {
         RightJoystick = () -> {return new Vector2d(WrappedJoystick.getRawAxis(2),WrappedJoystick.getRawAxis(3));};
         LeftTrigger = () -> {return WrappedJoystick.getRawAxis(4);};
         RightTrigger = () -> {return WrappedJoystick.getRawAxis(5);};
-        LeftBumper = new JoystickButton(WrappedJoystick, 4); //TODO: FIGURE OUT BUMPER BUTTON MAPS
+        LeftBumper = new JoystickButton(WrappedJoystick, 4); //TODO: FIGURE OUT BUMPER BUTTON MAPS and trigger axis
         RightBumper = new JoystickButton(WrappedJoystick, 5); //TODO: FIGURE OUT BUMPER BUTTON MAPS
+        RightTriggerAsButton = new ControllerAxisToggle(WrappedJoystick, 4);
+        LeftTriggerAsButton = new ControllerAxisToggle(WrappedJoystick, 5);
+
         //povs 
         POVTop = new POVButton(WrappedJoystick,0);
         POVTopRight = new POVButton(WrappedJoystick, 45);

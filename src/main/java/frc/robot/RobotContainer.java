@@ -41,6 +41,7 @@ import frc.robot.commands.Driving.*;
 import frc.robot.commands.Driving.ConventionalDrive.ConventionalArcadeDrive;
 import frc.robot.commands.Trajectory.*;
 import frc.robot.commands.Turret.*;
+import frc.robot.driverinput.LogitechF310;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
 import  edu.wpi.first.wpilibj.controller.PIDController;
@@ -59,12 +60,12 @@ public class RobotContainer {
   //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
   //***************************************************************************/
   //private final Drivetrain Drivetrain_inst = new Drivetrain();
-  //private final CompressorController Compressor_inst = new CompressorController();
+  private final CompressorController Compressor_inst = new CompressorController();
   // Create a voltage constraint to ensure we don't accelerate too fast
   //private final SimpleMotorFeedforward forwardMotor = new SimpleMotorFeedforward(AutoConstants.ksVolts, AutoConstants.kvVoltSecondsPerMeter, AutoConstants.kaVoltSecondsSquaredPerMeter);
   //private final DifferentialDriveVoltageConstraint autoVoltageConstraint = new DifferentialDriveVoltageConstraint(forwardMotor, AutoConstants.kDriveKinematics, 10);
-  //private final AdjustableVictor BallHopperController = new AdjustableVictor(AuxiliaryMotorIds.HOPPER_VICTOR_ID);
-  //private final IntakeRake IntakeRake_Inst = new IntakeRake();
+  private final AdjustableVictor BallHopperController = new AdjustableVictor(AuxiliaryMotorIds.HOPPER_VICTOR_ID);
+  private final IntakeRake IntakeRake_Inst = new IntakeRake();
   // Create config for trajectory
   //private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
@@ -76,17 +77,9 @@ public class RobotContainer {
   //***************************************************************************/
   //USERINPUT STUFF (CONTROLLERS, JOYSTICK BUTTONS) INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
-  private final Joystick ControllerDrive = new Joystick(0);
-  private final JoystickButton AButton = new JoystickButton(ControllerDrive,1);
-  private final JoystickButton BButton = new JoystickButton(ControllerDrive,2);
-  private final JoystickButton XButton = new JoystickButton(ControllerDrive,3);
-  private final JoystickButton YButton = new JoystickButton(ControllerDrive,4);
-  private final POVButton POVTopRight = new POVButton(ControllerDrive, 45);
-  private final POVButton POVBottomLeft = new POVButton(ControllerDrive, 135);
-  private final POVButton POVBottomRight = new POVButton(ControllerDrive, 225);
-  private final POVButton POVTopLeft = new POVButton(ControllerDrive, 315);
+  private final LogitechF310 ControllerDrive = new LogitechF310(new Joystick(0));
   
-  private final Joystick ControllerShoot = new Joystick(1);
+  private final LogitechF310 ControllerShoot = new LogitechF310(new Joystick(1));
   //***************************************************************************/
   //COMMANDS INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
@@ -96,18 +89,18 @@ public class RobotContainer {
   private final AutoTurretRotation AutoTurretRotation_inst = new AutoTurretRotation(Turret_Inst);
   private final TurretFocusPID TurretFocusPID_inst = new TurretFocusPID(Turret_Inst,new PIDController(0.1, 0.001, 0));
   private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup(AutoTurretRotation_inst,TurretFocusPID_inst);
-  private final ConventionalArcadeDrive ConventionalCurveDrive_Inst = new ConventionalArcadeDrive(ConventionalDriveTrain_Inst, ControllerDrive);
+  private final ConventionalArcadeDrive ConventionalArcadeDrive_Inst = new ConventionalArcadeDrive(ConventionalDriveTrain_Inst, ControllerDrive);
   //auton
   //private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup(trajectory1.Runner());
-  private final SequentialCommandGroup Dayton = new SequentialCommandGroup(TurretFocusPID_inst);
+  private final SequentialCommandGroup DaytonAutonomous = new SequentialCommandGroup(TurretFocusPID_inst);
 
   //teleop
 
   //ugly rake solution:  
   //private final RakeAdjusterUgly UglyRakeAdjuster = new RakeAdjusterUgly()
-  //private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup(ConventionalCurveDrive_Inst);
+  //private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup(ConventionalArcadeDrive_Inst,UglyRakeAdjuster);
   //
-  private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup(ConventionalCurveDrive_Inst);
+  private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -115,11 +108,10 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    AButton.whenPressed(() -> TurretFocusPID_inst.stopCommand());
   
 
     //enable compressor
-    //new InstantCommand(Compressor::enableCompressor,Compressor).schedule();
+    new InstantCommand(Compressor_inst::enableCompressor,Compressor_inst).schedule();
   }
 
   /**
@@ -129,10 +121,19 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    BButton.whenPressed(TurretGroup);
+
     //XButton.whenPressed(() -> DriveModeController_Inst.toggleDrive());
+    ControllerDrive.RightTriggerAsButton.whenPressed(new InstantCommand(IntakeRake_Inst::enableRake,IntakeRake_Inst));
+    ControllerDrive.RightTriggerAsButton.whenReleased(new InstantCommand(IntakeRake_Inst::disableRake,IntakeRake_Inst));
 
+    ControllerDrive.RightBumper.whenPressed(new InstantCommand(IntakeRake_Inst::setDirectionCounterClockwise,IntakeRake_Inst));
+    ControllerDrive.RightBumper.whenReleased(new InstantCommand(IntakeRake_Inst::setDirectionClockwise,IntakeRake_Inst));
 
+    ContinuousTeleop.addCommands(ConventionalArcadeDrive_Inst);
+
+    ControllerShoot.AButton.whenPressed(() -> TurretFocusPID_inst.stopCommand());
+    ControllerShoot.BButton.whenPressed(TurretGroup);
+    ContinuousTeleop.addCommands();
   }
 
   public Command getAutonomousCommand() {
@@ -140,7 +141,7 @@ public class RobotContainer {
     //config.setKinematics(AutoConstants.kDriveKinematics);
     // Apply the voltage constraint
     //config.addConstraint(autoVoltageConstraint);
-    return Dayton;
+    return DaytonAutonomous;
   }
 
   /**

@@ -15,13 +15,11 @@ import frc.robot.enums.RotationDirection;
 public class IntakeRake extends SubsystemBase {
   private Solenoid RakePneumaticCylinderLeft = new Solenoid(0); 
   private Solenoid RakePneumaticCylinderRight = new Solenoid(0);
-
-  private AdjustableVictor IntakeDriverMotor = new AdjustableVictor(AuxiliaryMotorIds.INTAKE_VICTOR_ID);
+  private AdjustableVictor IntakeDriverMotor = new AdjustableVictor(AuxiliaryMotorIds.INTAKE_VICTOR_ID,RotationDirection.CLOCKWISE);
   /**
    * Creates a new IntakeRake.
    */
   public IntakeRake() {
-
   }
 
   public void setDirectionClockwise() {
@@ -32,9 +30,11 @@ public class IntakeRake extends SubsystemBase {
     IntakeDriverMotor.setDirection(RotationDirection.COUNTER_CLOCKWISE);
   }
   public void enableMotor() {
+    //direction is dynamically controlled behind the scenes.
     IntakeDriverMotor.setPower(1);
   }
   public void disableMotor() {
+    
     IntakeDriverMotor.setPower(0);
   }
 
