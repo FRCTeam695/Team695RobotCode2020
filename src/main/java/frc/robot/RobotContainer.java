@@ -45,25 +45,7 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
 import  edu.wpi.first.wpilibj.controller.PIDController;
 import frc.robot.Constants.AuxiliaryMotorIds;
-/**
- * COntroller button indicies:
- * A: 1
- * B: 2
- * X: 3
- * Y: 4
- * 
- * Left X-axis: 0
- * Left Y-axis: 1
- * 
- * POV:
- *      0
- *      ^
- *      |
- * 270<- -> 90
- *      |
- *      v
- *     180
- * /
+
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -104,6 +86,7 @@ public class RobotContainer {
   private final POVButton POVBottomRight = new POVButton(ControllerDrive, 225);
   private final POVButton POVTopLeft = new POVButton(ControllerDrive, 315);
   
+  private final Joystick ControllerShoot = new Joystick(1);
   //***************************************************************************/
   //COMMANDS INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
@@ -119,6 +102,11 @@ public class RobotContainer {
   private final SequentialCommandGroup Dayton = new SequentialCommandGroup(TurretFocusPID_inst);
 
   //teleop
+
+  //ugly rake solution:  
+  //private final RakeAdjusterUgly UglyRakeAdjuster = new RakeAdjusterUgly()
+  //private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup(ConventionalCurveDrive_Inst);
+  //
   private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup(ConventionalCurveDrive_Inst);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

@@ -50,6 +50,16 @@ public class IntakeRake extends SubsystemBase {
 
   }
 
+  public void enableRake() {
+    lowerRake();
+    enableMotor();
+  }
+
+  public void disableRake() {
+    disableMotor();
+    raiseRake();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

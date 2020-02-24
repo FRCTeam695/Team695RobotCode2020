@@ -5,12 +5,10 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
+package frc.robot.driverinput;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Button;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class ControllerAxisToggle extends Button {
   private Joystick ControllerWatched;
@@ -23,13 +21,16 @@ public class ControllerAxisToggle extends Button {
     this.ControllerWatched = ControllerWatched;
     this.axisId = axisId;
   }
+
+
+
   public boolean get() {
     double axisReading = ControllerWatched.getRawAxis(axisId);
     if (axisReading < 0.0001) {
       axisReading = 0;
     }
-    boolean readingChanged = axisReading != lastAxisReading;
+    boolean enableStateToggled = (axisReading != lastAxisReading) && ((axisReading == 0) || (lastAxisReading == 0));
     lastAxisReading = axisReading;
-    return readingChanged;
+    return enableStateToggled;
   }
 }
