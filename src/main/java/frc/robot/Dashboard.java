@@ -36,6 +36,7 @@ public class Dashboard {
  * @param gyro instance of gyro
  */
     public void initDash() {
+        //c
         /**thisisatab.selectTab();
         gyroBox = thisisatab.newBox("a",0.0, BuiltInWidgets.kTextView,new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(0,0));
         thisisatab.newSensor("Gyro",gyro, BuiltInWidgets.kGyro,new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(2,0));
