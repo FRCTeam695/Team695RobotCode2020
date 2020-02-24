@@ -88,7 +88,6 @@ public class RobotContainer {
 
   //private final TrajectoryCommand trajectory1 = new TrajectoryCommand("src/main/deploy/paths/FindBall.wpilib.json", Drivetrain_inst);
   //tirrets
-
   private final Turret Turret_Inst = new Turret(RobotMainNetworkTableInstance, 0);
   private final ConventionalDriveTrain ConventionalDriveTrain_Inst = new ConventionalDriveTrain();
 
@@ -117,7 +116,7 @@ public class RobotContainer {
   private final ConventionalArcadeDrive ConventionalCurveDrive_Inst = new ConventionalArcadeDrive(ConventionalDriveTrain_Inst, ControllerDrive);
   //auton
   //private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup(trajectory1.Runner());
-  private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup();
+  private final SequentialCommandGroup Dayton = new SequentialCommandGroup(TurretFocusPID_inst);
 
   //teleop
   private final ParallelCommandGroup ContinuousTeleop = new ParallelCommandGroup(ConventionalCurveDrive_Inst);
@@ -127,6 +126,9 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    AButton.whenPressed(() -> TurretFocusPID_inst.stopCommand());
+  
 
     //enable compressor
     //new InstantCommand(Compressor::enableCompressor,Compressor).schedule();
@@ -150,7 +152,7 @@ public class RobotContainer {
     //config.setKinematics(AutoConstants.kDriveKinematics);
     // Apply the voltage constraint
     //config.addConstraint(autoVoltageConstraint);
-    return sequentialTrajectory;
+    return Dayton;
   }
 
   /**
