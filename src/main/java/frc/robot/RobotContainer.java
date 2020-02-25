@@ -40,7 +40,9 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.commands.Driving.*;
+import frc.robot.commands.Driving.ConventionalDrive.AutonomousMove;
 import frc.robot.commands.Driving.ConventionalDrive.ConventionalArcadeDrive;
+import frc.robot.commands.HopperDriver.HopperAutonomous;
 import frc.robot.commands.HopperDriver.VictorControlJoystickAxis;
 import frc.robot.commands.Trajectory.*;
 import frc.robot.commands.Turret.*;
@@ -73,12 +75,13 @@ public class RobotContainer {
   private final AdjustableVictor BallHopperVictor = new AdjustableVictor(AuxiliaryMotorIds.HOPPER_VICTOR_ID);
   private final IntakeRake IntakeRake_Inst = new IntakeRake();
   private final Dashboard Dashboard_Inst = new Dashboard();
+  
   // Create config for trajectory
   //private final TrajectoryConfig config = new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
   //private final TrajectoryCommand trajectory1 = new TrajectoryCommand("src/main/deploy/paths/FindBall.wpilib.json", Drivetrain_inst);
   //tirrets
-  private final Turret Turret_Inst = new Turret(RobotMainNetworkTableInstance, 0);
+  private final Turret Turret_Inst = new Turret(RobotMainNetworkTableInstance, AuxiliaryMotorIds.TURRET_DRIVER_SRX_ID);
   private final ConventionalDriveTrain ConventionalDriveTrain_Inst = new ConventionalDriveTrain();
 
   //***************************************************************************/
@@ -91,15 +94,17 @@ public class RobotContainer {
   //COMMANDS INIT & CONSTRUCTED BELOW:
   //***************************************************************************/
 
-
+  private final AutonomousMove moveAutonomous = new AutonomousMove(ConventionalDriveTrain_Inst);
   //private final DriveModeController DriveModeController_Inst = new DriveModeController(Drivetrain_inst, ControllerDrive);
   private final AutoTurretRotation AutoTurretRotation_inst = new AutoTurretRotation(Turret_Inst);
-  private final TurretFocusPID TurretFocusPID_inst = new TurretFocusPID(Turret_Inst,new PIDController(0.1, 0.001, 0));
-  private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup(AutoTurretRotation_inst,TurretFocusPID_inst);
+  private final TurretFocusPID TurretFocusPID_inst = new TurretFocusPID(Turret_Inst,new PIDController(0.1, 0.00025, 0));
+  private final TurretFocusPIDAuton TurretFocusPIDAuton_Inst = new TurretFocusPIDAuton(Turret_Inst,BallHopperVictor,new PIDController(0.1, 0.001, 0));
+  private final SequentialCommandGroup TurretGroup = new SequentialCommandGroup(AutoTurretRotation_inst);
   private final ConventionalArcadeDrive ConventionalArcadeDrive_Inst = new ConventionalArcadeDrive(ConventionalDriveTrain_Inst, ControllerDrive);
   //auton
-  //private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup(trajectory1.Runner());
-  private final SequentialCommandGroup DaytonAutonomous = new SequentialCommandGroup(TurretFocusPID_inst);
+  //private final SequentialCommandGroup sequentialTrajectory = new SequentialCommandGroup(traWjectory1.Runner());
+  private final ParallelCommandGroup DaytonParallel = new ParallelCommandGroup(TurretFocusPIDAuton_Inst);
+  //private final SequentialCommandGroup DaytonAutonomous = new SequentialCommandGroup(DaytonParallel);
 
   //teleop
 
@@ -137,7 +142,7 @@ public class RobotContainer {
 
     ContinuousTeleop.addCommands(ConventionalArcadeDrive_Inst);
 
-    ControllerShoot.AButton.whenPressed(() -> TurretFocusPID_inst.stopCommand());
+    //ControllerShoot.AButton.whenPressed(() -> TurretFocusPID_inst.stopCommand());
     ControllerShoot.BButton.whenPressed(TurretGroup);
     ContinuousTeleop.addCommands(new VictorControlJoystickAxis(BallHopperVictor, ControllerShoot.LeftJoystick));
   }
@@ -147,7 +152,7 @@ public class RobotContainer {
     //config.setKinematics(AutoConstants.kDriveKinematics);
     // Apply the voltage constraint
     //config.addConstraint(autoVoltageConstraint);
-    return DaytonAutonomous;
+    return DaytonParallel;
   }
 
   /**

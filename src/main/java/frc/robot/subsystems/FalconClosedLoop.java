@@ -131,4 +131,7 @@ public class FalconClosedLoop extends SubsystemBase {
       public double getEncoderRate(){
         return Talon.getSelectedSensorVelocity()*distancePerPulse;
       }
+      public int getClosedLoopError() {
+          return Talon.getClosedLoopError();
+      }
 }

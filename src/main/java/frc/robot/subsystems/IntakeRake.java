@@ -14,7 +14,7 @@ import frc.robot.enums.RotationDirection;
 
 public class IntakeRake extends SubsystemBase {
   private Solenoid RakePneumaticCylinderLeft = new Solenoid(0); 
-  private Solenoid RakePneumaticCylinderRight = new Solenoid(0);
+  private Solenoid RakePneumaticCylinderRight = new Solenoid(1);
   private AdjustableVictor IntakeDriverMotor = new AdjustableVictor(AuxiliaryMotorIds.INTAKE_VICTOR_ID,RotationDirection.CLOCKWISE);
   /**
    * Creates a new IntakeRake.

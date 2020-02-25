@@ -9,21 +9,23 @@ package frc.robot.commands.Turret;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.subsystems.AdjustableVictor;
 import frc.robot.subsystems.Turret;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class TurretFocusPID extends PIDCommand {
+public class TurretFocusPIDAuton extends PIDCommand {
   private Turret Turret_Inst;
   private static double timeOutOfSetpoint = 0;
+  private static double timeInSetpoint = 0;
   //private 
   private boolean status = false;
   
   /**
    * Creates a new TurretFocusPID.
    */
-  public TurretFocusPID(Turret Turret_Inst,PIDController PID) {
+  public TurretFocusPIDAuton(Turret Turret_Inst,AdjustableVictor Hopper_Inst,PIDController PID) {
     super(
       // The controller that the command will use
       PID,
@@ -35,15 +37,24 @@ public class TurretFocusPID extends PIDCommand {
       output -> {
 
         if (PID.atSetpoint()) { 
-          System.out.println(Turret_Inst.getDistanceToContourInFeet() );
-          System.out.print(" ");
+          System.out.print(Turret_Inst.getDistanceToContourInFeet() );
+          System.out.print(" B PERCENT ");
 
           System.out.print(Turret_Inst.determineBottomMotorPercent());
-          System.out.print(" ");
+          System.out.print(" TOP PERCE ");
 
           System.out.print(Turret_Inst.determineTopMotorPercent());
           timeOutOfSetpoint = 0;
+          timeInSetpoint += 0.02;
           Turret_Inst.setShooterWheelPowers(Turret_Inst.determineTopMotorPercent(), Turret_Inst.determineBottomMotorPercent());
+          System.out.print(" TOP ERROR: ");
+          System.out.print(Turret_Inst.getTopError());
+          System.out.print(" BOTOP ERROR: ");
+          System.out.print(Turret_Inst.getBottomError());
+          System.out.println(Math.abs(Turret_Inst.getTopError()) < 4000 && Math.abs(Turret_Inst.getBottomError()) < 2000);
+          if (Math.abs(Turret_Inst.getTopError()) < 40000 && Math.abs(Turret_Inst.getBottomError()) < 2000) {
+            Hopper_Inst.setPower(1);
+          }
         } 
         else {
           if (!(Turret_Inst.isTooFarLeft())  && !(Turret_Inst.isTooFarRight())) { //ensure motor cannot turn more than fully left if headed left. Need to determine what this direction is.

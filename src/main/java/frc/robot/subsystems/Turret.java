@@ -46,8 +46,6 @@ public class Turret extends SubsystemBase {
   }
   
   public void setPower(double power) {
-    if(Math.abs(power) > 1)
-      throw new IllegalArgumentException("Speed is too high");
     power *= gain;
 
     motor.set(ControlMode. PercentOutput, power);
@@ -92,7 +90,12 @@ public class Turret extends SubsystemBase {
     BottomShooterMotor.setVelocityPercent(bottomPercent);
 
   }
-
+  public int getTopError() {
+    return TopShooterMotor.getClosedLoopError();
+  }
+  public int getBottomError() {
+    return BottomShooterMotor.getClosedLoopError();
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
