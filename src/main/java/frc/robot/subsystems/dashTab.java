@@ -67,7 +67,7 @@ public class dashTab extends SubsystemBase {
    */
   public void newSensor(String name, Object obj, BuiltInWidgets widget, Tuple<Integer,Integer> size, Tuple<Integer,Integer> pos) {
     thisTab.add(name, (Sendable) obj).withSize( size.x,size.y).withPosition(pos.x, pos.y);
-    System.out.println("aonhonaoihntosnt");
+    //System.out.println("aonhonaoihntosnt");
   }
 
   public class box {

@@ -17,41 +17,47 @@ import frc.robot.Utility.Tuple;
 import frc.robot.subsystems.dashTab;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.dashTab.box;
+import frc.robot.Utility.Tuple;
 
 /**
  * Add your docs here.
  */
 public class Dashboard {
-    private final String defTabTitle = "default";
-    private final dashTab thisisatab = new dashTab(defTabTitle);
-    private box gyroBox;
-    private box fixedColorWheel;
-    private box detectColorWheel;
+	private final String defTabTitle = "default";
+	private final dashTab thisisatab = new dashTab(defTabTitle);
+	private box gyroBox;
+	private box fixedColorWheel;
+	private box detectColorWheel;
+	private box targetLocked;
 
-    public Dashboard(){
+	public Dashboard(){
 
-    }
+	}
 /**
  * 
  * @param gyro instance of gyro
  */
-    public void initDash() {
-        //c
-        /**thisisatab.selectTab();
-        gyroBox = thisisatab.newBox("a",0.0, BuiltInWidgets.kTextView,new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(0,0));
-        thisisatab.newSensor("Gyro",gyro, BuiltInWidgets.kGyro,new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(2,0));
-        fixedColorWheel = thisisatab.newBox("Fixed Rotations", BuiltInWidgets.kNumberBar, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(9,3),Map.of("min",0,"Max",100));
-        detectColorWheel = thisisatab.newBox("To Color", BuiltInWidgets.kNumberBar, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(8,3),Map.of("min",0,"Max",100));**/
-    }
+	public void initDash() {
+		//c
+		thisisatab.selectTab();
+		/**gyroBox = thisisatab.newBox("a",0.0, BuiltInWidgets.kTextView,new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(0,0));
+		thisisatab.newSensor("Gyro",gyro, BuiltInWidgets.kGyro,new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(2,0));
+		fixedColorWheel = thisisatab.newBox("Fixed Rotations", BuiltInWidgets.kNumberBar, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(9,3),Map.of("min",0,"Max",100));
+		detectColorWheel = thisisatab.newBox("To Color", BuiltInWidgets.kNumberBar, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(8,3),Map.of("min",0,"Max",100));**/
+		targetLocked = thisisatab.newBox("Target Locked",false,BuiltInWidgets.kBooleanBox,new Tuple<Integer,Integer>(1,1),new Tuple<Integer,Integer>(2,6));
+	}
 
-    public box getGyroBox() {
-        return gyroBox;
-    }
-    public box getFixedColorWheel(){
-        return fixedColorWheel;
-    }
-    public box getDetectColorWheel(){
-        return detectColorWheel;
-    }
+	public box getGyroBox() {
+		return gyroBox;
+	}
+	public box getFixedColorWheel(){
+		return fixedColorWheel;
+	}
+	public box getDetectColorWheel(){
+		return detectColorWheel;
+	}
+	public box getTargetLocked(){
+		return targetLocked;
+	}
 
 }
