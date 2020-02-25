@@ -30,8 +30,10 @@ public class Dashboard {
 	private box detectColorWheel;
 	private box focusing;
 	private box searching;
-	private box turretTopMotorSpeed;
-	private box turretBottomMotorSpeed;
+	private box turretTopMotorError;
+	private box turretTopMotorGood;
+	private box turretBottomMotorError;
+	private box turretBottomMotorGood;
 
 	public Dashboard(){
 
@@ -49,12 +51,13 @@ public class Dashboard {
 		detectColorWheel = thisisatab.newBox("To Color", BuiltInWidgets.kNumberBar, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(8,3),Map.of("min",0,"Max",100));**/
 		focusing = thisisatab.newBox("Target Focused",false,BuiltInWidgets.kBooleanBox,new Tuple<Integer,Integer>(1,1),new Tuple<Integer,Integer>(2,6));
 		searching = thisisatab.newBox("Target Found",false,BuiltInWidgets.kBooleanBox,new Tuple<Integer,Integer>(1,1),new Tuple<Integer,Integer>(4,6));
-		turretTopMotorSpeed = thisisatab.newBox("Turret Top Motor", 0.0, BuiltInWidgets.kNumberBar, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(9,3),Map.of("min",0,"Max",1));
-		turretBottomMotorSpeed = thisisatab.newBox("Turret Bottom Motor", 0.0, BuiltInWidgets.kNumberBar, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(10,3),Map.of("min",0,"Max",1));
-
+		turretTopMotorError = thisisatab.newBox("Turret Top Motor Error", 0.0, BuiltInWidgets.kTextView, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(9,3));
+		turretBottomMotorError = thisisatab.newBox("Turret Bottom Motor Error", 0.0, BuiltInWidgets.kTextView, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(10,3));
+		turretTopMotorGood = thisisatab.newBox("Turret Top Motor", BuiltInWidgets.kBooleanBox, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(9,4));
+		turretBottomMotorGood = thisisatab.newBox("Turret Bottom Motor", BuiltInWidgets.kBooleanBox, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(10,4));
 	}
 
-	public box getGyroBox() {
+	/*public box getGyroBox() {
 		return gyroBox;
 	}
 	public box getFixedColorWheel(){
@@ -62,18 +65,43 @@ public class Dashboard {
 	}
 	public box getDetectColorWheel(){
 		return detectColorWheel;
-	}
+	}*/
 	public box getFocusing(){
 		return focusing;
+	}
+	public void setFocusing(Boolean a) {
+		focusing.set(a);
 	}
 	public box getSearching(){
 		return searching;
 	}
-	public box getTurretTopMotorSpeed(){
-		return turretTopMotorSpeed;
+	public void setSearching(Boolean a){
+		searching.set(a);
 	}
-	public box getTurretBottomMotorSpeed(){
-		return turretBottomMotorSpeed;
+	public box getTurretTopMotorError(){
+		return turretTopMotorError;
 	}
+	public void setTurretTopMotorError(Integer a){
+		turretTopMotorError.set(a);
+	}
+	public box getTurretBottomMotorError(){
+		return turretBottomMotorError;
+	}
+	public void setTurretBottomMotorError(Integer a){
+		turretBottomMotorError.set(a);
+	}
+	public box getTurretBottomMotorGood(){
+		return turretBottomMotorGood;
+	}
+	public void setTurretBottomMotorGood(Boolean a){
+		turretBottomMotorGood.set(a);
+	}
+	public box getTurretTopMotorGood(){
+		return turretTopMotorGood;
+	}
+	public void setTurretTopMotorGood(Boolean a){
+		turretTopMotorGood.set(a);
+	}
+	
 
 }
