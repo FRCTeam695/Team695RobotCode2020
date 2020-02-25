@@ -54,13 +54,13 @@ public class LogitechF310 {
         XButton = new JoystickButton(WrappedJoystick,3);
         YButton = new JoystickButton(WrappedJoystick,4);
         LeftJoystick = () -> {return new Vector2d(WrappedJoystick.getRawAxis(0),WrappedJoystick.getRawAxis(1));};
-        RightJoystick = () -> {return new Vector2d(WrappedJoystick.getRawAxis(2),WrappedJoystick.getRawAxis(3));};
-        LeftTrigger = () -> {return WrappedJoystick.getRawAxis(4);};
-        RightTrigger = () -> {return WrappedJoystick.getRawAxis(5);};
-        LeftBumper = new JoystickButton(WrappedJoystick, 4); //TODO: FIGURE OUT BUMPER BUTTON MAPS and trigger axis
-        RightBumper = new JoystickButton(WrappedJoystick, 5); //TODO: FIGURE OUT BUMPER BUTTON MAPS
-        RightTriggerAsButton = new ControllerAxisToggle(WrappedJoystick, 4);
-        LeftTriggerAsButton = new ControllerAxisToggle(WrappedJoystick, 5);
+        RightJoystick = () -> {return new Vector2d(WrappedJoystick.getRawAxis(4),WrappedJoystick.getRawAxis(5));};
+        LeftTrigger = () -> {return WrappedJoystick.getRawAxis(2);};
+        RightTrigger = () -> {return WrappedJoystick.getRawAxis(3);};
+        LeftBumper = new JoystickButton(WrappedJoystick, 5); //TODO: FIGURE OUT BUMPER BUTTON MAPS and trigger axis
+        RightBumper = new JoystickButton(WrappedJoystick, 6); //TODO: FIGURE OUT BUMPER BUTTON MAPS
+        RightTriggerAsButton = new ControllerAxisToggle(WrappedJoystick, 2);
+        LeftTriggerAsButton = new ControllerAxisToggle(WrappedJoystick, 3);
 
         //povs 
         POVTop = new POVButton(WrappedJoystick,0);
