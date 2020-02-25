@@ -37,6 +37,8 @@ public class Drivetrain extends SubsystemBase {
   
   public Drivetrain() {
     shuffleInit();
+    leftPrimary.configFactoryDefault();
+    rightPrimary.configFactoryDefault();
     // The motors on the left side of the drive.
     leftPrimary.setInverted(false);
     leftFollow.follow(leftPrimary);
@@ -51,9 +53,12 @@ public class Drivetrain extends SubsystemBase {
     m_rightEncoder.setDistancePerPulse(DriveConstants.ENCODER_DISTANCE_PER_WHEEL_ROTATION);
     resetEncoders();
     m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+    m_drive = new DifferentialDrive(leftPrimary, rightPrimary);
+    m_drive.setRightSideInverted(false);
+
   }
   // The robot's drive
-  private final DifferentialDrive m_drive = new DifferentialDrive(leftPrimary, rightPrimary);
+  private final DifferentialDrive m_drive;
   
 
   // The left-side drive encoder
@@ -75,6 +80,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public void DriveSubsystem() {
     // Sets the distance per pulse for the encoders
+
     m_leftEncoder.setDistancePerPulse(DriveConstants.ENCODER_DISTANCE_PER_WHEEL_ROTATION);
     m_rightEncoder.setDistancePerPulse(DriveConstants.ENCODER_DISTANCE_PER_WHEEL_ROTATION);
     resetEncoders();
