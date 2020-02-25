@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -32,26 +34,24 @@ class PIDCoefficients {
 public class FalconClosedLoop extends SubsystemBase {
 
     private TalonFX Talon; 
-    private int timeoutMs = 30;
     private int PIDLoopId = 0;
     private ControlMode CurrentControlMode;
     private static PIDCoefficients VelocityPIDCoefficients = new PIDCoefficients(.23,0.0004,7,0);
     private static PIDCoefficients PositionPIDCoefficients = new PIDCoefficients(1,0,0,0);
     public double distancePerPulse = 2048;
-    public FalconClosedLoop(int talonId,int PIDLoopId,int timeoutMs,ControlMode ClosedLoopMode) {
+    public FalconClosedLoop(TalonFX TalonUsed,int PIDLoopId,ControlMode ClosedLoopMode) {
         this.PIDLoopId = PIDLoopId;
-        this.timeoutMs = timeoutMs;
-        this.Talon = new TalonFX(talonId);
+        this.Talon = TalonUsed;
         Talon.configFactoryDefault();
         Talon.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 
         PIDLoopId,
-        timeoutMs);
+        DriveConstants.MOTOR_TIMEOUT);
         Talon.setSensorPhase(true);
-        Talon.configNominalOutputForward(0, timeoutMs);
-		Talon.configNominalOutputReverse(0, timeoutMs);
-		Talon.configPeakOutputForward(1, timeoutMs);
-        Talon.configPeakOutputReverse(-1, timeoutMs);
-        Talon.getSensorCollection().setIntegratedSensorPositionToAbsolute(timeoutMs);
+        Talon.configNominalOutputForward(0, DriveConstants.MOTOR_TIMEOUT);
+		Talon.configNominalOutputReverse(0, DriveConstants.MOTOR_TIMEOUT);
+		Talon.configPeakOutputForward(1, DriveConstants.MOTOR_TIMEOUT);
+        Talon.configPeakOutputReverse(-1, DriveConstants.MOTOR_TIMEOUT);
+        Talon.getSensorCollection().setIntegratedSensorPositionToAbsolute(DriveConstants.MOTOR_TIMEOUT);
         applyPIDCoefficients(getPIDCoefficientsForControlMode(ClosedLoopMode));
     }
     public PIDCoefficients getPIDCoefficientsForControlMode(ControlMode ControlModeToUse) {
@@ -59,7 +59,7 @@ public class FalconClosedLoop extends SubsystemBase {
             case Velocity:
                 return VelocityPIDCoefficients;
             case Position:
-                Talon.getSensorCollection().setIntegratedSensorPositionToAbsolute(timeoutMs);
+                Talon.getSensorCollection().setIntegratedSensorPositionToAbsolute(DriveConstants.MOTOR_TIMEOUT);
                 return PositionPIDCoefficients;
             case PercentOutput:
                 return new PIDCoefficients(0, 0, 0, 0);
@@ -68,10 +68,10 @@ public class FalconClosedLoop extends SubsystemBase {
         } 
     }
     private void applyPIDCoefficients(PIDCoefficients CoefficientsToApply) {
-		Talon.config_kP(PIDLoopId, CoefficientsToApply.kP, timeoutMs);
-		Talon.config_kI(PIDLoopId, CoefficientsToApply.kI, timeoutMs);
-        Talon.config_kD(PIDLoopId, CoefficientsToApply.kD, timeoutMs);
-        Talon.config_kF(PIDLoopId, CoefficientsToApply.kF, timeoutMs);
+		Talon.config_kP(PIDLoopId, CoefficientsToApply.kP, DriveConstants.MOTOR_TIMEOUT);
+		Talon.config_kI(PIDLoopId, CoefficientsToApply.kI, DriveConstants.MOTOR_TIMEOUT);
+        Talon.config_kD(PIDLoopId, CoefficientsToApply.kD, DriveConstants.MOTOR_TIMEOUT);
+        Talon.config_kF(PIDLoopId, CoefficientsToApply.kF, DriveConstants.MOTOR_TIMEOUT);
     }
 
 

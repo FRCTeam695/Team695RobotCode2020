@@ -7,6 +7,9 @@
 
 package frc.robot.commands.Turret;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.AdjustableVictor;
@@ -19,6 +22,8 @@ public class TurretFocusPIDAuton extends PIDCommand {
   private Turret Turret_Inst;
   private static double timeOutOfSetpoint = 0;
   private static double timeInSetpoint = 0;
+  private static Queue<Double> DistanceReadings = new LinkedList<Double>();
+  private static double readingSum = 0;
   //private 
   private boolean status = false;
   
@@ -37,7 +42,6 @@ public class TurretFocusPIDAuton extends PIDCommand {
       output -> {
 
         if (PID.atSetpoint()) { 
-          System.out.print(Turret_Inst.getDistanceToContourInFeet() );
           System.out.print(" B PERCENT ");
 
           System.out.print(Turret_Inst.determineBottomMotorPercent());
@@ -46,13 +50,27 @@ public class TurretFocusPIDAuton extends PIDCommand {
           System.out.print(Turret_Inst.determineTopMotorPercent());
           timeOutOfSetpoint = 0;
           timeInSetpoint += 0.02;
-          Turret_Inst.setShooterWheelPowers(Turret_Inst.determineTopMotorPercent(), Turret_Inst.determineBottomMotorPercent());
+          //calculate definite sum from a second ago up to now and then average it/
+          double CurrentDistanceReading = Turret_Inst.getDistanceToContourInFeet();
+          DistanceReadings.add(CurrentDistanceReading);
+          int ReadingsTaken = DistanceReadings.size();
+          //if there are more than 50 readings (1 second's worth of data, the last reading gets removed.)
+          if (ReadingsTaken > 50) {
+            readingSum -= DistanceReadings.peek();
+            DistanceReadings.remove();
+            ReadingsTaken -= 1;
+          }
+          readingSum += CurrentDistanceReading;
+          double averageDistance = (1.0/(ReadingsTaken))*readingSum;
+          Turret_Inst.setShooterWheelPowers(Turret_Inst.determineTopMotorPercent(averageDistance), Turret_Inst.determineBottomMotorPercent(averageDistance));
           System.out.print(" TOP ERROR: ");
           System.out.print(Turret_Inst.getTopError());
           System.out.print(" BOTOP ERROR: ");
           System.out.print(Turret_Inst.getBottomError());
-          System.out.println(Math.abs(Turret_Inst.getTopError()) < 4000 && Math.abs(Turret_Inst.getBottomError()) < 2000);
-          if (Math.abs(Turret_Inst.getTopError()) < 40000 && Math.abs(Turret_Inst.getBottomError()) < 2000) {
+          System.out.print(Math.abs(Turret_Inst.getTopError()) < 4000 && Math.abs(Turret_Inst.getBottomError()) < 2000);
+          System.out.println(averageDistance);
+
+          if (Math.abs(Turret_Inst.getTopError()) < 500 && Math.abs(Turret_Inst.getBottomError()) < 500) {
             Hopper_Inst.setPower(1);
           }
         } 
@@ -64,7 +82,9 @@ public class TurretFocusPIDAuton extends PIDCommand {
           }
           timeOutOfSetpoint += 0.02;
           if (timeOutOfSetpoint >= 0.25) {
-            Turret_Inst.setShooterWheelPowers(0, 0); //stop motors if out of setpoint for too long.
+            Turret_Inst.setShooterWheelPowers(0, 0); //stop motors if out of setpoint for too long and also reset integral data.
+            DistanceReadings.clear();
+            readingSum = 0;
             
           }   
         }        // Use the output here
