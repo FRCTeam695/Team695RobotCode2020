@@ -28,7 +28,8 @@ public class Dashboard {
 	private box gyroBox;
 	private box fixedColorWheel;
 	private box detectColorWheel;
-	private box targetLocked;
+	private box focusing;
+	private box searching;
 
 	public Dashboard(){
 
@@ -44,7 +45,9 @@ public class Dashboard {
 		thisisatab.newSensor("Gyro",gyro, BuiltInWidgets.kGyro,new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(2,0));
 		fixedColorWheel = thisisatab.newBox("Fixed Rotations", BuiltInWidgets.kNumberBar, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(9,3),Map.of("min",0,"Max",100));
 		detectColorWheel = thisisatab.newBox("To Color", BuiltInWidgets.kNumberBar, new Tuple<Integer,Integer>(1,1), new Tuple<Integer,Integer>(8,3),Map.of("min",0,"Max",100));**/
-		targetLocked = thisisatab.newBox("Target Locked",false,BuiltInWidgets.kBooleanBox,new Tuple<Integer,Integer>(1,1),new Tuple<Integer,Integer>(2,6));
+		focusing = thisisatab.newBox("Target Locked",false,BuiltInWidgets.kBooleanBox,new Tuple<Integer,Integer>(1,1),new Tuple<Integer,Integer>(2,6));
+		searching = thisisatab.newBox("Target Locked",false,BuiltInWidgets.kBooleanBox,new Tuple<Integer,Integer>(1,1),new Tuple<Integer,Integer>(4,6));
+
 	}
 
 	public box getGyroBox() {
@@ -56,8 +59,11 @@ public class Dashboard {
 	public box getDetectColorWheel(){
 		return detectColorWheel;
 	}
-	public box getTargetLocked(){
-		return targetLocked;
+	public box getFocusing(){
+		return focusing;
+	}
+	public box getSearching(){
+		return searching;
 	}
 
 }
