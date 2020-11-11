@@ -64,9 +64,9 @@ import frc.robot.Constants.AuxiliaryMotorIds;
 public class RobotContainer {
   private final NetworkTableInstance RobotMainNetworkTableInstance = NetworkTableInstance.getDefault();
   // The robot's subsystems and commands are defined here...
-  //***************************************************************************/
+  //********************************************/
   //SUBSYSTEMS INITIALIZED & CONSTRUCTED BELOW:
-  //***************************************************************************/
+  //*******************************************/
   //private final Drivetrain Drivetrain_inst = new Drivetrain();
   private final CompressorController Compressor_inst = new CompressorController();
   // Create a voltage constraint to ensure we don't accelerate too fast
